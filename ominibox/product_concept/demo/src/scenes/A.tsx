@@ -84,8 +84,11 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
 
   const dust = lin(t, 2.65, 2.85, 0, 1);
 
+  // final：气泡落定后推近对话（右上角为原点，气泡和回复都留在画面里），回复字不再小
+  const zoom = lin(t, 4.4, 4.9, 1, 1.25);
   return (
     <Fill bg={bg}>
+     <div style={{ position: 'absolute', inset: 0, transform: `scale(${zoom})`, transformOrigin: '1540px 120px' }}>
       {/* 聊天首页（推荐问题气泡、卡片） */}
       <div style={{ position: 'absolute', inset: 0, opacity: uiO * (1 - leave), transform: `scale(${uiS}) translateY(${leave * 300}px)`, transformOrigin: '960px 540px' }}>
         <div style={{ position: 'absolute', left: 690, top: 380, padding: '12px 24px', borderRadius: 999, background: '#383838', color: '#cfcfcf', fontSize: 18, transform: `scale(${sp(t, 3.85)})`, transformOrigin: 'left bottom' }}>
@@ -140,6 +143,7 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
           <Tx x={420} y={210} s={26} w={1100} c={C.text}>{reply}</Tx>
         </>
       )}
+     </div>
       <KeyHud t={t} a={4.25} b={4.7} text={tr('⏎ 发送', '⏎ Send')} />
     </Fill>
   );

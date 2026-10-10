@@ -10,9 +10,14 @@ import { Badge, BottomBar, ChatComposer, ChatHistoryList, ContentTabs, Disclaime
 // 切到「对话」接着问、点引用看来源 → 回到电脑，接 E 的 Agent 归档
 export const M2_AT = 26.45;
 const CAM_PHONE = { x: 1520, y: 560, s: 1.32 };
+// final：读周报、输入追问、看回答、看引用时分别推近手机对应区域
+const CAM_TOP = { x: 1590, y: 470, s: 1.75 }, CAM_BOTTOM = { x: 1590, y: 700, s: 1.9 };
 const CAM = [
   { t: 0, ...CAM_FULL }, { t: 1.3, ...CAM_WIDE }, { t: 3.0, ...CAM_WIDE }, { t: 3.6, ...CAM_PHONE },
-  { t: 12.3, ...CAM_PHONE }, { t: 13.1, ...CAM_WIDE }, { t: 13.5, ...CAM_WIDE }, { t: 15.2, ...CAM_FULL },
+  { t: 3.9, ...CAM_TOP }, { t: 5.1, ...CAM_TOP }, { t: 5.35, ...CAM_PHONE }, { t: 7.1, ...CAM_PHONE },
+  { t: 7.45, ...CAM_BOTTOM }, { t: 8.5, ...CAM_BOTTOM }, { t: 8.9, ...CAM_TOP }, { t: 10.6, ...CAM_TOP },
+  { t: 11.0, ...CAM_BOTTOM }, { t: 12.15, ...CAM_BOTTOM },
+  { t: 12.5, ...CAM_PHONE }, { t: 13.1, ...CAM_WIDE }, { t: 13.5, ...CAM_WIDE }, { t: 15.2, ...CAM_FULL },
 ];
 // 电脑侧栏里「AI 动态周报 · 第 40 周」那一行（原片 E 资源树第 9 行，屏幕坐标）
 const ROW_SCREEN = { x: 16, y: 697, w: 268, h: 34 };

@@ -184,8 +184,8 @@ export const Tx: React.FC<{ x: number; y: number; s?: number; c?: string; w?: nu
 );
 
 /** 画面大字：模糊 → 清晰浮起，b 后淡出 */
-export const Caption: React.FC<{ t: number; a: number; b: number; text: React.ReactNode; y?: number; x?: number; size?: number; color?: string; align?: 'center' | 'left'; sub?: string }> = ({
-  t, a, b, text, y = 880, x = 120, size = 64, color = '#fff', align = 'center', sub,
+export const Caption: React.FC<{ t: number; a: number; b: number; text: React.ReactNode; y?: number; x?: number; size?: number; color?: string; align?: 'center' | 'left'; sub?: string; plate?: boolean }> = ({
+  t, a, b, text, y = 880, x = 120, size = 64, color = '#fff', align = 'center', sub, plate,
 }) => {
   if (t < a - 0.01 || t > b + 0.3) return null;
   const pin = lin(t, a, a + 0.3, 0, 1);
@@ -198,7 +198,8 @@ export const Caption: React.FC<{ t: number; a: number; b: number; text: React.Re
         textShadow: color === '#fff' ? '0 4px 30px rgba(0,0,0,.6)' : undefined, fontFamily: FONT,
       }}
     >
-      {text}
+      {/* plate：叠在界面上的标题垫一块磨砂深色底，压在任何画面上都看得清 */}
+      <span style={plate ? { display: 'inline-block', padding: `${size * 0.22}px ${size * 0.6}px`, borderRadius: size * 0.42, background: 'rgba(14,14,16,.72)', backdropFilter: 'blur(18px)', boxShadow: '0 20px 60px rgba(0,0,0,.35)', border: '1px solid rgba(255,255,255,.08)' } : undefined}>{text}</span>
       {sub && <div style={{ fontSize: size * 0.42, fontWeight: 400, opacity: 0.75, marginTop: 14 }}>{sub}</div>}
     </div>
   );

@@ -11,8 +11,12 @@ import { BottomBar, ContentTabs, Dialog, HomeComposer, HomeHeader, Ic, M, MoreSh
 export const M1_AT = 12.05;
 const DOT_FLIGHT = 1.5; // 光点从手机飘到电脑侧栏的时长（v2 从 0.85 s 放慢）
 const CAM_PHONE = { x: 1520, y: 560, s: 1.32 };
+// final：操作时推近手机下半屏（录音面板、对话框、「更多方式」），手机界面字不再小
+const CAM_SHEET = { x: 1590, y: 720, s: 1.9 }, CAM_DLG = { x: 1590, y: 590, s: 1.9 };
 const CAM = [
   { t: 0, ...CAM_FULL }, { t: 1.3, ...CAM_WIDE }, { t: 1.5, ...CAM_WIDE }, { t: 2.3, ...CAM_PHONE },
+  { t: 2.75, ...CAM_PHONE }, { t: 3.15, ...CAM_SHEET }, { t: 5.9, ...CAM_SHEET }, { t: 6.2, ...CAM_DLG }, { t: 6.95, ...CAM_DLG },
+  { t: 7.4, ...CAM_PHONE }, { t: 8.35, ...CAM_PHONE }, { t: 8.7, ...CAM_SHEET }, { t: 9.15, ...CAM_SHEET }, { t: 9.45, ...CAM_PHONE },
   { t: 11.2, ...CAM_PHONE }, { t: 12.2, ...CAM_WIDE }, { t: 13.6, ...CAM_WIDE }, { t: 15.25, ...CAM_FULL },
 ];
 

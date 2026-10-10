@@ -5,7 +5,7 @@ import { BAND_IN, Cue, END, H0, LOGO, SECTIONS } from './cues';
 
 export type Plan = { id: string; name: string; stems: Record<string, Bus> };
 
-const C_RANGE = [SECTIONS.Cp, SECTIONS.D], E_RANGE = [SECTIONS.Ep, SECTIONS.Ep + 15.2];
+const C_RANGE = [SECTIONS.Cp, SECTIONS.D], E_RANGE = [SECTIONS.Ep, SECTIONS.Ep + 16];
 const inPhone = (t: number) => (t >= C_RANGE[0] && t < C_RANGE[1]) || (t >= E_RANGE[0] && t < E_RANGE[1]);
 /** 插段里手机在画面右侧：手机声音偏右 */
 const panOf = (c: Cue) => (c.phone && inPhone(c.t) ? 0.35 : 0);
@@ -74,22 +74,50 @@ export const plan2 = (CUES: Cue[]): Plan => {
   // 前奏（无鼓）：垫音渐入 + 升起，「！」正好落在拍上，BAND_IN 是第一小节重拍
   S.bass_synth.add(V.pad(CH.Am.map((m) => m + 12), BAND_IN - 0.4, 0.6, 900), 0.4);
   S.transitions.add(V.riser(1.5, 0.5), BAND_IN - 1.5);
-  // 主体：Am F C G，每小节一个和弦；插段里降成半拍感（只留底鼓 1 拍 + 踩镲），结尾口号处停鼓
-  const prog = ['Am', 'F', 'C', 'G'];
-  const trans = [SECTIONS.B, SECTIONS.C, SECTIONS.D, SECTIONS.E, SECTIONS.F, SECTIONS.G, H0].filter((t) => t > BAND_IN);
-  each(BAND_IN, H0 + 0.3, BAR, (t, bar) => {
-    const ch = CH[prog[bar % 4]], phone = inPhone(t + 0.1);
-    if (bar === 0 || trans.some((x) => x <= t && t - x < BAR)) S.drums.add(V.crash(0.7), t); // 每段第一小节重拍
+  // 主体（final 编曲）：段落都从小节线开始，每段换一种和弦 / 鼓型 / 密度，避免一个循环放到底
+  //   A 尾：只有底鼓 1、3 拍 + 贝斯，蓄力；B 全乐队；C 加十六分踩镲；D「理解」半拍感 + 换和弦色彩；
+  //   E 主歌高潮：全乐队 + 主旋律动机；F 米白画布：大调、轻；G 全片最高点：动机 + 开镲；插段（手机）：降成垫音 + 轻底鼓
+  type Sec = { prog: string[]; kick: number[]; snare: number[]; hat16?: boolean; open?: boolean; bass: boolean; arpV: number; arpUp?: number; motif?: boolean; phone?: boolean };
+  const FULL = { kick: [0, 2], snare: [1, 3], bass: true, arpV: 0.5 };
+  const PHONE: Sec = { prog: ['Fmaj7', 'G6', 'Em7', 'Am9'], kick: [0], snare: [], bass: false, arpV: 0.35, phone: true };
+  const ARR: [number, Sec][] = [
+    [BAND_IN, { prog: ['Am', 'F', 'C', 'G'], kick: [0, 2], snare: [], bass: true, arpV: 0.4 }],
+    [SECTIONS.B, { prog: ['Am', 'F', 'C', 'G'], ...FULL }],
+    [SECTIONS.C, { prog: ['Am', 'F', 'C', 'G'], ...FULL, hat16: true }],
+    [SECTIONS.Cp, PHONE],
+    [SECTIONS.D, { prog: ['Dm9', 'G6', 'Cmaj7', 'Am9'], kick: [0], snare: [2], bass: true, arpV: 0.42 }],
+    [SECTIONS.E, { prog: ['Am', 'F', 'C', 'G'], ...FULL, motif: true }],
+    [SECTIONS.Ep, PHONE],
+    [SECTIONS.Ep + 16, { prog: ['Am', 'F', 'C', 'G'], ...FULL, hat16: true, motif: true }],
+    [SECTIONS.F, { prog: ['C', 'G', 'Am', 'F'], kick: [0, 2], snare: [1, 3], bass: true, arpV: 0.42, arpUp: 12 }],
+    [SECTIONS.G, { prog: ['F', 'G', 'Am', 'C'], ...FULL, hat16: true, open: true, motif: true }],
+  ];
+  const secOf = (t: number) => { let k = 0; for (let i = 0; i < ARR.length; i++) if (t >= ARR[i][0] - 1e-6) k = i; return k; };
+  // 主旋律动机（每小节两三个和弦内音，钢琴 + 钟琴叠一层），跟着当前和弦走
+  const MOTIF: Record<string, [number, number][]> = {
+    Am: [[76, 0], [72, 1.5], [74, 3]], F: [[77, 0], [72, 1.5], [69, 3]], C: [[79, 0], [76, 1.5], [72, 3]], G: [[74, 0], [71, 1.5], [79, 3]],
+  };
+  const trans = [SECTIONS.B, SECTIONS.C, SECTIONS.Cp, SECTIONS.D, SECTIONS.E, SECTIONS.Ep, SECTIONS.Ep + 16, SECTIONS.F, SECTIONS.G, H0].filter((t) => t > BAND_IN);
+  each(BAND_IN, H0 + 0.3, BAR, (t) => {
+    const k = secOf(t + 0.01), [t0, A] = ARR[k];
+    const bar = Math.round((t - t0) / BAR), name = A.prog[bar % A.prog.length], ch = CH[name];
+    if (k > 0 && bar === 0 || t === BAND_IN || (A === ARR[ARR.length - 1][1] && bar % 2 === 0)) S.drums.add(V.crash(A.phone ? 0.4 : 0.7), t); // 每段第一拍；G 每两小节
     for (let b = 0; b < 4; b++) {
       const tb = t + b * BEAT;
       if (tb >= H0 + 0.3) break;
-      if (b === 0 || (!phone && b === 2)) S.drums.add(V.kick(phone ? 0.6 : 1), tb);
-      if (!phone && (b === 1 || b === 3)) S.drums.add(V.snare(0.8), tb);
-      S.drums.add(V.hat(0.6), tb); S.drums.add(V.hat(b === 3 && !phone ? 0.7 : 0.4, b === 3 && !phone), tb + BEAT / 2, 1, 0.2);
-      if (!phone) { S.bass_synth.add(V.bass(ch[0] - 12, BEAT * 0.45, 0.9), tb); S.bass_synth.add(V.bass(ch[0], BEAT * 0.4, 0.6), tb + BEAT / 2); }
-      for (let s = 0; s < 4; s++) S.melody.add(V.arp(ch[(b * 4 + s) % ch.length] + 24, 0.11, phone ? 0.35 : 0.5, phone ? 1400 : 2600), tb + s * BEAT / 4, 1, s % 2 ? 0.3 : -0.3);
+      if (A.kick.includes(b)) S.drums.add(V.kick(A.phone ? 0.6 : 1), tb);
+      if (A.snare.includes(b)) S.drums.add(V.snare(0.8), tb);
+      S.drums.add(V.hat(0.6), tb);
+      S.drums.add(V.hat(A.open ? 0.55 : b === 3 && !A.phone ? 0.7 : 0.4, A.open || (b === 3 && !A.phone)), tb + BEAT / 2, 1, 0.2);
+      if (A.hat16) for (const q of [1, 3]) S.drums.add(V.hat(0.22), tb + q * BEAT / 4, 1, -0.2);
+      if (A.bass) { S.bass_synth.add(V.bass(ch[0] - 12, BEAT * 0.45, 0.9), tb); S.bass_synth.add(V.bass(ch[0], BEAT * 0.4, 0.6), tb + BEAT / 2); }
+      for (let q = 0; q < 4; q++) S.melody.add(V.arp(ch[(b * 4 + q) % ch.length] + 24 + (A.arpUp ?? 0), 0.11, A.arpV, A.phone ? 1400 : 2600), tb + q * BEAT / 4, 1, q % 2 ? 0.3 : -0.3);
     }
-    if (phone) S.bass_synth.add(V.pad(ch, BAR + 0.2, 0.5, 1200), t);
+    if (A.phone) S.bass_synth.add(V.pad(ch, BAR + 0.2, 0.5, 1200), t);
+    if (A.motif && MOTIF[name]) for (const [m, beat] of MOTIF[name]) {
+      const tm = t + beat * BEAT; if (tm >= H0) continue;
+      S.melody.add(sum(V.piano(m, 1.2, 0.5), V.glock(m + 12, 0.12)), tm, 1, 0.1);
+    }
   });
   // 转场前一拍：军鼓十六分过门
   for (const x of trans) for (let s = 0; s < 4; s++) S.drums.add(V.snare(0.35 + s * 0.12), x - BEAT + s * BEAT / 4);

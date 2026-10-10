@@ -56,7 +56,7 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
 
   // ① 逐词出现
   const rev = (a: number) => lin(u, a, a + 0.4, 0, 1);
-  const r0 = rev(0.5), r1 = rev(0.95), r2 = rev(1.4);
+  const r0 = rev(0.3), r1 = rev(0.75), r2 = rev(1.2); // final：光带一过就出第一个词，不留黑场
 
   // ② 互换：万物走上弧、记忆走下弧，变成像跷跷板一样点一下
   const sw = u < 2.1 ? 0 : sp(u, 2.1, { damping: 12, mass: 0.9 });
@@ -105,9 +105,11 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
   const TEXT_X = tr(840, 960 + LS / 2 + SHIFT + 80);
   const shift = lin(u, 6.1, 6.6, 0, SHIFT);
   const line = (a: number) => lin(u, a, a + 0.4, 0, 1);
-  const push = lin(u, 7.0, 9.6, 1, 1.03);
-  const fade = lin(u, 9.05, 9.55, 0, 1);
-  const blink = blinkAt(u, [4.45, 8.2]);
+  const U_END = toOut(45) - toOut(39) - HOLD; // 本段最后一刻（u）
+  const push = lin(u, 7.0, U_END, 1, 1.03);
+  const fade = lin(u, U_END - 0.6, U_END - 0.1, 0, 1);
+  const blink = blinkAt(u, [4.45, 8.2, U_END - 1.6]);
+  const cta = u < 7.25 ? 0 : sp(u, 7.25, { damping: 11, mass: 0.7 });
   const look = u < 4.4 ? 0.9 : 0; // 先看着字，落地后看镜头
   const lookY = u >= 4.75 ? 0.5 : 0;
 
@@ -158,10 +160,16 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
             {[
               { a: 6.55, s: 96, w: 800, c: '#fff', text: tr('小黑 OmniBox', 'Xiaohei OmniBox') },
               { a: 6.9, s: 46, w: 500, c: '#ddd', text: tr('你的 AI 知识伙伴', 'Your AI knowledge companion') },
-              { a: 7.25, s: 30, w: 400, c: '#9a9a9a', text: tr('免费开始 · omnibox.pro', 'Start for free · omnibox.pro') },
             ].map((l) => (
               <div key={l.text} style={{ fontSize: l.s, fontWeight: l.w, color: l.c, marginBottom: 16, opacity: line(l.a), filter: `blur(${(1 - line(l.a)) * 10}px)`, whiteSpace: 'nowrap' }}>{l.text}</div>
             ))}
+            {/* final：行动按钮（弹出）+ 网址 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 28, marginTop: 18, opacity: Math.min(1, cta * 1.5) }}>
+              <div style={{ padding: '16px 40px', borderRadius: 999, background: `linear-gradient(180deg, ${C.blue}, #6FA6FB)`, color: '#fff', fontSize: 34, fontWeight: 700, boxShadow: `0 10px 40px ${C.blue}66`, transform: `scale(${0.6 + 0.4 * cta})`, transformOrigin: 'left center', whiteSpace: 'nowrap' }}>
+                {tr('免费开始 →', 'Start for free →')}
+              </div>
+              <div style={{ fontSize: 34, fontWeight: 500, color: '#cfcfcf', letterSpacing: 0.5 }}>omnibox.pro</div>
+            </div>
           </div>
         )}
       </div>

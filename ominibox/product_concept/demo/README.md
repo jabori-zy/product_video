@@ -1,6 +1,7 @@
 # 小黑 OmniBox 产品介绍片
 
-- **成片**：`npm run render:final -- v2` → `out/ominibox_product_video_v2.mp4`（≈124 s，1920×1080，30 fps，含方案二声音）；先按当前时间线重建声音，再渲染 Final、合成。脚本 `../result/script-v2.md`；v1 成片保留在 `out/ominibox_product_video_v1.mp4`
+- **Final 成片**：`npm run render:final -- final` → `out/ominibox_product_video_final.mp4`（≈126 s；转场卡小节线、按段编曲、−14 LUFS / −1.5 dBTP、标题垫底、镜头推近；改动见 `../result/script-final.md`）；审片截图 `node tools/stills.mjs [--scale=0.33] <秒>…` → `out/stills/`
+- **v2 成片**：`npm run render:final -- v2` → `out/ominibox_product_video_v2.mp4`（≈124 s，1920×1080，30 fps，含方案二声音）；先按当前时间线重建声音，再渲染 Final、合成。脚本 `../result/script-v2.md`；v1 成片保留在 `out/ominibox_product_video_v1.mp4`
 - **英文成片**：`npm run render:final -- v1 en` → `out/ominibox_product_video_en_v1.mp4`（组件 `FinalEn`，画面与时长同中文版）。文案切换走 `src/i18n.tsx`（`useTr` / `useRes` / `textW`）、`src/copy.ts`（打字文案、开场按键、资源名，画面与声音共用）、`src/data/locales/en.ts`；英文更宽的地方（开场、结尾口号与品牌名）按实测宽度排版；英文打字保持中文版总时长，声音按英文按键重算（`npm run audio -- en` → `audio/out/music2_en/`）
 
 - 成片：`out/demo.mp4`（1920×1080 · 30 fps · 45 s · 无配乐）

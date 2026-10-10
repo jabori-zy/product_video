@@ -1,6 +1,6 @@
 // 全片声音事件表（成片秒数）。时间取自各场景代码里的关键帧，经 appTimeline 换算到 demo_modify_slogon 的时间线，
 // 所以声音与画面同源：改了画面节奏，重跑 npm run audio 即可重新对齐
-import { INSERTS, TOTAL_APP, insertStart, toOutApp } from '../src/appTimeline';
+import { INSERTS, TOTAL_APP, insertScale, insertStart, toOutApp } from '../src/appTimeline';
 import { ARC_DE } from '../src/pace';
 import { TYPED, openKeys, stepOf, txt, type Lang, type TypedCopy } from '../src/copy';
 
@@ -63,7 +63,7 @@ export const buildCues = (lang: Lang): Cue[] => {
   for (let i = 0; i < 3; i++) c(o(11.1 + i * 0.1), 'tick', { v: 0.7 });
 
   // ---------- C+ 手机随手记（插段，成片秒 = C0 + 局部秒）----------
-  const m1 = (u: number) => C0 + u;
+  const m1 = (u: number) => C0 + u / insertScale('C+');
   c(m1(0), 'whoosh', { dur: 1.3, v: 0.5 }); c(m1(0.75), 'pop', { phone: true }); c(m1(1.5), 'whoosh', { dur: 0.8, v: 0.3 });
   c(m1(2.0), 'blink', { v: 0.5 });
   c(m1(2.6), 'tap', { phone: true }); c(m1(2.75), 'sheetUp', { phone: true }); c(m1(3.0), 'recStart', { phone: true });
@@ -97,7 +97,7 @@ export const buildCues = (lang: Lang): Cue[] => {
   c(o(24.5), 'stream', { dur: o(25.8) - o(24.5) }); c(o(25.95), 'swish', { dur: 0.35 }); c(o(26.3), 'pop');
 
   // ---------- E+ 跨端接力（插段）----------
-  const m2 = (u: number) => E0 + u;
+  const m2 = (u: number) => E0 + u / insertScale('E+');
   c(m2(0), 'whoosh', { dur: 1.3, v: 0.5 }); c(m2(0.75), 'pop', { phone: true }); c(m2(1.5), 'tick');
   c(m2(1.6), 'whoosh', { dur: 0.4, v: 0.5 }); c(m2(1.95), 'swish', { dur: 0.8, v: 0.8 }); c(m2(2.8), 'pop', { phone: true });
   c(m2(3.0), 'whoosh', { dur: 0.6, v: 0.25 }); c(m2(3.6), 'stream', { dur: 1.4, v: 0.5, phone: true });
@@ -128,15 +128,16 @@ export const buildCues = (lang: Lang): Cue[] => {
   // ---------- H2 结尾（成片秒 = H0 + u）----------
   const h = (u: number) => H0 + (u < H_HOLD0 ? u : u + H_HOLD); // 互换之后的事件顺延 2 秒
   const hRaw = (u: number) => H0 + u;
-  for (let i = 0; i < 3; i++) c(h(0.5 + i * 0.45), 'word', { i: i + 6 });
+  for (let i = 0; i < 3; i++) c(h(0.3 + i * 0.45), 'word', { i: i + 6 });
   c(h(2.1), 'swap', { dur: 1.0 });
   for (let i = 0; i < 3; i++) c(hRaw(3.6 + i * 0.2), 'word', { i: i + 9 }); // 第二行「万物 变成 记忆」
   c(h(3.3), 'slide'); c(h(3.5), 'meow', { i: 1 }); c(h(3.65), 'retract');
   c(h(3.95) - 0.04, 'boing', { i: 2 }); c(h(4.3), 'land', { i: 2 }); c(h(4.32), 'trampoline'); c(h(4.45), 'blink');
   c(h(4.65), 'fall'); c(h(4.8), 'swell', { dur: 0.6 });
   c(h(5.35) - 0.03, 'boing', { i: 3, v: 0.7 }); c(LOGO, 'logo');
-  for (let i = 0; i < 3; i++) c(h(6.55 + i * 0.35), 'line', { i });
-  c(h(8.2), 'blink');
+  for (let i = 0; i < 2; i++) c(h(6.55 + i * 0.35), 'line', { i });
+  c(h(7.25), 'pop'); c(h(7.3), 'line', { i: 2 }); // 行动按钮弹出
+  c(h(8.2), 'blink'); c(END - 1.6, 'blink', { v: 0.6 });
   return cues.sort((a, b) => a.t - b.t);
 };
 

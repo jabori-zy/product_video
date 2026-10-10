@@ -44,6 +44,9 @@ const CAM = [
   { t: 3.45, ...tc(3), s: 1.45 },
   { t: 3.8, ...tc(3), s: 1.45 },
   { t: 4.0, x: 960, y: 540, s: 1 },
+  // final：⌘J 搜索框弹出后推近
+  { t: 4.6, x: 960, y: 540, s: 1 },
+  { t: 5.5, x: 960, y: 540, s: 1.2 },
 ];
 const rowY = (i: number) => TREE0 + i * 40;
 
@@ -158,7 +161,7 @@ export const Dd: React.FC<{ t: number }> = ({ t }) => {
     ['🖼 Whiteboard Photo.jpg', '…', 'meeting', ' ', 'to-dos', ': double DAU…'],
     ['📕 Q3 Product Review.pdf', '…next quarter ', '', '', 'to-do', ' list…'],
   ]);
-  const black = lin(t, 5.5, 5.6, 0, 0.94);
+  const black = lin(t, 5.5, 5.6, 0, 1);
 
   return (
     <Fill bg={C.main}>
@@ -167,9 +170,9 @@ export const Dd: React.FC<{ t: number }> = ({ t }) => {
         <Sidebar tab={0}>{tree}{dots}</Sidebar>
         {TILES.map((_, i) => <Tile key={i} i={i} t={t} />)}
       </Camera>
-      <Caption t={t} a={4.0} b={4.5} text={tr('自动打标签', 'Automatically tagged')} y={930} size={56} />
+      <Caption t={t} a={4.0} b={4.5} text={tr('自动打标签', 'Automatically tagged')} y={930} size={56} plate />
       {t >= 4.5 && t < 5.7 && (
-        <div style={{ position: 'absolute', left: 560, top: 260, width: 800, height: 420, borderRadius: 20, background: 'rgba(48,48,48,.92)', border: '1px solid #555', boxShadow: '0 30px 80px rgba(0,0,0,.5)', transform: `scale(${0.6 + 0.4 * sP})`, opacity: Math.min(sP * 1.5, 1) }}>
+        <div style={{ position: 'absolute', left: 560, top: 260, width: 800, height: 420, borderRadius: 20, background: 'rgba(48,48,48,.92)', border: '1px solid #555', boxShadow: '0 30px 80px rgba(0,0,0,.5)', transform: `scale(${(0.6 + 0.4 * sP) * lin(t, 4.6, 5.4, 1, 1.3)})`, opacity: Math.min(sP * 1.5, 1) }}>
           <div style={{ position: 'absolute', left: 24, top: 22, width: 752, height: 56, borderRadius: 12, background: '#262626', color: '#fff', fontSize: 24, lineHeight: '56px', paddingLeft: 20, boxSizing: 'border-box' }}>
             🔍 {q || <span style={{ color: C.muted }}>{tr('搜索', 'Search')}</span>}
           </div>
@@ -187,12 +190,12 @@ export const Dd: React.FC<{ t: number }> = ({ t }) => {
         </div>
       )}
       <KeyHud t={t} a={4.5} b={5.0} text="⌘ J" />
-      <Caption t={t} a={4.8} b={5.45} text={tr('⌘J，一搜就到', '⌘J. Search. Found.')} y={880} size={60} />
+      <Caption t={t} a={4.8} b={5.45} text={tr('⌘J，一搜就到', '⌘J. Search. Found.')} y={880} size={60} plate />
       <div style={{ position: 'absolute', inset: 0, background: '#000', opacity: black }} />
       {t >= 5.5 && (
         <>
           <Band x={lin(t, 5.5, 6.0, -300, 2200)} o={0.55} />
-          <Words t={t} times={[5.55, 5.7, 5.85]} words={tr(['万物', '变成', '记忆'], ['Everything', 'becomes', 'memory.'])} />
+          <Words t={t} times={[5.55, 5.7, 5.85]} words={tr(['万物', '变成', '记忆'], ['Everything', 'becomes', 'memory.'])} colors={['#fff', '#fff', '#7FB0FF']} />
         </>
       )}
     </Fill>

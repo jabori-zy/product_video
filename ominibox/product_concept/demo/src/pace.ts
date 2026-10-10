@@ -1,7 +1,10 @@
 // 不限时长版的节奏表：只重映射时间，画面内容一帧不改
 // 每项 [脚本时间终点（秒）, 放慢倍数]，从 0 起首尾相接覆盖 0–45 s。
 // 原则：运动（甩镜、变形、弹跳）≈1.2–1.5×，保留利落感；停稳、阅读的段落 2–4×；转场窗口 ≈1.2×
-export const PACE: [number, number][] = [
+/** D → E 光带擦除的中点（脚本秒）。v2 从 18.0 推迟到 18.5，让「万物变成记忆」整句先出齐 */
+export const ARC_DE = 18.5;
+
+const BASE: [number, number][] = [
   // A 开场 · 你好，小黑！
   [0.4, 1.5], // 光标闪烁
   [1.5, 1.4], // 拼音打字
@@ -75,11 +78,38 @@ export const PACE: [number, number][] = [
   [41.5, 2.4], // 口号：逐词、互换、双行整句（v2 加长）
   [43.0, 1.4], // 眼圈 → logo
   [44.2, 1.8], // 品牌名、副标题、网址
-  [45.0, 2], // 眨眼、淡出
+  [45.0, 3.5], // 眨眼、按钮、淡出（final：结尾多停 1.2 秒）
 ];
 
-/** D → E 光带擦除的中点（脚本秒）。v2 从 18.0 推迟到 18.5，让「万物变成记忆」整句先出齐 */
-export const ARC_DE = 18.5;
+
+// final：段落转场卡在音乐小节线上（120 BPM，一小节 2 秒，从 BAND 起算）。
+// 每个转场 [脚本时间, 前面那段停留的终点]：微调这段停留的倍数，让转场在成片里落在最近的小节线上。
+// 插段时长都是整数小节（appTimeline.ts），不改变相位
+const BAR = 2, BAND = 4.0;
+const SNAP: [number, number][] = [
+  [5, 4.85], // A → B 甩镜
+  [9, 8.85], // B → C 甩镜
+  [12.05, 11.45], // C → D 光点 / C+ 插段起点
+  [ARC_DE, 18.25], // D → E 光带
+  [26.45, 26.5], // E+ 插段起点
+  [30, 29.8], // E → F 分享展开
+  [35, 34.85], // F → G 甩镜
+  [39, 38.75], // G → H 光带
+];
+const outOf = (table: [number, number][], t: number) => {
+  let s = 0, o = 0;
+  for (const [e, f] of table) { if (t <= e) return o + (t - s) * f; o += (e - s) * f; s = e; }
+  return o;
+};
+export const PACE: [number, number][] = BASE.map(([e, f]) => [e, f]);
+for (const [tb, holdEnd] of SNAP) {
+  const i = PACE.findIndex(([e]) => e === holdEnd), s0 = i ? PACE[i - 1][0] : 0;
+  const span = Math.min(tb, holdEnd) - s0; // 这段停留在转场之前的脚本长度
+  const o = outOf(PACE, tb) - outOf(PACE, BAND);
+  let d = Math.round(o / BAR) * BAR - o; // 就近：可加长也可缩短
+  if (PACE[i][1] + d / span < 1) d += BAR; // 缩短会快过原速，就改成加长
+  PACE[i][1] += d / span;
+}
 
 // 输出时间 → 脚本时间
 const OUT: number[] = [];

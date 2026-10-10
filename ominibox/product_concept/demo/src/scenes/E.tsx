@@ -35,6 +35,16 @@ const CAM = [
   { t: 3.0, x: 1110, y: 640, s: 1.9 },
   { t: 3.2, x: 1110, y: 420, s: 1.25 },
   { t: 4.5, ...FULL },
+  // final：写周报和 Agent 两段不再全程全景——输入时推近输入框，周报生成时跟着内容，保存时拉回看资源树
+  { t: 5.5, ...FULL },
+  { t: 5.75, x: 1110, y: 860, s: 1.5 },
+  { t: 6.45, x: 1110, y: 860, s: 1.5 },
+  { t: 6.7, x: 1110, y: 380, s: 1.3 },
+  { t: 7.75, x: 1110, y: 520, s: 1.3 },
+  { t: 8.1, ...FULL },
+  { t: 8.45, ...FULL },
+  { t: 8.65, x: 1110, y: 860, s: 1.5 },
+  { t: 9.1, x: 1110, y: 860, s: 1.5 },
   { t: 9.3, ...FULL },
   { t: 9.45, x: 700, y: 320, s: 2.4 },
   { t: 9.6, x: 700, y: 320, s: 2.4 },
@@ -147,7 +157,7 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
   const q3O = lin(t, 9.2, 9.35, 0, 1);
   const approved = t >= 9.8;
 
-  const black = Math.min(lin(t, 11.0, 11.1, 0, 0.88), 0.88 - lin(t, 11.7, 11.8, 0, 0.88));
+  const black = Math.min(lin(t, 11.0, 11.1, 0, 1), 1 - lin(t, 11.7, 11.8, 0, 1));
 
   // 光标目标：英文按钮 / 文字更宽，按实测宽度定位（中文保持原坐标）
   const manualW = textW(tr('✋ 手动确认 ⌄', '✋ Manual confirmation ⌄'), 16, 400);
@@ -283,15 +293,15 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
         )}
       </MBlur>
 
-      <Caption t={t} a={3.8} b={5.3} text={tr('有问必答，句句有出处', 'Answers with sources. Every time.')} y={720} size={60} />
-      <Caption t={t} a={7.0} b={8.3} text={tr('资料变成周报', 'Turn your sources into a weekly report.')} y={720} size={60} />
-      <Caption t={t} a={10.0} b={10.9} text={tr('一句话，帮你整理好', 'One request. Everything organized.')} y={720} size={60} />
+      <Caption t={t} a={3.8} b={5.3} text={tr('有问必答，句句有出处', 'Answers with sources. Every time.')} y={720} size={60} plate />
+      <Caption t={t} a={7.0} b={8.15} text={tr('资料变成周报', 'Turn your sources into a weekly report.')} y={720} size={60} plate />
+      <Caption t={t} a={10.0} b={10.9} text={tr('一句话，帮你整理好', 'One request. Everything organized.')} y={720} size={60} plate />
 
       <div style={{ position: 'absolute', inset: 0, background: '#000', opacity: black }} />
       {t >= 11.0 && t < 11.85 && (
         <div style={{ position: 'absolute', inset: 0, opacity: 1 - lin(t, 11.7, 11.8, 0, 1) }}>
           <Band x={lin(t, 11.0, 11.6, 2200, -300)} o={0.55} />
-          <Words t={t} times={[11.1, 11.25, 11.4]} words={tr(['记忆', '变成', '万物'], ['Memory', 'becomes', 'everything.'])} y={420} />
+          <Words t={t} times={[11.1, 11.25, 11.4]} words={tr(['记忆', '变成', '万物'], ['Memory', 'becomes', 'everything.'])} y={420} colors={['#7FB0FF']} />
           <Caption t={t} a={11.55} b={12} text={tr('问答 · 写作 · 执行', 'Ask · Write · Act')} y={600} size={40} />
         </div>
       )}
