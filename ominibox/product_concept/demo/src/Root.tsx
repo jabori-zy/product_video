@@ -6,6 +6,9 @@ import { FPS, W, H, DURATION } from './lib';
 import { TOTAL_OUT } from './pace';
 import { MainApp } from './MainApp';
 import { TOTAL_APP } from './appTimeline';
+import { Hh2 } from './scenes/H2';
+
+const MainAppSlogan: React.FC = () => <MainApp ending={Hh2} />;
 
 export const Root: React.FC = () => (
   <>
@@ -14,5 +17,7 @@ export const Root: React.FC = () => (
     <Composition id="DemoPaced" component={Main} defaultProps={{ paced: true }} durationInFrames={Math.round(TOTAL_OUT * FPS)} fps={FPS} width={W} height={H} />
     {/* 加入手机操作与电脑 ↔ 手机衔接：原片 + 两段插段（appTimeline.ts） */}
     <Composition id="DemoApp" component={MainApp} durationInFrames={Math.round(TOTAL_APP * FPS)} fps={FPS} width={W} height={H} />
+    {/* 结尾改版（方案 A「回文翻转」）：同 DemoApp，只把 H 换成 H2 */}
+    <Composition id="DemoSlogan" component={MainAppSlogan} durationInFrames={Math.round(TOTAL_APP * FPS)} fps={FPS} width={W} height={H} />
   </>
 );

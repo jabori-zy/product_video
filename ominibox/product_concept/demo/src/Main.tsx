@@ -45,7 +45,8 @@ const Layer: React.FC<{ id: string; T: number; s: number; C: any; x?: number; y?
 
 // paced：不限时长版，输出时间经节奏表映射回脚本时间，内容不变
 // at：固定在某个脚本时间（嵌进笔记本屏幕、插段衔接用）；label=false 不画草稿标注
-export const Main: React.FC<{ paced?: boolean; at?: number; label?: boolean }> = ({ paced, at, label = true }) => {
+// ending：替换 H 段（品牌结尾）的组件，默认原版 Hh
+export const Main: React.FC<{ paced?: boolean; at?: number; label?: boolean; ending?: React.FC<{ t: number }> }> = ({ paced, at, label = true, ending = Hh }) => {
   const sec = useCurrentFrame() / FPS;
   const T = at ?? (paced ? toScript(sec) : sec);
   const L: React.ReactNode[] = [];
@@ -72,7 +73,7 @@ export const Main: React.FC<{ paced?: boolean; at?: number; label?: boolean }> =
   }
   if (in_(34.85, 39.25)) L.push(<Layer key="G" id="G" T={T} s={35} C={Gg} {...w35.in} />);
   // G → H：光带擦除
-  if (in_(38.75, 45.01)) L.push(<Layer key="H" id="H" T={T} s={39} C={Hh} style={{ clipPath: T < 39.25 ? `inset(0 ${Math.max(0, W - arcX(T, 39))}px 0 0)` : undefined }} />);
+  if (in_(38.75, 45.01)) L.push(<Layer key="H" id="H" T={T} s={39} C={ending} style={{ clipPath: T < 39.25 ? `inset(0 ${Math.max(0, W - arcX(T, 39))}px 0 0)` : undefined }} />);
 
   const band = (tb: number) => (T > tb - 0.25 && T < tb + 0.25 ? <Band key={`band${tb}`} x={arcX(T, tb)} /> : null);
   const cur = [...SCENES].reverse().find((s) => T >= s.s)!;
