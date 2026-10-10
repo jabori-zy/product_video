@@ -1,6 +1,7 @@
 import React from 'react';
 import { FONT } from '../fonts';
 import { C, Cat, Spinner, lin, sp } from '../lib';
+import { useRes, useTr } from '../i18n';
 
 // OmniBox 手机端（深色）部件：布局、颜色、文案取自 import-ai/omnibox-react-native
 // （BottomTabBar / HomeContentTabs / HomeMascot / MoreEntrySheet / RecordSheet / i18n zh-CN），并按真机录屏校对
@@ -54,61 +55,75 @@ export const PhoneShell: React.FC<{ children: React.ReactNode; time?: string }> 
 );
 
 // ---------- 首页 ----------
-export const HomeHeader: React.FC = () => (
+export const HomeHeader: React.FC = () => {
+  const tr = useTr(), res = useRes();
+  return (
   <div style={{ position: 'absolute', left: 16, right: 16, top: 62, height: 40, display: 'flex', alignItems: 'center', gap: 8 }}>
     <div style={{ width: 26, height: 26, borderRadius: 6, background: '#3b3b3b', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>X</div>
-    <span style={{ fontSize: 16, fontWeight: 600 }}>xiaohei 的空间</span><Ic n="chevD" s={16} />
-    <span style={{ marginLeft: 6, padding: '2px 10px', borderRadius: 6, background: '#2563EB', fontSize: 12, fontWeight: 700 }}>升级</span>
+    <span style={{ fontSize: 16, fontWeight: 600 }}>{res('space')}</span><Ic n="chevD" s={16} />
+    <span style={{ marginLeft: 6, padding: '2px 10px', borderRadius: 6, background: '#2563EB', fontSize: 12, fontWeight: 700 }}>{tr('升级', 'Upgrade')}</span>
     <div style={{ marginLeft: 'auto', display: 'flex', gap: 16, alignItems: 'center' }}>
       <Ic n="gift" s={21} c="#60A5FA" />
       <div style={{ position: 'relative' }}><Ic n="bell" s={21} /><div style={{ position: 'absolute', right: -1, top: -1, width: 8, height: 8, borderRadius: 4, background: '#EF4444' }} /></div>
       <Ic n="gear" s={21} w={1.6} />
     </div>
   </div>
-);
+  );
+};
 
 /** 线稿小黑 + 推荐问题气泡 + 输入框（HomeMascot / RecommendedQuestions / ChatInput） */
-export const HomeComposer: React.FC<{ y?: number; blink?: number; bubble?: string; text?: string; caret?: boolean }> = ({ y = 118, blink = 0, bubble = '列出包含「会议」标签的资源', text, caret }) => (
+export const HomeComposer: React.FC<{ y?: number; blink?: number; bubble?: string; text?: string; caret?: boolean }> = ({ y = 118, blink = 0, bubble, text, caret }) => {
+  const tr = useTr(), res = useRes();
+  return (
   <div style={{ position: 'absolute', left: 0, top: y, width: PW, height: 210 }}>
     <div style={{ position: 'absolute', left: 22, top: 6 }}><Cat w={78} fill={M.bg} blink={blink} look={0.4} lookY={0.4} /></div>
-    <div style={{ position: 'absolute', left: 108, top: 2, right: 16, padding: '10px 14px', borderRadius: 18, background: M.surface, fontSize: 14, lineHeight: 1.45, color: '#E5E5E5' }}>{bubble}</div>
+    <div style={{ position: 'absolute', left: 108, top: 2, right: 16, padding: '10px 14px', borderRadius: 18, background: M.surface, fontSize: 14, lineHeight: 1.45, color: '#E5E5E5' }}>{bubble ?? tr('列出包含「会议」标签的资源', 'List all resources tagged "meeting"')}</div>
     <div style={{ position: 'absolute', left: 12, right: 12, top: 74, height: 128, borderRadius: 20, background: M.surface, border: '1px solid #353537' }}>
       <div style={{ position: 'absolute', left: 16, top: 14, fontSize: 16, color: text ? M.text : '#8a8a8e' }}>
-        {text || '随便问点什么吧'}{caret && <span style={{ display: 'inline-block', width: 2, height: 18, background: M.blue, marginLeft: 1, verticalAlign: 'middle' }} />}
+        {text || tr('随便问点什么吧', 'Ask anything')}{caret && <span style={{ display: 'inline-block', width: 2, height: 18, background: M.blue, marginLeft: 1, verticalAlign: 'middle' }} />}
       </div>
       <div style={{ position: 'absolute', left: 16, bottom: 14, display: 'flex', gap: 18, alignItems: 'center' }}><Ic n="plus" s={20} c="#bbb" /><Ic n="hand" s={18} c="#bbb" /></div>
-      <div style={{ position: 'absolute', right: 58, bottom: 20, fontSize: 13, color: '#8a8a8e' }}>Agent 2.1 中</div>
+      <div style={{ position: 'absolute', right: 58, bottom: 20, fontSize: 13, color: '#8a8a8e' }}>{tr('Agent 2.1 中', 'Agent 2.1 Medium')}</div>
       <div style={{ position: 'absolute', right: 12, bottom: 10, width: 36, height: 36, borderRadius: 18, background: text ? '#fff' : '#555', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Ic n="up" s={18} c={text ? '#000' : '#999'} w={2.4} /></div>
     </div>
   </div>
-);
+  );
+};
 
 /** 资源 | 对话 胶囊切换（HomeContentTabs，h-10），p：0=资源 1=对话 */
-export const ContentTabs: React.FC<{ y: number; p: number }> = ({ y, p }) => (
+export const ContentTabs: React.FC<{ y: number; p: number }> = ({ y, p }) => {
+  const tr = useTr(), res = useRes();
+  return (
   <div style={{ position: 'absolute', left: PW / 2 - 84, top: y, width: 168, height: 40, borderRadius: 20, background: '#111113', border: `1px solid ${M.border}` }}>
     <div style={{ position: 'absolute', left: 2 + p * 82, top: 2, width: 82, height: 34, borderRadius: 17, background: '#2c2c2e' }} />
-    {['资源', '对话'].map((s, i) => <div key={s} style={{ position: 'absolute', left: 2 + i * 82, top: 2, width: 82, height: 34, lineHeight: '34px', textAlign: 'center', fontSize: 15, color: Math.abs(p - i) < 0.5 ? '#fff' : '#9a9a9e' }}>{s}</div>)}
+    {[tr('资源', 'Resources'), tr('对话', 'Chats')].map((s, i) => <div key={s} style={{ position: 'absolute', left: 2 + i * 82, top: 2, width: 82, height: 34, lineHeight: '34px', textAlign: 'center', fontSize: 15, color: Math.abs(p - i) < 0.5 ? '#fff' : '#9a9a9e' }}>{s}</div>)}
   </div>
-);
+  );
+};
 
 export const ResToolbar: React.FC<{ y: number; icons?: string[] }> = ({ y, icons = ['search', 'refresh', 'sort'] }) => (
   <div style={{ position: 'absolute', right: 18, top: y, display: 'flex', gap: 22 }}>{icons.map((n) => <Ic key={n} n={n} s={19} c="#bbb" />)}</div>
 );
 
-export const ResRow: React.FC<{ y: number; icon: string; text: string; o?: number; dx?: number; parsing?: boolean; t?: number; hl?: number }> = ({ y, icon, text, o = 1, dx = 0, parsing, t = 0, hl = 0 }) => (
+export const ResRow: React.FC<{ y: number; icon: string; text: string; o?: number; dx?: number; parsing?: boolean; t?: number; hl?: number }> = ({ y, icon, text, o = 1, dx = 0, parsing, t = 0, hl = 0 }) => {
+  const tr = useTr(), res = useRes();
+  return (
   <div style={{ position: 'absolute', left: 8, right: 8, top: y, height: 44, borderRadius: 10, background: hl ? `rgba(59,130,246,${0.22 * hl})` : undefined, display: 'flex', alignItems: 'center', gap: 12, padding: '0 10px', opacity: o, transform: `translateX(${dx}px)`, fontSize: 15.5 }}>
     <span style={{ fontSize: 17, width: 22, textAlign: 'center' }}>{icon}</span>
     <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{text}</span>
-    {parsing && <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: M.sub }}><Spinner t={t} size={13} />解析中</span>}
+    {parsing && <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: M.sub }}><Spinner t={t} size={13} />{tr('解析中', 'Parsing')}</span>}
   </div>
-);
+  );
+};
 
 /** 底部悬浮胶囊（BottomTabBar 258×60 + 112 渐隐遮罩）；rec：录音中显示波形与计时 */
-export const BottomBar: React.FC<{ t: number; rec?: string | null; press?: 'more' | 'record' | 'text' | null }> = ({ t, rec, press }) => (
+export const BottomBar: React.FC<{ t: number; rec?: string | null; press?: 'more' | 'record' | 'text' | null }> = ({ t, rec, press }) => {
+  const tr = useTr(), res = useRes();
+  return (
   <div style={{ position: 'absolute', left: 0, bottom: 0, width: PW, height: 112 }}>
     <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(rgba(28,28,30,0), ${M.bg})` }} />
     <div style={{ position: 'absolute', left: PW / 2 - 129, bottom: 40, width: 258, height: 60, borderRadius: 30, background: M.bar, boxShadow: '0 4px 16px rgba(0,0,0,.35)', display: 'flex' }}>
-      {([['more', 'plus', '更多'], ['record', 'mic', '录音'], ['text', 'file', '文字']] as const).map(([k, ic, s]) => (
+      {([['more', 'plus', tr('更多', 'More')], ['record', 'mic', tr('录音', 'Record')], ['text', 'file', tr('文字', 'Text')]] as const).map(([k, ic, s]) => (
         <div key={k} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3, color: press === k ? '#737373' : '#fff', fontSize: 12 }}>
           {k === 'record' && rec ? (
             <>
@@ -122,7 +137,8 @@ export const BottomBar: React.FC<{ t: number; rec?: string | null; press?: 'more
       ))}
     </div>
   </div>
-);
+  );
+};
 
 // ---------- 浮层 ----------
 /** 底部抽屉：p 0→1 滑出，背后压暗 */
@@ -136,11 +152,13 @@ export const Sheet: React.FC<{ p: number; h: number; bg?: string; children: Reac
   </>
 );
 
-export const MoreSheetBody: React.FC<{ press?: number }> = ({ press = -1 }) => (
+export const MoreSheetBody: React.FC<{ press?: number }> = ({ press = -1 }) => {
+  const tr = useTr(), res = useRes();
+  return (
   <div style={{ padding: '30px 16px 0' }}>
-    <div style={{ fontSize: 17, fontWeight: 600, marginBottom: 16 }}>更多方式</div>
+    <div style={{ fontSize: 17, fontWeight: 600, marginBottom: 16 }}>{tr('更多方式', 'More options')}</div>
     <div style={{ borderRadius: 20, background: '#2a2a2c', overflow: 'hidden' }}>
-      {([['camera', '#fff', '拍照', '打开相机或相册，保存图片内容'], ['upload', '#22C55E', '上传文件', '选择 PDF、Word 等文件保存到小黑'], ['link', '#60A5FA', '链接', '抖音/B站/小红书等，一键保存']] as const).map(([ic, col, ti, de], i) => (
+      {([['camera', '#fff', tr('拍照', 'Photo'), tr('打开相机或相册，保存图片内容', 'Save image from camera or albums')], ['upload', '#22C55E', tr('上传文件', 'Upload file'), tr('选择 PDF、Word 等文件保存到小黑', 'Choose a PDF, Word document, or another file')], ['link', '#60A5FA', tr('链接', 'Link'), tr('抖音/B站/小红书等，一键保存', 'Save webpage or video from link')]] as const).map(([ic, col, ti, de], i) => (
         <div key={ti} style={{ display: 'flex', alignItems: 'center', padding: '14px 16px', background: press === i ? '#3a3a3c' : undefined }}>
           <div style={{ width: 48, height: 48, borderRadius: 16, background: '#3a3a3c', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 12 }}><Ic n={ic} s={24} c={col} /></div>
           <div style={{ flex: 1 }}>
@@ -151,16 +169,19 @@ export const MoreSheetBody: React.FC<{ press?: number }> = ({ press = -1 }) => (
         </div>
       ))}
     </div>
-    <div style={{ marginTop: 16, height: 56, borderRadius: 20, background: '#2a2a2c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 19, fontWeight: 500 }}>取消</div>
+    <div style={{ marginTop: 16, height: 56, borderRadius: 20, background: '#2a2a2c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 19, fontWeight: 500 }}>{tr('取消', 'Cancel')}</div>
   </div>
-);
+  );
+};
 
 /** 录音抽屉（RecordSheet：DestinationFields + 波形 + 暂停/完成） */
-export const RecordSheetBody: React.FC<{ t: number; timer: string; active: boolean; press?: 'done' | null }> = ({ t, timer, active, press }) => (
+export const RecordSheetBody: React.FC<{ t: number; timer: string; active: boolean; press?: 'done' | null }> = ({ t, timer, active, press }) => {
+  const tr = useTr(), res = useRes();
+  return (
   <div style={{ padding: '30px 16px 0' }}>
-    <div style={{ fontSize: 17, fontWeight: 600, textAlign: 'center' }}>录音并保存</div>
+    <div style={{ fontSize: 17, fontWeight: 600, textAlign: 'center' }}>{tr('录音并保存', 'Record and Save')}</div>
     <div style={{ marginTop: 18, borderRadius: 16, background: '#2a2a2c' }}>
-      {[['空间', 'xiaohei 的空间'], ['添加到', '个人']].map(([k, v], i) => (
+      {[[tr('空间', 'Namespace'), res('space')], [tr('添加到', 'Add to'), tr('个人', 'Personal')]].map(([k, v], i) => (
         <div key={k} style={{ display: 'flex', alignItems: 'center', padding: '14px 16px', borderTop: i ? '1px solid #3a3a3c' : undefined, fontSize: 15 }}>
           <span style={{ color: M.sub }}>{k}</span><span style={{ marginLeft: 'auto', marginRight: 6 }}>{v}</span><Ic n="chevR" s={16} c="#888" />
         </div>
@@ -170,13 +191,14 @@ export const RecordSheetBody: React.FC<{ t: number; timer: string; active: boole
       {Array.from({ length: 34 }).map((_, i) => <div key={i} style={{ width: 4, borderRadius: 2, background: active ? '#EF4444' : '#555', height: active ? 8 + 52 * Math.abs(Math.sin(t * 6 + i * 0.7) * Math.cos(t * 2.3 + i * 0.31)) : 8 }} />)}
     </div>
     <div style={{ textAlign: 'center', fontSize: 34, fontWeight: 300, marginTop: 10, fontVariantNumeric: 'tabular-nums', letterSpacing: 1 }}>{timer}</div>
-    <div style={{ textAlign: 'center', fontSize: 13, color: active ? '#EF4444' : M.sub, marginTop: 2 }}>{active ? '● 录音中' : '准备录音'}</div>
+    <div style={{ textAlign: 'center', fontSize: 13, color: active ? '#EF4444' : M.sub, marginTop: 2 }}>{active ? tr('● 录音中', '● Recording') : tr('准备录音', 'Ready to record')}</div>
     <div style={{ display: 'flex', gap: 12, marginTop: 22 }}>
-      <div style={{ flex: 1, height: 52, borderRadius: 26, border: '1px solid #4a4a4c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17 }}>暂停</div>
-      <div style={{ flex: 1, height: 52, borderRadius: 26, background: press === 'done' ? '#d4d4d4' : '#fff', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, fontWeight: 600, transform: `scale(${press === 'done' ? 0.96 : 1})` }}>完成</div>
+      <div style={{ flex: 1, height: 52, borderRadius: 26, border: '1px solid #4a4a4c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17 }}>{tr('暂停', 'Pause')}</div>
+      <div style={{ flex: 1, height: 52, borderRadius: 26, background: press === 'done' ? '#d4d4d4' : '#fff', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, fontWeight: 600, transform: `scale(${press === 'done' ? 0.96 : 1})` }}>{tr('完成', 'Complete')}</div>
     </div>
   </div>
-);
+  );
+};
 
 export const Dialog: React.FC<{ p: number; title: string; body?: string; cancel: string; ok: string; press?: boolean }> = ({ p, title, body, cancel, ok, press }) => (
   <div style={{ position: 'absolute', inset: 0, background: `rgba(0,0,0,${0.5 * p})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -215,20 +237,23 @@ export const Tap: React.FC<{ t: number; at: number; x: number; y: number }> = ({
 };
 
 /** 对话列表（聊天历史分组） */
-export const HISTORY: [string, string[]][] = [
-  ['今天', ['周会待办整理', '你好，小黑！']],
-  ['过去 7 天', ['RAG 和微调的区别', '买菜清单请求', 'Q3 复盘要点']],
-  ['2026 年 9 月', ['知乎热榜总结', 'AI 新闻速览']],
+export const HISTORY: [string[], string[][]][] = [ // [[中文, English], 条目]
+  [['今天', 'Today'], [['周会待办整理', 'Weekly meeting to-dos'], ['你好，小黑！', 'Hello, Xiaohei!']]],
+  [['过去 7 天', 'Past 7 days'], [['RAG 和微调的区别', 'RAG vs. fine-tuning'], ['买菜清单请求', 'Grocery list request'], ['Q3 复盘要点', 'Q3 review highlights']]],
+  [['2026 年 9 月', 'September 2026'], [['知乎热榜总结', 'Zhihu trending summary'], ['AI 新闻速览', 'AI news at a glance']]],
 ];
 export const ChatHistoryList: React.FC<{ y: number; o?: number; hl?: string; hlP?: number }> = ({ y, o = 1, hl, hlP = 0 }) => {
+  const tr = useTr();
   let yy = y;
   const out: React.ReactNode[] = [];
-  for (const [g, items] of HISTORY) {
+  for (const [gp, items] of HISTORY) {
+    const g = tr(gp[0], gp[1]);
     out.push(<div key={g} style={{ position: 'absolute', left: 18, top: yy, fontSize: 13, color: M.sub }}>{g}</div>);
     yy += 30;
-    for (const s of items) {
+    for (const it of items) {
+      const s = tr(it[0], it[1]), isHl = it[0] === hl; // hl 用中文名指定
       out.push(
-        <div key={s} style={{ position: 'absolute', left: 8, right: 8, top: yy - 6, height: 40, borderRadius: 10, background: s === hl ? `rgba(255,255,255,${0.08 * hlP})` : undefined, display: 'flex', alignItems: 'center', gap: 10, padding: '0 10px', fontSize: 15.5 }}>
+        <div key={s} style={{ position: 'absolute', left: 8, right: 8, top: yy - 6, height: 40, borderRadius: 10, background: isHl ? `rgba(255,255,255,${0.08 * hlP})` : undefined, display: 'flex', alignItems: 'center', gap: 10, padding: '0 10px', fontSize: 15.5 }}>
           <Ic n="chat" s={17} c="#ddd" />{s}
         </div>,
       );
@@ -252,18 +277,24 @@ export const ThreadHeader: React.FC<{ title: string }> = ({ title }) => (
   </div>
 );
 
-export const ChatComposer: React.FC<{ text?: string; caret?: boolean; send?: boolean }> = ({ text, caret, send }) => (
+export const ChatComposer: React.FC<{ text?: string; caret?: boolean; send?: boolean }> = ({ text, caret, send }) => {
+  const tr = useTr(), res = useRes();
+  return (
   <div style={{ position: 'absolute', left: 12, right: 12, bottom: 44, height: 96, borderRadius: 20, background: M.surface, border: '1px solid #353537' }}>
     <div style={{ position: 'absolute', left: 16, top: 14, fontSize: 16, color: text ? M.text : '#8a8a8e' }}>
-      {text || '随便问点什么吧'}{caret && <span style={{ display: 'inline-block', width: 2, height: 18, background: M.blue, marginLeft: 1, verticalAlign: 'middle' }} />}
+      {text || tr('随便问点什么吧', 'Ask anything')}{caret && <span style={{ display: 'inline-block', width: 2, height: 18, background: M.blue, marginLeft: 1, verticalAlign: 'middle' }} />}
     </div>
     <div style={{ position: 'absolute', left: 16, bottom: 12, display: 'flex', gap: 18 }}><Ic n="plus" s={20} c="#bbb" /><Ic n="hand" s={18} c="#bbb" /></div>
-    <div style={{ position: 'absolute', right: 56, bottom: 18, fontSize: 13, color: '#8a8a8e' }}>Agent 2.1 中</div>
+    <div style={{ position: 'absolute', right: 56, bottom: 18, fontSize: 13, color: '#8a8a8e' }}>{tr('Agent 2.1 中', 'Agent 2.1 Medium')}</div>
     <div style={{ position: 'absolute', right: 10, bottom: 8, width: 36, height: 36, borderRadius: 18, background: send ? '#fff' : '#555', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Ic n="up" s={18} c={send ? '#000' : '#999'} w={2.4} /></div>
   </div>
-);
+  );
+};
 
-export const Disclaimer = () => <div style={{ position: 'absolute', left: 0, bottom: 22, width: PW, textAlign: 'center', fontSize: 11.5, color: '#6b6b6f' }}>内容由小黑 AI 生成，仅供参考</div>;
+export const Disclaimer = () => {
+  const tr = useTr();
+  return <div style={{ position: 'absolute', left: 0, bottom: 22, width: PW, textAlign: 'center', fontSize: 11.5, color: '#6b6b6f' }}>{tr('内容由小黑 AI 生成，仅供参考', 'Generated by OmniBox AI')}</div>;
+};
 
 export const Badge: React.FC<{ n: number; on?: number }> = ({ n, on = 0 }) => (
   <span style={{ display: 'inline-flex', width: 18, height: 18, borderRadius: 9, background: C.blue, color: '#fff', fontSize: 11, fontWeight: 700, alignItems: 'center', justifyContent: 'center', marginLeft: 4, verticalAlign: 'middle', boxShadow: on ? `0 0 0 ${4 * on}px rgba(74,142,249,.35)` : undefined }}>{n}</span>

@@ -2,26 +2,30 @@ import React from 'react';
 import { interpolateColors } from 'remotion';
 import { C, Cat, Fill, KeyHud, Tx, W, blinkAt, hop, kf, lin, sp, typed } from '../lib';
 import { Composer, HomeCards, Sidebar } from '../ui';
+import { textW, useLang, useTr } from '../i18n';
+import { OPEN_TEXT_EN, TYPED, openKeys, stepOf, txt } from '../copy';
 
 // A 开场 · 你好，小黑！（0.0–5.0 s）
 
-// 输入法按键：[时刻, 已上屏, 拼音]
-const KEYS: [number, string, string][] = [
-  [0.4, '', 'n'], [0.46, '', 'ni'], [0.52, '', 'nih'], [0.58, '', 'niha'], [0.64, '', 'nihao'],
-  [0.72, '你好', ''], [0.82, '你好，', ''],
-  [0.88, '你好，', 'x'], [0.93, '你好，', 'xi'], [0.98, '你好，', 'xia'], [1.03, '你好，', 'xiao'], [1.08, '你好，', 'xiaoh'], [1.13, '你好，', 'xiaohe'], [1.18, '你好，', 'xiaohei'],
-  [1.3, '你好，小黑', ''], [1.5, '你好，小黑！', ''],
-];
 const CANDS: Record<string, string> = { n: '1.你好  2.拟好  3.你  4.呢', x: '1.小黑  2.小嘿  3.小  4.晓' };
 
 const K = 20 / 96; // 大字 96px → 输入框 20px
 const COMP = { x: 480, y: 470, w: 960 };
-const TEXT_IN_COMP = { x: 562, y: 504 }; // 文字在输入框里的中心
-const BUBBLE = { x: 1738, y: 128, k: 22 / 96 };
+const BUBBLE = { y: 128, k: 22 / 96 };
 const GROUND = 588;
 const TEXT_TOP = 495;
 
 export const A: React.FC<{ t: number }> = ({ t }) => {
+  const lang = useLang(), tr = useTr();
+  const KEYS = openKeys(lang);
+  // ---- 排版（按实测文字宽度：中文 6 个 96px 字；英文更宽）----
+  const full = tr('你好，小黑！', OPEN_TEXT_EN);
+  const W_FULL = textW(full, 96);
+  const left = 960 - (W_FULL + 11) / 2; // 11 = 光标宽度 + 间距
+  const CAT_X = lang === 'en' ? left + textW('Hello, ', 96) + textW('Xiaohei', 96) / 2 : 1056; // 小黑落在「小黑 / Xiaohei」上
+  const TEXT_IN_COMP = { x: 502 + (W_FULL * K) / 2, y: 504 }; // 文字在输入框里的中心
+  const bubbleW = W_FULL * BUBBLE.k + 32;
+  const BUBBLE_X = 1820 - bubbleW / 2;
   // ---- 打字 ----
   let committed = '';
   let pinyin = '';
@@ -39,7 +43,7 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
     { t: 3.6, x: 960, y: 540, k: 1 },
     { t: 4.0, x: TEXT_IN_COMP.x, y: TEXT_IN_COMP.y, k: K },
     { t: 4.25, x: TEXT_IN_COMP.x, y: TEXT_IN_COMP.y, k: K },
-    { t: 4.45, x: BUBBLE.x, y: BUBBLE.y, k: BUBBLE.k },
+    { t: 4.45, x: BUBBLE_X, y: BUBBLE.y, k: BUBBLE.k },
   ]);
 
   // ---- 小黑 ----
@@ -53,11 +57,11 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
     cat = { ...hop(t, 2.4, 2.65, { x: 45, y: GROUND }, { x: 412, y: GROUND }, 180), s: 1 };
     rot = lin(t, 2.3, 2.4, 10, 0);
   } else if (t < 3.6) {
-    cat = { ...hop(t, 2.88, 3.15, { x: 412, y: GROUND }, { x: 1056, y: TEXT_TOP }, 210, 0.08), s: 1 };
+    cat = { ...hop(t, 2.88, 3.15, { x: 412, y: GROUND }, { x: CAT_X, y: TEXT_TOP }, 210, 0.08), s: 1 };
     cat.y += dip;
   } else {
     // 坐在文字上随文字移动，4.0 后滑到输入框上沿后方
-    const ride = { x: g.x + 96 * g.k, y: g.y - 45 * g.k };
+    const ride = { x: g.x + (CAT_X - 960) * g.k, y: g.y - 45 * g.k };
     const p2 = sp(t, 4.0, { damping: 15 });
     const fx = 600, fy = 505;
     const s = lin(t, 3.6, 4.0, 1, 0.75) - 0.03 * p2;
@@ -76,7 +80,7 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
   const leave = lin(t, 4.25, 4.45, 0, 1);
   const sideX = lin(t, 4.25, 4.5, -300, 0);
   const bubbleO = lin(t, 4.35, 4.45, 0, 1);
-  const reply = typed(t, 4.5, '你好！我是小黑（OmniBox），很高兴见到你 👋 想记住什么，交给我就好。', 0.4 / 36);
+  const reply = typed(t, 4.5, txt(TYPED.reply, lang), stepOf(TYPED.reply, lang));
 
   const dust = lin(t, 2.65, 2.85, 0, 1);
 
@@ -85,7 +89,7 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
       {/* 聊天首页（推荐问题气泡、卡片） */}
       <div style={{ position: 'absolute', inset: 0, opacity: uiO * (1 - leave), transform: `scale(${uiS}) translateY(${leave * 300}px)`, transformOrigin: '960px 540px' }}>
         <div style={{ position: 'absolute', left: 690, top: 380, padding: '12px 24px', borderRadius: 999, background: '#383838', color: '#cfcfcf', fontSize: 18, transform: `scale(${sp(t, 3.85)})`, transformOrigin: 'left bottom' }}>
-          创建一个文件夹"图片收藏"并移入最近的图片
+          {tr('创建一个文件夹"图片收藏"并移入最近的图片', 'Create an "Image collection" folder and move recent images into it')}
         </div>
         <HomeCards x={COMP.x} y={760} w={COMP.w} t={t} a={3.9} />
       </div>
@@ -109,7 +113,7 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
       </div>
 
       {/* 用户气泡底 */}
-      <div style={{ position: 'absolute', left: BUBBLE.x - 82, top: BUBBLE.y - 28, width: 164, height: 56, borderRadius: 16, background: '#383838', opacity: bubbleO }} />
+      <div style={{ position: 'absolute', left: BUBBLE_X - bubbleW / 2, top: BUBBLE.y - 28, width: bubbleW, height: 56, borderRadius: 16, background: '#383838', opacity: bubbleO }} />
 
       {/* 开场白文字：同一个元素一路变形到输入框、再到气泡 */}
       <div
@@ -136,7 +140,7 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
           <Tx x={420} y={210} s={26} w={1100} c={C.text}>{reply}</Tx>
         </>
       )}
-      <KeyHud t={t} a={4.25} b={4.7} text="⏎ 发送" />
+      <KeyHud t={t} a={4.25} b={4.7} text={tr('⏎ 发送', '⏎ Send')} />
     </Fill>
   );
 };

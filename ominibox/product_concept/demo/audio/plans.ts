@@ -1,7 +1,7 @@
 // 声音方案（采用方案二）：事件表 cues.ts → 音色、音乐与分轨
 import { Bus, sum } from './dsp';
 import * as V from './voices';
-import { BAND_IN, CUES, Cue, END, H0, LOGO, SECTIONS } from './cues';
+import { BAND_IN, Cue, END, H0, LOGO, SECTIONS } from './cues';
 
 export type Plan = { id: string; name: string; stems: Record<string, Bus> };
 
@@ -24,7 +24,7 @@ const WORD_NOTES = [72, 76, 79, 79, 76, 72, 72, 76, 79, 74, 77, 81]; // 最后�
 // ======================================================================
 // 方案二 · 音乐主导、卡在拍子上（120 BPM，参考片的节奏感）
 // ======================================================================
-export const plan2 = (): Plan => {
+export const plan2 = (CUES: Cue[]): Plan => {
   const S = stems('drums', 'bass_synth', 'melody', 'transitions', 'ui_keys', 'xiaohei');
   const BEAT = 0.5, BAR = 2;
   for (const c of CUES) {

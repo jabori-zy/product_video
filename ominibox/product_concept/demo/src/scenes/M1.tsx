@@ -1,6 +1,8 @@
 import React from 'react';
 import { Caption, blinkAt, kf, lin } from '../lib';
 import { LOCALES } from '../data/content';
+import { useLang, useRes, useTr } from '../i18n';
+import type { ResKey } from '../copy';
 import { Board } from '../content/understand';
 import { CAM_FULL, CAM_WIDE, Laptop, PHONE, Phone, Stage, phoneToWorld, screenToWorld } from '../mobile/stage';
 import { BottomBar, ContentTabs, Dialog, HomeComposer, HomeHeader, Ic, M, MoreSheetBody, PH, PW, RecordSheetBody, ResRow, ResToolbar, Sheet, Tap, Toast, spr } from '../mobile/ui';
@@ -16,12 +18,13 @@ const CAM = [
 
 const BAR_Y = PH - 70; // 胶囊中心
 const ROW0 = 432, ROW_STEP = 46;
-const OLD = [['🌐', '首页 - 知乎'], ['📕', '2026 年 10 月月报.pdf'], ['📕', 'Docker 技术入门与实战（第 4 版）.pdf']];
-const NEW = [{ at: 7.3, icon: '🎙', text: '周会录音.m4a' }, { at: 10.95, icon: '🖼', text: '白板照片.jpg' }];
+const OLD: [string, ResKey][] = [['🌐', 'zhihuHome'], ['📕', 'monthly'], ['📕', 'docker']];
+const NEW: { at: number; icon: string; text: ResKey }[] = [{ at: 7.3, icon: '🎙', text: 'meeting' }, { at: 10.95, icon: '🖼', text: 'board' }];
 
 const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 
 export const M1: React.FC<{ t: number }> = ({ t }) => {
+  const lang = useLang(), tr = useTr(), res = useRes();
   const cam = kf(t, CAM);
   const enter = spr(t, 0.7, 16);
   const px = PHONE.x + (1 - enter) * 900 + lin(t, 13.6, 15.25, 0, 420);
@@ -54,9 +57,9 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
       <HomeHeader />
       <HomeComposer blink={blinkAt(t, [2.0, 8.0, 11.6])} />
       <ContentTabs y={340} p={0} />
-      <div style={{ position: 'absolute', left: 18, top: 398, fontSize: 13, color: M.sub, display: 'flex', alignItems: 'center', gap: 2 }}>个人 <Ic n="chevD" s={13} c={M.sub} /></div>
+      <div style={{ position: 'absolute', left: 18, top: 398, fontSize: 13, color: M.sub, display: 'flex', alignItems: 'center', gap: 2 }}>{tr('个人', 'Personal')} <Ic n="chevD" s={13} c={M.sub} /></div>
       <ResToolbar y={396} />
-      {rows.map((r, i) => <ResRow key={r.key} y={ys[i]} icon={r.icon} text={r.text} o={r.o} dx={(1 - Math.min(1, r.o)) * 30} parsing={r.parsing} t={t} hl={hlOf(r.key)} />)}
+      {rows.map((r, i) => <ResRow key={r.key} y={ys[i]} icon={r.icon} text={res(r.text as ResKey)} o={r.o} dx={(1 - Math.min(1, r.o)) * 30} parsing={r.parsing} t={t} hl={hlOf(r.key)} />)}
       <BottomBar t={t} rec={barRec} press={press} />
       <Tap t={t} at={2.6} x={195} y={BAR_Y} />
       {recP > 0.001 && (
@@ -65,9 +68,9 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
         </Sheet>
       )}
       <Tap t={t} at={5.9} x={288} y={768} />
-      {dlgP > 0.001 && <Dialog p={dlgP} title="结束并保存录音？" body="返回后可继续录音。" cancel="继续录音" ok="结束并保存" press={t > 6.85 && t < 6.98} />}
+      {dlgP > 0.001 && <Dialog p={dlgP} title={tr('结束并保存录音？', 'End and save recording?')} body={tr('返回后可继续录音。', 'You can keep recording after going back.')} cancel={tr('继续录音', 'Keep recording')} ok={tr('结束并保存', 'End and save')} press={t > 6.85 && t < 6.98} />}
       <Tap t={t} at={6.9} x={262} y={461} />
-      <Toast t={t} a={7.15} text="保存成功" />
+      <Toast t={t} a={7.15} text={tr('保存成功', 'Saved successfully')} />
       <Tap t={t} at={8.3} x={105} y={BAR_Y} />
       {moreP > 0.001 && (
         <Sheet p={moreP} h={440}>
@@ -80,11 +83,11 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
           <div style={{ position: 'absolute', left: 20, top: 62 }}><Ic n="x" s={26} /></div>
           {/* 取景器：白板 */}
           <div style={{ position: 'absolute', left: 0, top: 120, width: PW, height: 520, overflow: 'hidden', background: '#2a2826' }}>
-            <div style={{ position: 'absolute', left: 12, top: 60, transform: 'perspective(900px) rotateY(-8deg) rotateX(4deg) scale(1.11)', transformOrigin: '50% 50%' }}><Board c={LOCALES.zh} /></div>
+            <div style={{ position: 'absolute', left: 12, top: 60, transform: 'perspective(900px) rotateY(-8deg) rotateX(4deg) scale(1.11)', transformOrigin: '50% 50%' }}><Board c={LOCALES[lang]} /></div>
             {[[0.33, 0], [0.66, 0], [0, 0.33], [0, 0.66]].map(([gx, gy], i) => <div key={i} style={{ position: 'absolute', left: gx ? PW * gx : 0, top: gy ? 520 * gy : 0, width: gx ? 1 : PW, height: gy ? 1 : 520, background: 'rgba(255,255,255,.25)' }} />)}
           </div>
           <div style={{ position: 'absolute', left: 0, top: 666, width: PW, display: 'flex', justifyContent: 'center', gap: 34, fontSize: 14 }}>
-            <span style={{ color: '#aaa' }}>相册</span><span style={{ color: '#FACC15', fontWeight: 700 }}>拍照</span>
+            <span style={{ color: '#aaa' }}>{tr('相册', 'Albums')}</span><span style={{ color: '#FACC15', fontWeight: 700 }}>{tr('拍照', 'Camera')}</span>
           </div>
           <div style={{ position: 'absolute', left: PW / 2 - 37, top: 708, width: 74, height: 74, borderRadius: 37, border: '4px solid #fff', boxSizing: 'border-box', padding: 4 }}>
             <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: '#fff', transform: `scale(${t > 10.05 && t < 10.2 ? 0.86 : 1})` }} />
@@ -94,7 +97,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
         </div>
       )}
       <Tap t={t} at={10.1} x={195} y={745} />
-      <Toast t={t} a={10.9} text="保存成功" />
+      <Toast t={t} a={10.9} text={tr('保存成功', 'Saved successfully')} />
     </>
   );
 
@@ -126,7 +129,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
         <Phone x={px} y={PHONE.y} k={PHONE.k}>{screen}</Phone>
         {dots}
       </Stage>
-      <Caption t={t} a={11.7} b={13.5} text="手机随手记，电脑马上有" y={930} size={56} />
+      <Caption t={t} a={11.7} b={13.5} text={tr('手机随手记，电脑马上有', "Capture it on your phone. It's already on your computer.")} y={930} size={56} />
     </>
   );
 };

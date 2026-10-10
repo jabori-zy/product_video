@@ -1,6 +1,7 @@
 import React from 'react';
 import { C, Cat, Fill, Logo, blinkAt, hop, kf, lin, sp } from '../lib';
 import { toOut } from '../pace';
+import { textW, useTr } from '../i18n';
 
 // H2 品牌结尾 · 方案 A「回文翻转」（替换 H，见 result/script-modify_slogon.md）
 // 口号逐词出现 → 「万物」「记忆」沿两条弧线互换位置 → 双行整句「记忆变成万物 / 万物变成记忆」→ 开场的线稿小黑跳上「记忆」→
@@ -8,9 +9,7 @@ import { toOut } from '../pace';
 // 局部时间 t = 全局 − 39；节奏按成片秒数 u（经 pace.ts 换算）来写，便于与脚本对时
 
 const ROW_Y = 540; // 口号行中心
-const FS = 150; // 字号
-const SLOT = [600, 960, 1320]; // 三个词的中心 x
-const ROW1 = 470, ROW2 = 650; // v2：互换后第一行上移，第二行「万物 变成 记忆」出现在下面
+const ROW1 = 470; // v2：互换后第一行上移，第二行「万物 变成 记忆」出现在下面
 const GROUND = 790; // 小黑探头时的地面（两行口号下方）
 const BLUE = '#7FB0FF';
 
@@ -20,8 +19,8 @@ const L0 = { x: 960 - LS / 2, y: 540 - LS / 2 };
 const CW = LS * 0.76; // logo 里猫头宽
 const CAT_BOTTOM = L0.y + LS * 0.36 + CW * 0.88; // logo 里猫头底边（被方块裁掉一截）
 
-const Word: React.FC<{ text: string; x: number; y: number; o?: number; blur?: number; rot?: number; color?: string; s?: number }> = ({ text, x, y, o = 1, blur = 0, rot = 0, color = '#fff', s = 1 }) => (
-  <div style={{ position: 'absolute', left: x - 200, top: y - 100, width: 400, height: 200, lineHeight: '200px', textAlign: 'center', fontSize: FS, fontWeight: 800, color, opacity: o, filter: blur > 0.2 ? `blur(${blur}px)` : undefined, transform: `rotate(${rot}deg) scale(${s})`, whiteSpace: 'nowrap' }}>{text}</div>
+const Word: React.FC<{ text: string; x: number; y: number; fs: number; o?: number; blur?: number; rot?: number; color?: string; s?: number }> = ({ text, x, y, fs, o = 1, blur = 0, rot = 0, color = '#fff', s = 1 }) => (
+  <div style={{ position: 'absolute', left: x - 400, top: y - 100, width: 800, height: 200, lineHeight: '200px', textAlign: 'center', fontSize: fs, fontWeight: 800, color, opacity: o, filter: blur > 0.2 ? `blur(${blur}px)` : undefined, transform: `rotate(${rot}deg) scale(${s})`, whiteSpace: 'nowrap' }}>{text}</div>
 );
 
 /** 线稿/实心小黑，锚点在底边中心 */
@@ -35,6 +34,15 @@ const Xiaohei: React.FC<{ x: number; y: number; sx?: number; sy?: number; s?: nu
 );
 
 export const Hh2: React.FC<{ t: number }> = ({ t }) => {
+  const tr = useTr();
+  // 口号三词与排版：中文每词两个 150px 字；英文用小写、104px，按实测宽度排（互换后两端词宽度不同，需重新居中）
+  const FS = tr(150, 104), GAP = tr(60, 44);
+  const [W1, W2, W3] = tr(['万物', '变成', '记忆'], ['everything', 'becomes', 'memory']);
+  const wd = [W1, W2, W3].map((w) => textW(w, FS, 800));
+  const centers = (ws: number[]) => { const tot = ws.reduce((a, b) => a + b, 0) + GAP * (ws.length - 1); let x = 960 - tot / 2; return ws.map((w) => { const c = x + w / 2; x += w + GAP; return c; }); };
+  const SLOT = centers(wd); // 互换前（也是第二行）：W1 W2 W3
+  const [a3, a2, a1] = centers([wd[2], wd[1], wd[0]]); // 互换后：W3 W2 W1
+  const ROW2 = tr(650, ROW1 + FS * 1.2);
   const uRaw = toOut(39 + t) - toOut(39); // 本段成片秒数（0 ≈ 结尾起点）
   // v2：互换之后插入 2 秒的「双行整句」，这期间原有时间线停在 3.3，之后整体顺延 2 秒
   const HOLD0 = 3.3, HOLD = 2.0;
@@ -53,8 +61,9 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
   // ② 互换：万物走上弧、记忆走下弧，变成像跷跷板一样点一下
   const sw = u < 2.1 ? 0 : sp(u, 2.1, { damping: 12, mass: 0.9 });
   const arc = Math.sin(Math.PI * Math.min(1, Math.max(0, sw)));
-  const wanX = SLOT[0] + (SLOT[2] - SLOT[0]) * sw, wanY = rowY - 170 * arc;
-  const jiX = SLOT[2] + (SLOT[0] - SLOT[2]) * sw, jiY = rowY + 170 * arc;
+  const wanX = SLOT[0] + (a1 - SLOT[0]) * sw, wanY = rowY - 170 * arc;
+  const jiX = SLOT[2] + (a3 - SLOT[2]) * sw, jiY = rowY + 170 * arc;
+  const bianX = SLOT[1] + (a2 - SLOT[1]) * sw;
   const seesaw = 7 * arc * (sw < 0.5 ? 1 : -1);
 
   // ③ 小黑：从左边探头 → 跳上「记忆」（互换后在左侧）
@@ -66,15 +75,15 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
     const pk = kf(u, [{ t: 3.3, x: -90 }, { t: 3.55, x: 40 }, { t: 3.65, x: 15 }, { t: 3.8, x: 60 }]);
     cat = { x: pk.x, y: GROUND, sx: 1, sy: 1, s: 1 };
   } else if (u < 4.75) {
-    cat = { ...hop(u, 3.95, LAND, { x: 60, y: GROUND }, { x: SLOT[0], y: WORD_TOP }, 260, 0.12), s: 1 };
+    cat = { ...hop(u, 3.95, LAND, { x: 60, y: GROUND }, { x: a3, y: WORD_TOP }, 260, 0.12), s: 1 };
     cat.y += dip;
   }
 
   // ④ 其余两个词掉落；「记忆」缩成蓝色圆角方块并移到中心；小黑骑在方块上沿
   const fall = lin(u, 4.65, 5.05, 0, 1, (x) => x * x);
   const sq = u < 4.8 ? 0 : sp(u, 4.8, { damping: 15, mass: 0.8 });
-  const sqW = 300 + (LS - 300) * sq, sqH = 150 + (LS - 150) * sq; // 起始高度 150：上沿正好是字面顶端，小黑不跳
-  const sqX = SLOT[0] + (960 - SLOT[0]) * sq, sqY = rowY + (ROW_Y - rowY) * sq;
+  const sqW = wd[2] + (LS - wd[2]) * sq, sqH = FS + (LS - FS) * sq; // 起始 = 「记忆」字框：上沿正好是字面顶端，小黑不跳
+  const sqX = a3 + (960 - a3) * sq, sqY = rowY + (ROW_Y - rowY) * sq;
   const sqTop = sqY - sqH / 2;
   const sqO = lin(u, 4.75, 4.95, 0, 1);
   if (u >= 4.75 && u < 5.35) cat = { x: sqX, y: sqTop, sx: 1, sy: 1, s: 1 };
@@ -90,7 +99,11 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
   const logoOn = u >= 5.9; // 交接给 Logo 组件（几何一致，不跳）
 
   // ⑥ 品牌文字
-  const shift = lin(u, 6.1, 6.6, 0, -330);
+  // 英文品牌名更宽：logo + 间距 80 + 文字整体居中（中文保持原来的 −330 / 840）
+  const brandW = Math.max(textW('Xiaohei OmniBox', 96, 800), textW('Your AI knowledge companion', 46, 500));
+  const SHIFT = tr(-330, -(80 + brandW) / 2);
+  const TEXT_X = tr(840, 960 + LS / 2 + SHIFT + 80);
+  const shift = lin(u, 6.1, 6.6, 0, SHIFT);
   const line = (a: number) => lin(u, a, a + 0.4, 0, 1);
   const push = lin(u, 7.0, 9.6, 1, 1.03);
   const fade = lin(u, 9.05, 9.55, 0, 1);
@@ -109,15 +122,15 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
         {/* 口号三词 */}
         {u < 5.1 && (
           <>
-            <Word text="万物" x={wanX} y={wanY + dip + fall * 420} o={r0 * (1 - fall)} blur={(1 - r0) * 12} rot={fall * -25} />
+            <Word text={W1} fs={FS} x={wanX} y={wanY + dip + fall * 420} o={r0 * (1 - fall)} blur={(1 - r0) * 12} rot={fall * -25} />
             <div style={{ position: 'absolute', inset: 0, transform: `rotate(${seesaw}deg)`, transformOrigin: `960px ${rowY}px` }}>
-              <Word text="变成" x={SLOT[1]} y={rowY + dip + fall * 460} o={r1 * (1 - fall)} blur={(1 - r1) * 12} rot={fall * 18} />
+              <Word text={W2} fs={FS} x={bianX} y={rowY + dip + fall * 460} o={r1 * (1 - fall)} blur={(1 - r1) * 12} rot={fall * 18} />
             </div>
             {/* 第二行：万物 变成 记忆（和第一行一起掉落） */}
-            {['万物', '变成', '记忆'].map((w, i) => (
-              <Word key={`l2${w}`} text={w} x={SLOT[i]} y={ROW2 + fall * (380 + i * 40)} o={l2[i] * (1 - fall)} blur={(1 - l2[i]) * 12} rot={fall * [22, -14, 26][i]} color={i === 2 ? BLUE : '#fff'} />
+            {[W1, W2, W3].map((w, i) => (
+              <Word key={`l2${w}`} text={w} fs={FS} x={SLOT[i]} y={ROW2 + fall * (380 + i * 40)} o={l2[i] * (1 - fall)} blur={(1 - l2[i]) * 12} rot={fall * [22, -14, 26][i]} color={i === 2 ? BLUE : '#fff'} />
             ))}
-            <Word text="记忆" x={u < 4.75 ? jiX : sqX} y={(u < 4.75 ? jiY : sqY) + dip} o={r2 * (1 - lin(u, 4.75, 4.95, 0, 1))} blur={(1 - r2) * 12} color={BLUE} s={u < 4.75 ? 1 : 1 - 0.3 * sq} />
+            <Word text={W3} fs={FS} x={u < 4.75 ? jiX : sqX} y={(u < 4.75 ? jiY : sqY) + dip} o={r2 * (1 - lin(u, 4.75, 4.95, 0, 1))} blur={(1 - r2) * 12} color={BLUE} s={u < 4.75 ? 1 : 1 - 0.3 * sq} />
           </>
         )}
 
@@ -141,11 +154,11 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
 
         {/* 品牌文字（与原版相同的三行） */}
         {u >= 6.5 && (
-          <div style={{ position: 'absolute', left: 840, top: 395 }}>
+          <div style={{ position: 'absolute', left: TEXT_X, top: 395 }}>
             {[
-              { a: 6.55, s: 96, w: 800, c: '#fff', text: '小黑 OmniBox' },
-              { a: 6.9, s: 46, w: 500, c: '#ddd', text: '你的 AI 知识伙伴' },
-              { a: 7.25, s: 30, w: 400, c: '#9a9a9a', text: '免费开始 · omnibox.pro' },
+              { a: 6.55, s: 96, w: 800, c: '#fff', text: tr('小黑 OmniBox', 'Xiaohei OmniBox') },
+              { a: 6.9, s: 46, w: 500, c: '#ddd', text: tr('你的 AI 知识伙伴', 'Your AI knowledge companion') },
+              { a: 7.25, s: 30, w: 400, c: '#9a9a9a', text: tr('免费开始 · omnibox.pro', 'Start for free · omnibox.pro') },
             ].map((l) => (
               <div key={l.text} style={{ fontSize: l.s, fontWeight: l.w, color: l.c, marginBottom: 16, opacity: line(l.a), filter: `blur(${(1 - line(l.a)) * 10}px)`, whiteSpace: 'nowrap' }}>{l.text}</div>
             ))}
