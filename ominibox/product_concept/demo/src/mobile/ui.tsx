@@ -56,8 +56,8 @@ export const PhoneShell: React.FC<{ children: React.ReactNode; time?: string }> 
 // ---------- 首页 ----------
 export const HomeHeader: React.FC = () => (
   <div style={{ position: 'absolute', left: 16, right: 16, top: 62, height: 40, display: 'flex', alignItems: 'center', gap: 8 }}>
-    <div style={{ width: 26, height: 26, borderRadius: 6, background: '#3b3b3b', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>J</div>
-    <span style={{ fontSize: 16, fontWeight: 600 }}>Jabori 的空间</span><Ic n="chevD" s={16} />
+    <div style={{ width: 26, height: 26, borderRadius: 6, background: '#3b3b3b', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>X</div>
+    <span style={{ fontSize: 16, fontWeight: 600 }}>xiaohei 的空间</span><Ic n="chevD" s={16} />
     <span style={{ marginLeft: 6, padding: '2px 10px', borderRadius: 6, background: '#2563EB', fontSize: 12, fontWeight: 700 }}>升级</span>
     <div style={{ marginLeft: 'auto', display: 'flex', gap: 16, alignItems: 'center' }}>
       <Ic n="gift" s={21} c="#60A5FA" />
@@ -160,7 +160,7 @@ export const RecordSheetBody: React.FC<{ t: number; timer: string; active: boole
   <div style={{ padding: '30px 16px 0' }}>
     <div style={{ fontSize: 17, fontWeight: 600, textAlign: 'center' }}>录音并保存</div>
     <div style={{ marginTop: 18, borderRadius: 16, background: '#2a2a2c' }}>
-      {[['空间', 'Jabori 的空间'], ['添加到', '个人']].map(([k, v], i) => (
+      {[['空间', 'xiaohei 的空间'], ['添加到', '个人']].map(([k, v], i) => (
         <div key={k} style={{ display: 'flex', alignItems: 'center', padding: '14px 16px', borderTop: i ? '1px solid #3a3a3c' : undefined, fontSize: 15 }}>
           <span style={{ color: M.sub }}>{k}</span><span style={{ marginLeft: 'auto', marginRight: 6 }}>{v}</span><Ic n="chevR" s={16} c="#888" />
         </div>

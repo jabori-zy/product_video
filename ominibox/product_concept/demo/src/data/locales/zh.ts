@@ -39,7 +39,7 @@ export const zh: Content = {
     boardLines: ['Q4 目标', 'DAU ×2'],
   },
   app: {
-    space: 'Jabori 的空间', tabs: ['资源', '对话'], greet: '晚上好，有什么可以帮你？', ask: '随便问点什么吧', recent: '最近更新',
+    space: 'xiaohei 的空间', tabs: ['资源', '对话'], greet: '晚上好，有什么可以帮你？', ask: '随便问点什么吧', recent: '最近更新',
     items: [['📕', 'Q3 产品复盘.pdf'], ['🎙', '周会录音.m4a'], ['🖼', '白板照片.jpg'], ['🌐', 'AI Agent 元年…（知乎）']],
     bottom: ['更多', '录音', '文字'],
   },
@@ -106,7 +106,7 @@ export const zh: Content = {
     feats: ['✓ 网页、文档、图片、音视频统一入库', '✓ 基于原文作答，句句有出处', '✓ 私有部署，配合 Ollama 离线运行'],
   },
   devices: {
-    web: { space: 'Jabori 的空间', nav: ['小黑', '通知', '黑友社区'], tabs: ['资源', '对话'], greet: '晚上好，有什么可以帮你？', ask: '随便问点什么吧' },
+    web: { space: 'xiaohei 的空间', nav: ['小黑', '通知', '黑友社区'], tabs: ['资源', '对话'], greet: '晚上好，有什么可以帮你？', ask: '随便问点什么吧' },
     ext: { name: '小黑', save: '📦 保存到小黑', to: '保存到：个人', area: '指定区域 · 按住 ⌥' },
     ios: { greet: '晚上好', ask: '随便问点什么吧', bottom: ['更多', '录音', '文字'] },
     android: { title: '资源', items: ['Q3 产品复盘.pdf', '周会录音.m4a', '白板照片.jpg', 'AI 动态周报', '10 分钟看懂 RAG'] },

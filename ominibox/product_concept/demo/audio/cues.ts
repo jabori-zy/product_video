@@ -1,6 +1,7 @@
 // 全片声音事件表（成片秒数）。时间取自各场景代码里的关键帧，经 appTimeline 换算到 demo_modify_slogon 的时间线，
 // 所以声音与画面同源：改了画面节奏，重跑 npm run audio 即可重新对齐
-import { TOTAL_APP, insertStart, toOutApp } from '../src/appTimeline';
+import { INSERTS, TOTAL_APP, insertStart, toOutApp } from '../src/appTimeline';
+import { ARC_DE } from '../src/pace';
 
 export type Kind =
   | 'key' | 'keyHeavy' | 'keyBang' | 'enter' | 'click' | 'tap'
@@ -13,9 +14,11 @@ export type Cue = { t: number; k: Kind; dur?: number; v?: number; i?: number; ph
 const o = toOutApp; // 原片脚本秒 → 成片秒
 const C0 = insertStart('C+'), E0 = insertStart('E+');
 export const H0 = toOutApp(39); // H2 结尾起点；H2 内部用成片秒 u（见 src/scenes/H2.tsx）
-export const SECTIONS = { A: 0, B: o(5), C: o(9), Cp: C0, D: C0 + 14.6, E: o(18), Ep: E0, F: o(30), G: o(35), H: H0 };
+export const SECTIONS = { A: 0, B: o(5), C: o(9), Cp: C0, D: C0 + INSERTS[0].dur, E: o(ARC_DE), Ep: E0, F: o(30), G: o(35), H: H0 };
 export const BAND_IN = o(4.0); // 文字落进输入框，全乐队进
-export const LOGO = H0 + 5.8; // 小黑钻进方块、logo 成形
+/** H2 里互换之后插入的双行整句时长（见 src/scenes/H2.tsx 的 HOLD0 / HOLD） */
+const H_HOLD0 = 3.3, H_HOLD = 2.0;
+export const LOGO = H0 + 5.8 + H_HOLD; // 小黑钻进方块、logo 成形
 
 const cues: Cue[] = [];
 const c = (t: number, k: Kind, extra: Partial<Cue> = {}) => cues.push({ t, k, ...extra });
@@ -39,7 +42,7 @@ c(o(4.25), 'enter'); c(o(4.3), 'swish', { dur: 0.3 }); c(o(4.5), 'stream', { dur
 // ---------- 转场 ----------
 for (const tb of [5, 9, 35]) c(o(tb) - 0.25, 'whoosh', { dur: 0.5 });
 c(o(11.45), 'riser', { dur: o(12.05) - o(11.45) });
-for (const tb of [18, 39]) c(o(tb) - 0.3, 'arc', { dur: 0.65 });
+for (const tb of [ARC_DE, 39]) c(o(tb - 0.25) - 0.05, 'arc', { dur: o(tb + 0.25) - o(tb - 0.25) + 0.1 });
 c(o(29.8), 'whoosh', { dur: 0.5, v: 0.7 }); // 分享按钮展开成米白画布
 
 // ---------- B 一键收藏 ----------
@@ -68,8 +71,8 @@ c(m1(8.3), 'tap', { phone: true }); c(m1(8.45), 'sheetUp', { phone: true }); c(m
 c(m1(9.3), 'swish', { dur: 0.3, phone: true }); c(m1(10.1), 'shutter', { phone: true }); c(m1(10.25), 'swish', { dur: 0.3, v: 0.5, phone: true, }); c(m1(10.6), 'sheetDown', { phone: true });
 c(m1(10.9), 'ding', { phone: true }); c(m1(10.95), 'swish', { dur: 0.2, v: 0.4, phone: true });
 c(m1(11.2), 'whoosh', { dur: 1.0, v: 0.4 });
-c(m1(11.9), 'dotUp', { i: 0 }); c(m1(12.15), 'dotUp', { i: 1 }); c(m1(12.75), 'dotLand', { i: 0 }); c(m1(13.0), 'dotLand', { i: 1 });
-c(m1(12.95), 'whoosh', { dur: 1.65, v: 0.6 });
+c(m1(11.9), 'dotUp', { i: 0 }); c(m1(12.15), 'dotUp', { i: 1 }); c(m1(13.4), 'dotLand', { i: 0 }); c(m1(13.65), 'dotLand', { i: 1 }); // 光点飘 1.5 s
+c(m1(13.6), 'whoosh', { dur: 1.65, v: 0.6 });
 
 // ---------- D 理解 ----------
 for (let i = 0; i < 5; i++) c(o(12.22 + i * 0.2), 'tick', { v: 0.8 });
@@ -119,9 +122,11 @@ for (let i = 0; i < 6; i++) c(o(35.1 + i * 0.15), 'pop', { v: 0.6, i });
 for (const k of [37, 37.65, 38.3]) c(o(k), 'impact', { v: 0.7 });
 
 // ---------- H2 结尾（成片秒 = H0 + u）----------
-const h = (u: number) => H0 + u;
+const h = (u: number) => H0 + (u < H_HOLD0 ? u : u + H_HOLD); // 互换之后的事件顺延 2 秒
+const hRaw = (u: number) => H0 + u;
 for (let i = 0; i < 3; i++) c(h(0.5 + i * 0.45), 'word', { i: i + 6 });
 c(h(2.1), 'swap', { dur: 1.0 });
+for (let i = 0; i < 3; i++) c(hRaw(3.6 + i * 0.2), 'word', { i: i + 9 }); // 第二行「万物 变成 记忆」
 c(h(3.3), 'slide'); c(h(3.5), 'meow', { i: 1 }); c(h(3.65), 'retract');
 c(h(3.95) - 0.04, 'boing', { i: 2 }); c(h(4.3), 'land', { i: 2 }); c(h(4.32), 'trampoline'); c(h(4.45), 'blink');
 c(h(4.65), 'fall'); c(h(4.8), 'swell', { dur: 0.6 });

@@ -10,7 +10,7 @@ import { Ee } from './scenes/E';
 import { Ff } from './scenes/F';
 import { Gg } from './scenes/G';
 import { Hh } from './scenes/H';
-import { toScript } from './pace';
+import { ARC_DE, toScript } from './pace';
 
 // 八段与转场，时间严格对应 result/script.md
 export const SCENES = [
@@ -63,9 +63,9 @@ export const Main: React.FC<{ paced?: boolean; at?: number; label?: boolean; end
   }
   if (in_(8.85, 12.05)) L.push(<Layer key="C" id="C" T={T} s={9} C={Cc} {...w9.in} />);
   // C → D：光点流进侧栏，D 淡入
-  if (in_(11.85, 18.25)) L.push(<Layer key="D" id="D" T={T} s={12} C={Dd} style={{ opacity: lin(T, 11.85, 12.05, 0, 1) }} />);
+  if (in_(11.85, ARC_DE + 0.25)) L.push(<Layer key="D" id="D" T={T} s={12} C={Dd} style={{ opacity: lin(T, 11.85, 12.05, 0, 1) }} />);
   // D → E：光带擦除
-  if (in_(17.75, 30.2)) L.push(<Layer key="E" id="E" T={T} s={18} C={Ee} style={{ clipPath: T < 18.25 ? `inset(0 ${Math.max(0, W - arcX(T, 18))}px 0 0)` : undefined }} />);
+  if (in_(ARC_DE - 0.25, 30.2)) L.push(<Layer key="E" id="E" T={T} s={18} C={Ee} style={{ clipPath: T < ARC_DE + 0.25 ? `inset(0 ${Math.max(0, W - arcX(T, ARC_DE))}px 0 0)` : undefined }} />);
   // E → F：右上角「分享」放大成米白画布
   if (in_(29.8, 35.15)) {
     const r = lin(T, 29.8, 30.2, 0, 2300);
@@ -81,7 +81,7 @@ export const Main: React.FC<{ paced?: boolean; at?: number; label?: boolean; end
   return (
     <AbsoluteFill style={{ background: '#000', fontFamily: FONT }}>
       {L}
-      {band(18)}
+      {band(ARC_DE)}
       {band(39)}
       {/* 草稿标注：段落与时间码 */}
       {label && <div style={{ position: 'absolute', right: 16, bottom: 12, padding: '4px 10px', borderRadius: 6, background: 'rgba(0,0,0,.55)', color: '#ffd84a', fontSize: 18, fontFamily: 'monospace' }}>

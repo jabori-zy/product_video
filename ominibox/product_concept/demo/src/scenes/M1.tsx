@@ -7,15 +7,16 @@ import { BottomBar, ContentTabs, Dialog, HomeComposer, HomeHeader, Ic, M, MoreSh
 
 // C+ 手机随手记（插在 D 开场 12.05 s）：电脑画面拉远成笔记本 → 手机录下周会、拍下白板 → 两条资源化作光点飞进电脑侧栏 → 推回电脑，接 D
 export const M1_AT = 12.05;
+const DOT_FLIGHT = 1.5; // 光点从手机飘到电脑侧栏的时长（v2 从 0.85 s 放慢）
 const CAM_PHONE = { x: 1520, y: 560, s: 1.32 };
 const CAM = [
   { t: 0, ...CAM_FULL }, { t: 1.3, ...CAM_WIDE }, { t: 1.5, ...CAM_WIDE }, { t: 2.3, ...CAM_PHONE },
-  { t: 11.2, ...CAM_PHONE }, { t: 12.2, ...CAM_WIDE }, { t: 12.95, ...CAM_WIDE }, { t: 14.6, ...CAM_FULL },
+  { t: 11.2, ...CAM_PHONE }, { t: 12.2, ...CAM_WIDE }, { t: 13.6, ...CAM_WIDE }, { t: 15.25, ...CAM_FULL },
 ];
 
 const BAR_Y = PH - 70; // 胶囊中心
 const ROW0 = 432, ROW_STEP = 46;
-const OLD = [['🌐', '首页 - 知乎'], ['📕', 'Superexx 2024 年 10 月月报.pdf'], ['📕', 'Docker 技术入门与实战（第 4 版）.pdf']];
+const OLD = [['🌐', '首页 - 知乎'], ['📕', '2026 年 10 月月报.pdf'], ['📕', 'Docker 技术入门与实战（第 4 版）.pdf']];
 const NEW = [{ at: 7.3, icon: '🎙', text: '周会录音.m4a' }, { at: 10.95, icon: '🖼', text: '白板照片.jpg' }];
 
 const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
@@ -23,7 +24,7 @@ const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${Str
 export const M1: React.FC<{ t: number }> = ({ t }) => {
   const cam = kf(t, CAM);
   const enter = spr(t, 0.7, 16);
-  const px = PHONE.x + (1 - enter) * 900 + lin(t, 12.95, 14.6, 0, 420);
+  const px = PHONE.x + (1 - enter) * 900 + lin(t, 13.6, 15.25, 0, 420);
 
   // 录音
   const recP = t < 7.0 ? spr(t, 2.75) : 1 - lin(t, 7.0, 7.3, 0, 1);
@@ -100,7 +101,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
   // 光点：手机里的两条新资源 → 笔记本侧栏（原片 D 开场正要落下资源行的位置）
   const dots = NEW.map((n, i) => {
     const a = 11.9 + i * 0.25;
-    const p = lin(t, a, a + 0.85, 0, 1, (x) => x * x * (3 - 2 * x));
+    const p = lin(t, a, a + DOT_FLIGHT, 0, 1, (x) => x * x * (3 - 2 * x));
     if (t < a || p >= 1) return null;
     const from = phoneToWorld(60, ROW0 + i * ROW_STEP + 22, { ...PHONE, x: px });
     const to = screenToWorld(450, 586 + i * 65); // 原片 D 定格帧里侧栏资源行下方
@@ -116,7 +117,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
       </React.Fragment>
     );
   });
-  const glow = Math.max(0, 1 - Math.abs(t - 12.9) / 0.4);
+  const glow = Math.max(0, 1 - Math.abs(t - 13.55) / 0.5);
 
   return (
     <>
@@ -125,7 +126,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
         <Phone x={px} y={PHONE.y} k={PHONE.k}>{screen}</Phone>
         {dots}
       </Stage>
-      <Caption t={t} a={11.7} b={12.85} text="手机随手记，电脑马上有" y={930} size={56} />
+      <Caption t={t} a={11.7} b={13.5} text="手机随手记，电脑马上有" y={930} size={56} />
     </>
   );
 };

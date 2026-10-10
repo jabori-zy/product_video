@@ -11,7 +11,7 @@ const Z = LOCALES.zh; // 线框里的真实内容（data/locales/zh.ts）
 export const TREE0 = 376;
 const OLD = [
   ['🌐', '首页 - 知乎'],
-  ['📕', 'Superexx 2024 年 10 月月报.pdf'],
+  ['📕', '2026 年 10 月月报.pdf'],
   ['📕', 'Docker 技术入门与实战（第 4 版）.pdf'],
 ];
 const NEW = [

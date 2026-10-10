@@ -9,8 +9,8 @@ export const TREE_Y = 360;
 
 export const Sidebar: React.FC<{ tab: number; children?: React.ReactNode; x?: number }> = ({ tab, children, x = 0 }) => (
   <div style={{ position: 'absolute', left: x, top: 0, width: SIDE_W, height: 1080, background: C.side, borderRight: '1px solid #2a2a2a' }}>
-    <div style={{ position: 'absolute', left: 24, top: 26, width: 30, height: 30, borderRadius: 8, background: '#3b3b3b', color: '#fff', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>J</div>
-    <Tx x={64} y={28} s={19}>Jabori 的空间 ⌄</Tx>
+    <div style={{ position: 'absolute', left: 24, top: 26, width: 30, height: 30, borderRadius: 8, background: '#3b3b3b', color: '#fff', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>X</div>
+    <Tx x={64} y={28} s={19}>xiaohei 的空间 ⌄</Tx>
     {[
       ['🐱', '小黑'],
       ['🔔', '通知'],
@@ -99,7 +99,7 @@ export const HomeCards: React.FC<{ x: number; y: number; w: number; t: number; a
       {card(1, (
         <>
           <div style={{ color: '#fff', fontSize: 22, fontWeight: 700 }}>最近更新</div>
-          {['Superexx 2024 年 10 月月报.pdf', 'Docker 技术入门与实战（第 4 版）.pdf'].map((s, i) => (
+          {['2026 年 10 月月报.pdf', 'Docker 技术入门与实战（第 4 版）.pdf'].map((s, i) => (
             <div key={s} style={{ marginTop: i ? 10 : 18, color: C.text, fontSize: 16 }}>📕 {s}<div style={{ color: C.muted, fontSize: 13 }}>4 天前更新</div></div>
           ))}
         </>

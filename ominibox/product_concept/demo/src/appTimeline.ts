@@ -3,7 +3,7 @@
 import { toOut, toScript } from './pace';
 
 export const INSERTS = [
-  { id: 'C+', name: '手机随手记', at: 12.05, dur: 14.6 },
+  { id: 'C+', name: '手机随手记', at: 12.05, dur: 15.25 },
   { id: 'E+', name: '跨端接力', at: 26.45, dur: 15.2 },
 ] as const;
 export type InsertId = (typeof INSERTS)[number]['id'];

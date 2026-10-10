@@ -39,7 +39,7 @@ export const en: Content = {
     boardLines: ['Q4 goal', 'DAU ×2'],
   },
   app: {
-    space: "Jabori's space", tabs: ['Resources', 'Chats'], greet: 'Good evening. How can I help you today?', ask: 'Ask anything', recent: 'Recently updated',
+    space: "xiaohei's space", tabs: ['Resources', 'Chats'], greet: 'Good evening. How can I help you today?', ask: 'Ask anything', recent: 'Recently updated',
     items: [['📕', 'Q3 Product Review.pdf'], ['🎙', 'Weekly Meeting Recording.m4a'], ['🖼', 'Whiteboard Photo.jpg'], ['🌐', 'The Year of AI Agents… (Zhihu)']],
     bottom: ['More', 'Record', 'Text'],
   },
@@ -106,7 +106,7 @@ export const en: Content = {
     feats: ['✓ Webpages, docs, images, audio and video in one place', '✓ Answers with sources, every time', '✓ Self-host and run offline with Ollama'],
   },
   devices: {
-    web: { space: "Jabori's space", nav: ['Xiaohei', 'Notifications', 'Community'], tabs: ['Resources', 'Chats'], greet: 'Good evening. How can I help?', ask: 'Ask anything' },
+    web: { space: "xiaohei's space", nav: ['Xiaohei', 'Notifications', 'Community'], tabs: ['Resources', 'Chats'], greet: 'Good evening. How can I help?', ask: 'Ask anything' },
     ext: { name: 'Xiaohei', save: '📦 Save to Xiaohei', to: 'Save to: Personal', area: 'Specific area · Hold ⌥' },
     ios: { greet: 'Good evening', ask: 'Ask anything', bottom: ['More', 'Record', 'Text'] },
     android: { title: 'Resources', items: ['Q3 Product Review.pdf', 'Meeting Recording.m4a', 'Whiteboard Photo.jpg', 'AI Weekly Brief', 'Understand RAG'] },

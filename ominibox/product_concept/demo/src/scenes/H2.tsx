@@ -3,15 +3,15 @@ import { C, Cat, Fill, Logo, blinkAt, hop, kf, lin, sp } from '../lib';
 import { toOut } from '../pace';
 
 // H2 品牌结尾 · 方案 A「回文翻转」（替换 H，见 result/script-modify_slogon.md）
-// 口号逐词出现 → 「万物」「记忆」沿两条弧线互换位置 → 开场的线稿小黑跳上「记忆」→
+// 口号逐词出现 → 「万物」「记忆」沿两条弧线互换位置 → 双行整句「记忆变成万物 / 万物变成记忆」→ 开场的线稿小黑跳上「记忆」→
 // 「记忆」缩成蓝色圆角方块、小黑钻进去，变成 logo 里探头的猫 → 品牌文字 → 眨眼淡出
 // 局部时间 t = 全局 − 39；节奏按成片秒数 u（经 pace.ts 换算）来写，便于与脚本对时
 
 const ROW_Y = 540; // 口号行中心
 const FS = 150; // 字号
 const SLOT = [600, 960, 1320]; // 三个词的中心 x
-const WORD_TOP = ROW_Y - FS / 2; // 字面顶端（小黑落脚处）
-const GROUND = ROW_Y + 120; // 小黑探头时的地面
+const ROW1 = 470, ROW2 = 650; // v2：互换后第一行上移，第二行「万物 变成 记忆」出现在下面
+const GROUND = 790; // 小黑探头时的地面（两行口号下方）
 const BLUE = '#7FB0FF';
 
 // 最终 logo（与原版 H 相同：260px 居中，随后左移 330）
@@ -35,7 +35,16 @@ const Xiaohei: React.FC<{ x: number; y: number; sx?: number; sy?: number; s?: nu
 );
 
 export const Hh2: React.FC<{ t: number }> = ({ t }) => {
-  const u = toOut(39 + t) - toOut(39); // 本段成片秒数（0 ≈ 109.5 s）
+  const uRaw = toOut(39 + t) - toOut(39); // 本段成片秒数（0 ≈ 结尾起点）
+  // v2：互换之后插入 2 秒的「双行整句」，这期间原有时间线停在 3.3，之后整体顺延 2 秒
+  const HOLD0 = 3.3, HOLD = 2.0;
+  const u = uRaw < HOLD0 ? uRaw : Math.max(HOLD0, uRaw - HOLD);
+
+  // ⓪ 双行：第一行「记忆 变成 万物」上移，第二行「万物 变成 记忆」逐词出现
+  const rise = uRaw < 3.35 ? 0 : sp(uRaw, 3.35, { damping: 15, mass: 0.8 });
+  const rowY = ROW_Y + (ROW1 - ROW_Y) * rise;
+  const WORD_TOP = rowY - FS / 2; // 第一行字面顶端（小黑落脚处）
+  const l2 = [3.6, 3.8, 4.0].map((a) => lin(uRaw, a, a + 0.4, 0, 1));
 
   // ① 逐词出现
   const rev = (a: number) => lin(u, a, a + 0.4, 0, 1);
@@ -44,8 +53,8 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
   // ② 互换：万物走上弧、记忆走下弧，变成像跷跷板一样点一下
   const sw = u < 2.1 ? 0 : sp(u, 2.1, { damping: 12, mass: 0.9 });
   const arc = Math.sin(Math.PI * Math.min(1, Math.max(0, sw)));
-  const wanX = SLOT[0] + (SLOT[2] - SLOT[0]) * sw, wanY = ROW_Y - 170 * arc;
-  const jiX = SLOT[2] + (SLOT[0] - SLOT[2]) * sw, jiY = ROW_Y + 170 * arc;
+  const wanX = SLOT[0] + (SLOT[2] - SLOT[0]) * sw, wanY = rowY - 170 * arc;
+  const jiX = SLOT[2] + (SLOT[0] - SLOT[2]) * sw, jiY = rowY + 170 * arc;
   const seesaw = 7 * arc * (sw < 0.5 ? 1 : -1);
 
   // ③ 小黑：从左边探头 → 跳上「记忆」（互换后在左侧）
@@ -57,7 +66,7 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
     const pk = kf(u, [{ t: 3.3, x: -90 }, { t: 3.55, x: 40 }, { t: 3.65, x: 15 }, { t: 3.8, x: 60 }]);
     cat = { x: pk.x, y: GROUND, sx: 1, sy: 1, s: 1 };
   } else if (u < 4.75) {
-    cat = { ...hop(u, 3.95, LAND, { x: 60, y: GROUND }, { x: SLOT[0], y: WORD_TOP }, 230, 0.12), s: 1 };
+    cat = { ...hop(u, 3.95, LAND, { x: 60, y: GROUND }, { x: SLOT[0], y: WORD_TOP }, 260, 0.12), s: 1 };
     cat.y += dip;
   }
 
@@ -65,7 +74,7 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
   const fall = lin(u, 4.65, 5.05, 0, 1, (x) => x * x);
   const sq = u < 4.8 ? 0 : sp(u, 4.8, { damping: 15, mass: 0.8 });
   const sqW = 300 + (LS - 300) * sq, sqH = 150 + (LS - 150) * sq; // 起始高度 150：上沿正好是字面顶端，小黑不跳
-  const sqX = SLOT[0] + (960 - SLOT[0]) * sq, sqY = ROW_Y;
+  const sqX = SLOT[0] + (960 - SLOT[0]) * sq, sqY = rowY + (ROW_Y - rowY) * sq;
   const sqTop = sqY - sqH / 2;
   const sqO = lin(u, 4.75, 4.95, 0, 1);
   if (u >= 4.75 && u < 5.35) cat = { x: sqX, y: sqTop, sx: 1, sy: 1, s: 1 };
@@ -95,15 +104,19 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
     <Fill bg={C.black}>
       <div style={{ position: 'absolute', inset: 0, transform: `scale(${push})`, transformOrigin: '960px 540px', opacity: 1 - fade }}>
         {/* 口号背后的柔光 */}
-        <div style={{ position: 'absolute', left: 260, top: 330, width: 1400, height: 420, borderRadius: '50%', background: `radial-gradient(ellipse, rgba(74,142,249,${0.18 * glow}) 0%, transparent 70%)` }} />
+        <div style={{ position: 'absolute', left: 260, top: 280, width: 1400, height: 560, borderRadius: '50%', background: `radial-gradient(ellipse, rgba(74,142,249,${0.18 * glow}) 0%, transparent 70%)` }} />
 
         {/* 口号三词 */}
         {u < 5.1 && (
           <>
             <Word text="万物" x={wanX} y={wanY + dip + fall * 420} o={r0 * (1 - fall)} blur={(1 - r0) * 12} rot={fall * -25} />
-            <div style={{ position: 'absolute', inset: 0, transform: `rotate(${seesaw}deg)`, transformOrigin: `960px ${ROW_Y}px` }}>
-              <Word text="变成" x={SLOT[1]} y={ROW_Y + dip + fall * 460} o={r1 * (1 - fall)} blur={(1 - r1) * 12} rot={fall * 18} />
+            <div style={{ position: 'absolute', inset: 0, transform: `rotate(${seesaw}deg)`, transformOrigin: `960px ${rowY}px` }}>
+              <Word text="变成" x={SLOT[1]} y={rowY + dip + fall * 460} o={r1 * (1 - fall)} blur={(1 - r1) * 12} rot={fall * 18} />
             </div>
+            {/* 第二行：万物 变成 记忆（和第一行一起掉落） */}
+            {['万物', '变成', '记忆'].map((w, i) => (
+              <Word key={`l2${w}`} text={w} x={SLOT[i]} y={ROW2 + fall * (380 + i * 40)} o={l2[i] * (1 - fall)} blur={(1 - l2[i]) * 12} rot={fall * [22, -14, 26][i]} color={i === 2 ? BLUE : '#fff'} />
+            ))}
             <Word text="记忆" x={u < 4.75 ? jiX : sqX} y={(u < 4.75 ? jiY : sqY) + dip} o={r2 * (1 - lin(u, 4.75, 4.95, 0, 1))} blur={(1 - r2) * 12} color={BLUE} s={u < 4.75 ? 1 : 1 - 0.3 * sq} />
           </>
         )}

@@ -1,6 +1,6 @@
 # 小黑 OmniBox 产品介绍片
 
-- **成片 v1**：`npm run render:final` → `out/ominibox_product_video_v1.mp4`（≈119 s，1920×1080，30 fps）：手机版时间线 + 结尾方案 A + 线框全部换成真实内容（`src/content/`，文案 `src/data/locales/zh.ts`）+ 方案二声音；不显示时间码
+- **成片**：`npm run render:final -- v2` → `out/ominibox_product_video_v2.mp4`（≈124 s，1920×1080，30 fps，含方案二声音）；先按当前时间线重建声音，再渲染 Final、合成。脚本 `../result/script-v2.md`；v1 成片保留在 `out/ominibox_product_video_v1.mp4`
 
 - 成片：`out/demo.mp4`（1920×1080 · 30 fps · 45 s · 无配乐）
 - 依据：`../result/script.md`（时间轴一一对应，右下角黄色标注当前段落和时间码，正式版删除）
