@@ -8,6 +8,7 @@
     "render": "remotion render Demo out/demo.mp4",
     "render:paced": "node tools/render-paced.mjs",
     "render:content": "node tools/render-content.mjs",
+    "render:app": "remotion render DemoApp out/demo-add_more_app.mp4",
     "still": "remotion still Demo"
   },
   "dependencies": {
