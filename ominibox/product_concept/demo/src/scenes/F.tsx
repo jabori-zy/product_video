@@ -45,7 +45,8 @@ export const Ff: React.FC<{ t: number }> = ({ t }) => {
           const p = sp(t, a);
           const f = lin(t, 3.4 + i * 0.05, 3.7 + i * 0.05, 0, 1);
           const x0 = 1290 + (i % 2) * 70, y0 = 430 + Math.floor(i / 2) * 70;
-          const x1 = 1290 + i * 44, y1 = 365;
+          // 落点：团队空间卡片里「团队」一栏的表头右侧（缩到 0.7 后约 39 px，间距 34，右对齐在团队框内）
+          const x1 = 1306 - (3 - i) * 34, y1 = 422;
           return <div key={i} style={{ position: 'absolute', left: x0 + (x1 - x0) * f, top: y0 + (y1 - y0) * f, width: 56, height: 56, borderRadius: '50%', background: col, border: '3px solid #fff', color: '#fff', fontSize: 22, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${p * (1 - 0.3 * f)})`, zIndex: 2 }}>{'林王陈李'[i]}</div>;
         })}
 

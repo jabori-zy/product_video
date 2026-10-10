@@ -33,7 +33,7 @@ const row = (slug) => {
 };
 fs.writeFileSync(path.join(outDir, 'README.md'), `# Content Screenshots
 
-Real content for every wireframe in the demo video (\`demo/out/demo-45s.mp4\`, \`demo-89s.mp4\`), fully simulated in Remotion (React/CSS/SVG). The video itself is unchanged.
+Real content for every wireframe in the demo video (\`demo/out/demo-add_more_app.mp4\`), fully simulated in Remotion (React/CSS/SVG). The video itself is unchanged.
 
 - Languages: ${langs.join(', ')} (one subfolder each). Copy lives in \`demo/src/data/locales/<lang>.ts\`; add a language by adding a file there and registering it in \`demo/src/data/content.ts\`.
 - Size = wireframe size; PNGs are rendered at 2× for sharpness.

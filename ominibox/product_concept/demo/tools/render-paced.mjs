@@ -1,4 +1,4 @@
-// 渲染不限时长版：时长由 src/pace.ts 算出，输出 out/demo-<秒>s.mp4（不覆盖 demo-45s.mp4 等已有文件）
+// 渲染不限时长版：时长由 src/pace.ts 算出，输出 out/demo-<秒>s.mp4（不覆盖已有文件）
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';

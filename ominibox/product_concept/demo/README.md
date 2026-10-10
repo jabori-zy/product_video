@@ -4,7 +4,7 @@
 - 依据：`../result/script.md`（时间轴一一对应，右下角黄色标注当前段落和时间码，正式版删除）
 - 简化：网页、设备、文档内容都是带标识的占位矩形；文字、转场、镜头运动完整实现
 - 渲染：`npm run render`（约 30 s）；预览调整：`npm run studio`
-- 不限时长版：`npm run render:paced` → `out/demo-<秒>s.mp4`（当前 `demo-89s.mp4`）；同一套画面，`src/pace.ts` 把输出时间映射回脚本时间，只放慢不改内容；对应脚本 `../result/script-untimed.md`
+- 不限时长版：`npm run render:paced` → `out/demo-<秒>s.mp4`（成片已删除，需要时重新渲染）；同一套画面，`src/pace.ts` 把输出时间映射回脚本时间，只放慢不改内容；对应脚本 `../result/script-untimed.md`
 - 手机版：`npm run render:app` → `out/demo-add_more_app.mp4`（≈119 s）；在不限时长版里插入两段手机操作（C+ 手机随手记、E+ 跨端接力），首尾定格在原片同一帧，衔接无缝；对应脚本 `../result/script-add_more_app.md`
 - 依赖：`npm install`（Remotion 4.0.529）
 
