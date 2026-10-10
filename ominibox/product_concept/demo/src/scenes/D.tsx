@@ -49,6 +49,9 @@ const CAM = [
   { t: 5.5, x: 960, y: 540, s: 1.2 },
 ];
 const rowY = (i: number) => TREE0 + i * 40;
+/** C 段光点的汇聚点：新资源行落脚处（世界坐标），以及 D 开场镜头下它在画面上的位置（C 的光点飞向这里） */
+const LAND_WORLD = { x: 40, y: rowY(5) + 17 };
+export const LAND_SCREEN = (() => { const c = kf(0, CAM); return { x: (LAND_WORLD.x - c.x) * c.s + 960, y: (LAND_WORLD.y - c.y) * c.s + 540 }; })();
 
 const Tile: React.FC<{ i: number; t: number }> = ({ i, t }) => {
   const lang = useLang(), tr = useTr(), res = useRes();
@@ -133,7 +136,7 @@ export const Dd: React.FC<{ t: number }> = ({ t }) => {
       <Tx x={26} y={340} s={15} c={C.muted}>{tr('个人 ⌄', 'Personal ⌄')}</Tx>
       {OLD.map(([ic, s], i) => <Row key={s} y={rowY(i)} icon={ic} text={resName(s)} />)}
       {NEW.map(([ic, s], i) => {
-        const a = 0.1 + i * 0.2;
+        const a = 0.22 + i * 0.2; // final：从 0.07 s 起才出现，C+ 在 0.05 s 定格时画面里还没有光点
         const p = sp(t, a + 0.12);
         const done = t > (TILES.find((k) => k.row === i)?.st ?? 1.0) + 0.6;
         return <Row key={s} y={rowY(3 + i)} icon={ic} text={resName(s)} o={p} dx={(1 - p) * -30} right={<Parsing t={t} done={done} />} />;
@@ -142,10 +145,10 @@ export const Dd: React.FC<{ t: number }> = ({ t }) => {
   );
   // 落进资源树的光点
   const dots = NEW.map((_, i) => {
-    const a = 0.1 + i * 0.2;
+    const a = 0.22 + i * 0.2; // final：从 0.07 s 起才出现，C+ 在 0.05 s 定格时画面里还没有光点
     const p = lin(t, a - 0.15, a + 0.12, 0, 1, (x) => x * x);
     if (p <= 0 || p >= 1) return null;
-    return <div key={i} style={{ position: 'absolute', left: 36 - 6, top: -60 + (rowY(3 + i) + 17 + 60) * p - 6, width: 12, height: 12, borderRadius: '50%', background: '#fff', boxShadow: `0 0 18px ${C.blue}` }} />;
+    return <div key={i} style={{ position: 'absolute', left: LAND_WORLD.x + (36 - LAND_WORLD.x) * p - 6, top: LAND_WORLD.y + (rowY(3 + i) + 17 - LAND_WORLD.y) * p - 6, width: 12, height: 12, borderRadius: '50%', background: '#fff', boxShadow: `0 0 18px ${C.blue}` }} />;
   });
 
   // ⌘J 搜索

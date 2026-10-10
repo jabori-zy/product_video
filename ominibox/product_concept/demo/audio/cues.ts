@@ -79,7 +79,7 @@ export const buildCues = (lang: Lang): Cue[] => {
   c(m1(13.6), 'whoosh', { dur: 1.65, v: 0.6 });
 
   // ---------- D 理解 ----------
-  for (let i = 0; i < 5; i++) c(o(12.22 + i * 0.2), 'tick', { v: 0.8 });
+  for (let i = 0; i < 5; i++) c(o(12.34 + i * 0.2), 'tick', { v: 0.8 });
   for (const st of [13, 13.75, 14.5, 15.25]) c(o(st), 'swish', { dur: 0.35, v: 0.6 });
   c(o(14.0), 'murmur', { dur: o(14.35) - o(14.0), v: 0.4 }); // 白板扫描「滋」
   c(o(14.7), 'stream', { dur: 0.5 }); for (let j = 0; j < 3; j++) c(o(14.95 + j * 0.1), 'ding', { v: 0.35 });

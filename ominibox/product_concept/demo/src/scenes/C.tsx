@@ -6,6 +6,7 @@ import { useLang, useTr } from '../i18n';
 import { Bili, News, Rss, XPost, Xhs } from '../content/cards';
 import { App } from '../content/phone';
 import { KeyframeThumb } from '../content/understand';
+import { LAND_SCREEN } from './D';
 
 
 // C 万物入口 · 随时随地（9.0–12.0 s），局部时间 t = 全局 − 9
@@ -33,7 +34,8 @@ const CAM = [
   { t: 2.5, x: 1675, y: 540, s: 0.42 },
 ];
 
-const TARGET = { x: 170, y: 520 };
+// 光点汇聚到 D 开场镜头下新资源行的位置（随 D 的镜头算，不写死）
+const TARGET = LAND_SCREEN;
 
 export const Cc: React.FC<{ t: number }> = ({ t }) => {
   const lang = useLang(), tr = useTr();
