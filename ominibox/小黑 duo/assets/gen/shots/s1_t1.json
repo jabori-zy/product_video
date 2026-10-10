@@ -1,0 +1,43 @@
+[
+  {
+    "created_at": "2026-09-28T09:27:56.964333Z",
+    "display_name": "Seedance 2.5",
+    "id": "ea866247-1962-484f-8a07-b05dd8e27727",
+    "job_type": "seedance_2_5",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "16:9",
+      "bitrate_mode": "standard",
+      "draft": false,
+      "draft_job_id": null,
+      "duration": 4,
+      "extension_mode": null,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 1080,
+      "medias": [
+        {
+          "data": {
+            "id": "a7cb795e-9628-4d72-a262-8349de9e3fde",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/a7cb795e-9628-4d72-a262-8349de9e3fde_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "default",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "Reference: the approved Xiaohei character sheet. Xiaohei is a minimalist pure matte black cartoon cat mascot made of\nflocked vinyl, cream ring eyes with black pupils, no nose, no whiskers — keep the design exactly. Xiaohei has NO mouth\nin every shot — no mouth line, no opening, no smile; expressions come only from the eyes and ears.\nStyle: premium consumer-electronics product commercial, seamless white studio background (#F4F4F2), soft shadowless\nlight, gentle rim light on the black silhouette, macro lens, very shallow depth of field, slow and precise\nmotion-control camera, clean cool-white grade. No text, no captions, no logos, no humans, no real cat fur.\n\nExtreme macro close-up of one of Xiaohei's cream ring eyes. Camera slides laterally in from an out-of-focus black velvet surface, focus racks onto the eye, then a slow push-in. The black pupil contracts slightly like a camera aperture; a tiny reflection of a photo of a printed page appears on the pupil, with thin glowing rectangles outlining lines of text one by one. Avoid: mouth, lips, teeth, tongue, smile line, nose, whiskers, real cat fur, text, captions, logos, humans, hands, extra eyes, both eyes closing during a wink.",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "1080p",
+      "speedramp": "auto",
+      "width": 1920
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20260928_092756_ea866247-1962-484f-8a07-b05dd8e27727.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20260928_092756_ea866247-1962-484f-8a07-b05dd8e27727_thumbnail.webp"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "name": "omnibox-product-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "小黑 OmniBox 产品介绍片 · 草稿 demo（45 s，无配乐，占位矩形）",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Demo out/demo.mp4",
+    "still": "remotion still Demo"
+  }
+}

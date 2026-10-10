@@ -1,0 +1,142 @@
+import React from 'react';
+import { interpolateColors } from 'remotion';
+import { C, Cat, Fill, KeyHud, Tx, W, blinkAt, hop, kf, lin, sp, typed } from '../lib';
+import { Composer, HomeCards, Sidebar } from '../ui';
+
+// A 开场 · 你好，小黑！（0.0–5.0 s）
+
+// 输入法按键：[时刻, 已上屏, 拼音]
+const KEYS: [number, string, string][] = [
+  [0.4, '', 'n'], [0.46, '', 'ni'], [0.52, '', 'nih'], [0.58, '', 'niha'], [0.64, '', 'nihao'],
+  [0.72, '你好', ''], [0.82, '你好，', ''],
+  [0.88, '你好，', 'x'], [0.93, '你好，', 'xi'], [0.98, '你好，', 'xia'], [1.03, '你好，', 'xiao'], [1.08, '你好，', 'xiaoh'], [1.13, '你好，', 'xiaohe'], [1.18, '你好，', 'xiaohei'],
+  [1.3, '你好，小黑', ''], [1.5, '你好，小黑！', ''],
+];
+const CANDS: Record<string, string> = { n: '1.你好  2.拟好  3.你  4.呢', x: '1.小黑  2.小嘿  3.小  4.晓' };
+
+const K = 20 / 96; // 大字 96px → 输入框 20px
+const COMP = { x: 480, y: 470, w: 960 };
+const TEXT_IN_COMP = { x: 562, y: 504 }; // 文字在输入框里的中心
+const BUBBLE = { x: 1738, y: 128, k: 22 / 96 };
+const GROUND = 588;
+const TEXT_TOP = 495;
+
+export const A: React.FC<{ t: number }> = ({ t }) => {
+  // ---- 打字 ----
+  let committed = '';
+  let pinyin = '';
+  for (const [k, c, p] of KEYS) if (t >= k) { committed = c; pinyin = p; }
+  const caretOn = (t < 0.4 && (t % 0.2) < 0.1) || (t >= 0.4 && t < 1.5) || (t >= 1.5 && t < 1.8 && t < 1.6);
+  const lastKey = [...KEYS].reverse().find(([k]) => t >= k)?.[0] ?? -1;
+  const pop = 1 + 0.04 * (1 - sp(t, lastKey, { damping: 12 }));
+
+  // 踩字回弹
+  const d = t - 3.15;
+  const dip = d > 0 && t < 3.6 ? 6 * Math.exp(-d * 7) * Math.cos(d * 22) : 0;
+
+  // 文字整体变换：中心 → 输入框 → 用户气泡
+  const g = kf(t, [
+    { t: 3.6, x: 960, y: 540, k: 1 },
+    { t: 4.0, x: TEXT_IN_COMP.x, y: TEXT_IN_COMP.y, k: K },
+    { t: 4.25, x: TEXT_IN_COMP.x, y: TEXT_IN_COMP.y, k: K },
+    { t: 4.45, x: BUBBLE.x, y: BUBBLE.y, k: BUBBLE.k },
+  ]);
+
+  // ---- 小黑 ----
+  let cat: any;
+  let rot = 0;
+  if (t < 2.3) {
+    const pk = kf(t, [{ t: 1.8, x: -90 }, { t: 1.95, x: 20 }, { t: 2.05, x: -30 }, { t: 2.15, x: 45 }, { t: 2.3, x: 45 }]);
+    cat = { x: pk.x, y: GROUND, sx: 1, sy: 1, s: 1 };
+    rot = lin(t, 2.05, 2.15, 0, 10);
+  } else if (t < 2.8) {
+    cat = { ...hop(t, 2.4, 2.65, { x: 45, y: GROUND }, { x: 412, y: GROUND }, 180), s: 1 };
+    rot = lin(t, 2.3, 2.4, 10, 0);
+  } else if (t < 3.6) {
+    cat = { ...hop(t, 2.88, 3.15, { x: 412, y: GROUND }, { x: 1056, y: TEXT_TOP }, 210, 0.08), s: 1 };
+    cat.y += dip;
+  } else {
+    // 坐在文字上随文字移动，4.0 后滑到输入框上沿后方
+    const ride = { x: g.x + 96 * g.k, y: g.y - 45 * g.k };
+    const p2 = sp(t, 4.0, { damping: 15 });
+    const fx = 600, fy = 505;
+    const s = lin(t, 3.6, 4.0, 1, 0.75) - 0.03 * p2;
+    cat = { x: ride.x + (fx - ride.x) * (t >= 4.0 ? p2 : 0), y: ride.y + (fy - ride.y) * (t >= 4.0 ? p2 : 0), sx: 1, sy: 1, s };
+    if (t >= 4.25) cat.y += lin(t, 4.25, 4.45, 0, 1) * 360; // 跟着输入框一起下沉
+  }
+  const look = t < 3.25 ? 1 : t < 3.6 ? 0 : -0.6;
+  const lookY = t >= 3.6 ? 0.8 : 0;
+  const blink = blinkAt(t, [3.4, 4.15]);
+
+  // ---- 背景与界面 ----
+  const bgP = lin(t, 3.6, 4.25, 0, 1);
+  const bg = interpolateColors(bgP, [0, 1], [C.black, C.main]);
+  const uiO = lin(t, 3.6, 3.95, 0, 1);
+  const uiS = lin(t, 3.6, 4.0, 1.18, 1);
+  const leave = lin(t, 4.25, 4.45, 0, 1);
+  const sideX = lin(t, 4.25, 4.5, -300, 0);
+  const bubbleO = lin(t, 4.35, 4.45, 0, 1);
+  const reply = typed(t, 4.5, '你好！我是小黑（OmniBox），很高兴见到你 👋 想记住什么，交给我就好。', 0.4 / 36);
+
+  const dust = lin(t, 2.65, 2.85, 0, 1);
+
+  return (
+    <Fill bg={bg}>
+      {/* 聊天首页（推荐问题气泡、卡片） */}
+      <div style={{ position: 'absolute', inset: 0, opacity: uiO * (1 - leave), transform: `scale(${uiS}) translateY(${leave * 300}px)`, transformOrigin: '960px 540px' }}>
+        <div style={{ position: 'absolute', left: 690, top: 380, padding: '12px 24px', borderRadius: 999, background: '#383838', color: '#cfcfcf', fontSize: 18, transform: `scale(${sp(t, 3.85)})`, transformOrigin: 'left bottom' }}>
+          创建一个文件夹"图片收藏"并移入最近的图片
+        </div>
+        <HomeCards x={COMP.x} y={760} w={COMP.w} t={t} a={3.9} />
+      </div>
+
+      {/* 小黑（在输入框之下，所以落位后被输入框遮住下半个头） */}
+      {t >= 1.8 && (
+        <div style={{ position: 'absolute', left: cat.x, top: cat.y, opacity: t >= 4.25 ? 1 - leave : 1 }}>
+          <div style={{ position: 'absolute', left: -75, bottom: 0, transformOrigin: '75px 100%', transform: `rotate(${rot}deg) scale(${cat.s * cat.sx}, ${cat.s * cat.sy})` }}>
+            <Cat w={150} fill={bg} blink={blink} look={look} lookY={lookY} />
+          </div>
+        </div>
+      )}
+      {/* 落地扬尘 */}
+      {dust > 0 && dust < 1 && [-1, 0, 1].map((i) => (
+        <div key={i} style={{ position: 'absolute', left: 412 + i * 70 - 14, top: GROUND - 6 - (i === 0 ? 10 : 0), width: 28, height: 4, borderRadius: 2, background: C.cream, opacity: 1 - dust, transform: `translate(${i * dust * 30}px, ${-dust * 14}px) rotate(${i * 30}deg)` }} />
+      ))}
+
+      {/* 输入框 */}
+      <div style={{ position: 'absolute', inset: 0, opacity: uiO * (1 - leave), transform: `scale(${uiS}) translateY(${leave * 300}px)`, transformOrigin: '960px 540px' }}>
+        <Composer x={COMP.x} y={COMP.y} w={COMP.w} ph={1 - lin(t, 3.8, 3.9, 0, 1)} send={t >= 4.0 ? 1 : 0} />
+      </div>
+
+      {/* 用户气泡底 */}
+      <div style={{ position: 'absolute', left: BUBBLE.x - 82, top: BUBBLE.y - 28, width: 164, height: 56, borderRadius: 16, background: '#383838', opacity: bubbleO }} />
+
+      {/* 开场白文字：同一个元素一路变形到输入框、再到气泡 */}
+      <div
+        style={{
+          position: 'absolute', left: 0, top: 470, width: W, height: 140, lineHeight: '140px', textAlign: 'center', color: '#fff', fontSize: 96, fontWeight: 500, whiteSpace: 'nowrap',
+          transformOrigin: '960px 70px', transform: `translate(${g.x - 960}px, ${g.y - 540 + (t < 3.6 ? dip : 0)}px) scale(${g.k})`,
+        }}
+      >
+        <span style={{ display: 'inline-block', transform: `scale(${t < 1.6 ? pop : 1})` }}>{committed}</span>
+        {pinyin && <span style={{ fontSize: 64, color: '#ddd', textDecoration: 'underline', textUnderlineOffset: 10 }}>{pinyin}</span>}
+        <span style={{ display: 'inline-block', width: 5, height: 96, marginLeft: 6, verticalAlign: 'middle', background: '#fff', opacity: caretOn ? 1 : 0 }} />
+      </div>
+      {/* 输入法候选条 */}
+      {pinyin && (
+        <div style={{ position: 'absolute', left: 960 - 230, top: 620, width: 460, padding: '12px 20px', borderRadius: 12, background: 'rgba(60,60,60,.6)', color: '#eee', fontSize: 26, textAlign: 'center' }}>
+          {CANDS[pinyin[0]]}
+        </div>
+      )}
+
+      {/* 对话页：侧栏滑入、小黑回复 */}
+      {t >= 4.25 && (
+        <>
+          <Sidebar tab={0} x={sideX} />
+          <Tx x={420} y={210} s={26} w={1100} c={C.text}>{reply}</Tx>
+        </>
+      )}
+      <KeyHud t={t} a={4.25} b={4.7} text="⏎ 发送" />
+    </Fill>
+  );
+};

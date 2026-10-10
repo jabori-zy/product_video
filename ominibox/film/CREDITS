@@ -1,0 +1,10 @@
+Living Screencast ·《小黑 OmniBox》产品介绍（中文，20.4 s）
+风格：Lemo-Opuscar「活体实机录屏 Living Screencast」(styles/living-screencast)，Claude Opus 5.5 导演与编码。
+小黑形象与 OmniBox 界面属于杭州小黑智能科技有限公司；片中界面按产品截图用 HTML/CSS/SVG 重绘，未使用截图。
+
+Voice: Microsoft Edge neural TTS (zh-CN-XiaoxiaoNeural) via edge-tts — check Microsoft's terms before commercial use. Checked with faster-whisper small.
+Font (SIL OFL 1.1): Noto Sans SC (Adobe / Google). Licence in fonts/OFL-NotoSansSC.txt.
+Piano: "Salamander Grand Piano V3" by Alexander Holm, licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/)
+Drums: "MuldjordKit" by Lars Muldjord (drumgizmo.org), FreePats version, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+Samples (CC0): Karoryfer Samples / sfzinstruments (jazz bass), VS Chamber Orchestra: Community Edition and Versilian Community Sample Library (Versilian Studios) — glockenspiel, violins, claps, shaker.
+Chiptune voice of 小黑, UI foley and all sound effects: synthesised in sound.py.

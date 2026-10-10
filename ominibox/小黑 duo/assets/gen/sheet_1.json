@@ -1,0 +1,31 @@
+[
+  {
+    "created_at": "2026-09-28T09:20:34.238848Z",
+    "display_name": "Nano Banana 2",
+    "id": "d4d392f1-bb59-4832-b00f-31ed502caa4d",
+    "job_type": "nano_banana_flash",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20260928_092034_d4d392f1-bb59-4832-b00f-31ed502caa4d_min.webp",
+    "params": {
+      "aspect_ratio": "3:2",
+      "batch_size": 1,
+      "height": 1696,
+      "is_inpaint": false,
+      "medias": [
+        {
+          "data": {
+            "id": "4bf56bf3-0afa-477d-b867-aaf0224f0e9e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/4bf56bf3-0afa-477d-b867-aaf0224f0e9e.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "prompt": "Character turnaround sheet of \"Xiaohei\", a minimalist black cartoon cat mascot, keep the head EXACTLY as the reference image:\npure matte black round head (#141414), two pointed ears with soft rounded tips, two large cream-colored ring eyes (#FBF3E4)\nwith solid black pupils, NO mouth, NO nose, NO whiskers.\nAdd a full body: chibi proportions, head-to-body ratio 1:1, soft pear-shaped bean-bag body, short stubby rounded limbs\nlike gummy candy, round paws with dark charcoal paw pads (#2B2B2B, three small pads + one large pad), a long thin tail\ncurling into a question-mark shape. The whole body is the same pure black as the head, seamless.\nMaterial: matte flocked vinyl designer toy, very fine velvet texture visible up close, soft rim light, no fur, no gloss.\nViews: front, left profile, right profile, left 3/4, right 3/4, back — plus 3 pose studies:\n(1) standing, (2) raising one paw toward the viewer showing paw pads, (3) lazily slouching like a human on the floor,\nback leaning, legs splayed, belly out.\nSeamless white studio background, soft shadowless light, clean product-photo look, no text.",
+      "reference_elements": [],
+      "resolution": "2k",
+      "width": 2528
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20260928_092034_d4d392f1-bb59-4832-b00f-31ed502caa4d.png",
+    "status": "completed"
+  }
+]
