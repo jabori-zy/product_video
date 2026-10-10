@@ -56,3 +56,41 @@ export const Report: React.FC<{ c: Content }> = ({ c: { report: r } }) => {
     </div>
   );
 };
+
+// ---------- 视频里用的片段（替换 E 段的灰色文字条与待办行） ----------
+/** 两行文字按阅读顺序揭开：先第一行从左到右，再第二行（行高 26） */
+const clip2 = (r: number): React.CSSProperties => {
+  const k = Math.max(0, Math.min(1, r)), w1 = Math.min(1, k * 2) * 100, w2 = Math.max(0, k * 2 - 1) * 100;
+  return { clipPath: `polygon(0 0, ${w1}% 0, ${w1}% 26px, ${w2}% 26px, ${w2}% 52px, 0 52px)` };
+};
+
+/** 回答第 j 条的正文：两行，宽 900（E：灰条 n=2 gap 26），reveal 0→1 像流式输出一样从左往右出现 */
+export const AnswerBody: React.FC<{ c: Content; j: number; reveal?: number; w?: number }> = ({ c: { answer: a }, j, reveal = 1, w = 900 }) => (
+  <div style={{ width: w, fontFamily: FONT, fontSize: 18, lineHeight: '26px', color: '#d4d4d4', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', ...clip2(reveal * 1.05) }}>
+    {a.bodies[j]}
+    <Badge n={j + 1} s={18} />
+  </div>
+);
+
+/** 周报一节的 5 行列表（E：灰条 n=5 gap 34，宽 860），reveal 0→1 逐行出现 */
+export const ReportLines: React.FC<{ items: string[]; reveal?: number; w?: number; gap?: number }> = ({ items, reveal = 1, w = 860, gap = 34 }) => (
+  <div style={{ position: 'relative', width: w, height: gap * items.length, fontFamily: FONT }}>
+    {items.map((s, i) => {
+      const o = Math.max(0, Math.min(1, reveal * items.length - i));
+      return (
+        <div key={s} style={{ position: 'absolute', left: 0, top: i * gap - 6, width: w, display: 'flex', gap: 10, fontSize: 18, lineHeight: '30px', color: '#d4d4d4', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', opacity: o }}>
+          <span style={{ color: C.blue, fontWeight: 700 }}>{i + 1}.</span><span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{s}</span>
+        </div>
+      );
+    })}
+  </div>
+);
+
+/** 待办表的一行（E：860×46 的行线框）；header 为表头 */
+export const ReportRow: React.FC<{ cells: string[]; i: number; header?: boolean; w?: number; h?: number }> = ({ cells, i, header, w = 860, h = 46 }) => (
+  <div style={{ width: w, height: h, display: 'flex', alignItems: 'center', borderRadius: 6, background: header ? '#3a3a3a' : i % 2 ? '#2e2e2e' : '#333', border: '1px solid #444', boxSizing: 'border-box', fontFamily: FONT, fontSize: 17, fontWeight: header ? 700 : 400 }}>
+    {cells.map((cell, j) => (
+      <div key={j} style={{ flex: j === 0 ? 2.2 : 1, padding: '0 16px', color: !header && j === 2 ? ['#FBBF24', '#A1A1A1', '#4ADE80'][i % 3] : '#ddd', whiteSpace: 'nowrap' }}>{!header && j === 2 ? '● ' : ''}{cell}</div>
+    ))}
+  </div>
+);

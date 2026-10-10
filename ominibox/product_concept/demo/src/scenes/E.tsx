@@ -1,7 +1,12 @@
 import React from 'react';
-import { Band, Box, C, Camera, Caption, Cat, Cursor, Fill, MBlur, Spinner, Tx, W, Words, blinkAt, inOut, kf, lin, morph, sp, typed } from '../lib';
-import { Bars, Composer, HomeCards, Row, Sidebar } from '../ui';
+import { Band, C, Camera, Caption, Cat, Cursor, Fill, MBlur, Spinner, Tx, W, Words, blinkAt, inOut, kf, lin, morph, sp, typed } from '../lib';
+import { Composer, HomeCards, Row, Sidebar } from '../ui';
+import { LOCALES } from '../data/content';
+import { AnswerBody, ReportLines, ReportRow } from '../content/answers';
+import { ZhihuBody, ZhihuHeader } from '../content/zhihu';
 import { TREE0 } from './D';
+
+const Z = LOCALES.zh; // 线框里的真实内容（data/locales/zh.ts）
 
 // E 应用 · 记忆变成万物（18.0–30.0 s），局部时间 t = 全局 − 18
 
@@ -177,7 +182,7 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
                         {typed(t, a, h, 0.008)}
                         {t > a + 0.2 && <span style={{ display: 'inline-flex', marginLeft: 8, width: 26, height: 26, borderRadius: '50%', background: C.blue, color: '#fff', fontSize: 15, alignItems: 'center', justifyContent: 'center', verticalAlign: 'middle', transform: `scale(${sp(t, a + 0.2)})`, boxShadow: j === 1 && t > 4.6 && t < 5.0 ? '0 0 0 4px #fff6' : undefined }}>{'①②③'[j]}</span>}
                       </Tx>
-                      <Bars x={630} y={285 + j * 120} n={2} w={900} gap={26} reveal={lin(t, a + 0.08, a + 0.25, 0, 1)} />
+                      <div style={{ position: 'absolute', left: 630, top: 280 + j * 120 }}><AnswerBody c={Z} j={j} reveal={lin(t, a + 0.08, a + 0.25, 0, 1)} /></div>
                     </React.Fragment>
                   );
                 })}
@@ -234,10 +239,10 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
                       <React.Fragment key={h}>
                         <Tx x={0} y={110 + j * 260} s={24} b style={{ opacity: lin(t, a, a + 0.08, 0, 1) }}>{h}</Tx>
                         {j < 2 ? (
-                          <Bars x={0} y={160 + j * 260} n={5} w={860} gap={34} reveal={lin(t, a + 0.05, a + 0.3, 0, 1)} />
+                          <div style={{ position: 'absolute', left: 0, top: 160 + j * 260 }}><ReportLines items={j === 0 ? Z.report.highlights : Z.report.sources} reveal={lin(t, a + 0.05, a + 0.3, 0, 1)} /></div>
                         ) : (
-                          ['周五前发布插件 ｜ 林 ｜ 进行中', 'DAU 目标拆解 ｜ 王 ｜ 未开始', '下周复盘会 ｜ 全员 ｜ 已排期'].map((r, k) => (
-                            <Box key={r} x={0} y={170 + j * 260 + k * 56} w={860} h={46} r={6} bg="#3a3a3a" lc="#ddd" fs={18} label={r} style={{ opacity: lin(t, a + 0.1 + k * 0.08, a + 0.2 + k * 0.08, 0, 1) }} />
+                          Z.report.todos.map((r, k) => (
+                            <div key={r[0]} style={{ position: 'absolute', left: 0, top: 170 + j * 260 + k * 56, opacity: lin(t, a + 0.1 + k * 0.08, a + 0.2 + k * 0.08, 0, 1) }}><ReportRow cells={r} i={k} /></div>
                           ))
                         )}
                       </React.Fragment>
@@ -252,12 +257,18 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
         {/* 知乎原文（引用跳转） */}
         {t > 4.9 && t < 5.5 && (
           <div style={{ position: 'absolute', inset: 0, transform: `translateX(${chatOff + W}px)`, background: C.desk }}>
-            <Box x={260} y={110} w={1400} h={860} r={14} bg="#fff" label="" />
-            <Box x={260} y={110} w={1400} h={44} r={0} bg="#DCDCDF" lc="#444" fs={16} label="浏览器 · zhuanlan.zhihu.com" />
-            <Box x={420} y={200} w={1080} h={300} label="知乎页面" fs={40} />
+            {/* 浏览器窗口里的知乎原文 */}
+            <div style={{ position: 'absolute', left: 260, top: 110, width: 1400, height: 860, borderRadius: 14, background: '#fff', overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,.25)' }}>
+              <div style={{ height: 44, background: '#DCDCDF', display: 'flex', alignItems: 'center', gap: 8, padding: '0 18px' }}>
+                {['#FF5F57', '#FEBC2E', '#28C840'].map((col) => <div key={col} style={{ width: 13, height: 13, borderRadius: '50%', background: col }} />)}
+                <div style={{ marginLeft: 80, width: 900, height: 28, borderRadius: 14, background: '#fff', color: '#555', fontSize: 15, lineHeight: '28px', paddingLeft: 16 }}>zhuanlan.zhihu.com/p/7281…</div>
+              </div>
+            </div>
+            <div style={{ position: 'absolute', left: 420, top: 200 }}><ZhihuHeader c={Z} w={1080} h={300} /></div>
+            <Tx x={420} y={508} s={26} c="#121212" b>{Z.zhihu.title}</Tx>
             <div style={{ position: 'absolute', left: 416, top: 556, width: 640 * lin(t, 5.1, 5.25, 0, 1) + 10, height: 40, background: '#FDE68A', borderRadius: 4 }} />
             <Tx x={420} y={560} s={24} c="#222">真正的第二大脑，不是收藏夹，而是能回答你问题的记忆</Tx>
-            <Box x={420} y={630} w={1080} h={280} label="正文（占位）" fs={28} />
+            <div style={{ position: 'absolute', left: 420, top: 630 }}><ZhihuBody c={Z} w={1080} h={280} /></div>
           </div>
         )}
       </MBlur>

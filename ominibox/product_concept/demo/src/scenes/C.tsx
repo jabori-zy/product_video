@@ -1,6 +1,12 @@
 import React from 'react';
 import { random } from 'remotion';
-import { Box, C, Camera, Caption, Fill, MBlur, Pill, camBlur, kf, lin, sp } from '../lib';
+import { C, Camera, Caption, Fill, MBlur, Pill, camBlur, kf, lin, sp } from '../lib';
+import { LOCALES } from '../data/content';
+import { Bili, News, Rss, XPost, Xhs } from '../content/cards';
+import { App } from '../content/phone';
+import { KeyframeThumb } from '../content/understand';
+
+const Z = LOCALES.zh; // 线框里的真实内容（data/locales/zh.ts）
 
 // C 万物入口 · 随时随地（9.0–12.0 s），局部时间 t = 全局 − 9
 // 世界坐标里排一条 3D 卡片走廊，镜头每半拍甩到下一张
@@ -43,9 +49,9 @@ export const Cc: React.FC<{ t: number }> = ({ t }) => {
     </div>
   );
 
-  const labelBox = (k: any, w = k.w, h = k.h) => (
-    <Box x={0} y={0} w={w} h={h} r={18} bg="#2a2a2e" lc="#cfcfd4" fs={40} label={<div style={{ textAlign: 'center' }}>{k.label}<div style={{ fontSize: 22, fontWeight: 400, marginTop: 14, color: '#9a9aa0', padding: '0 30px' }}>{k.sub}</div></div>} />
-  );
+  // 线框 → 真实页面（content/cards.tsx，尺寸与卡片一致）
+  const PAGE: Record<string, React.FC<{ c: typeof Z }>> = { news: News, bili: Bili, xhs: Xhs, x: XPost };
+  const pageOf = (k: any) => { const P = PAGE[k.id]; return <P c={Z} />; };
 
   // 手机：微信 → OmniBox App
   const ph = CARDS[4];
@@ -66,16 +72,12 @@ export const Cc: React.FC<{ t: number }> = ({ t }) => {
         })}
       </div>
       <div style={{ position: 'absolute', inset: 0, opacity: app }}>
-        <Box x={20} y={50} w={304} h={44} r={10} bg="#2a2a2a" lc="#888" fs={16} label="OmniBox App · Ask anything" />
-        <Box x={60} y={110} w={224} h={36} r={18} bg="#2a2a2a" lc="#ccc" fs={15} label="Resources | Chats" />
-        {Array.from({ length: 16 }).map((_, i) => (
-          <div key={i} style={{ position: 'absolute', left: 40 + i * 17, top: 360 - 4, width: 9, height: t > 2.2 ? 12 + 60 * Math.abs(Math.sin(t * 9 + i)) : 6, transform: 'translateY(-50%)', borderRadius: 5, background: C.blue }} />
-        ))}
-        <div style={{ position: 'absolute', left: 0, bottom: 20, width: '100%', display: 'flex', justifyContent: 'space-around', color: '#ddd', fontSize: 18 }}>
-          <span>＋ More</span>
-          <span style={{ color: t > 2.15 ? '#8AB4FF' : '#ddd', fontWeight: 700 }}>🎙 Record</span>
-          <span>📝 Text</span>
-        </div>
+        <div style={{ position: 'absolute', left: -8, top: -8 }}><App c={Z} /></div>
+        {t > 2.15 && (
+          <div style={{ position: 'absolute', left: 30, right: 30, top: 572, height: 56, borderRadius: 14, background: 'rgba(28,28,30,.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, opacity: lin(t, 2.15, 2.25, 0, 1) }}>
+            {Array.from({ length: 16 }).map((_, i) => <div key={i} style={{ width: 6, height: t > 2.2 ? 8 + 32 * Math.abs(Math.sin(t * 9 + i)) : 6, borderRadius: 3, background: '#EF4444' }} />)}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -107,11 +109,12 @@ export const Cc: React.FC<{ t: number }> = ({ t }) => {
         <Camera c={c}>
           {CARDS.slice(0, 4).map((k) => card(k, (
             <>
-              {labelBox(k)}
+              {pageOf(k)}
+              {/* B 站：保存后在底部展开「章节 · 关键画面」缩略图条 */}
               {k.id === 'bili' && t >= 0.8 && (
-                <div style={{ position: 'absolute', left: 30, bottom: 24, display: 'flex', gap: 12, opacity: lin(t, 0.8, 0.95, 0, 1) }}>
-                  {['引言', '检索', '生成', '评估'].map((s) => <Box key={s} x={0} y={0} w={150} h={54} r={8} bg="#3a3a40" lc="#ddd" fs={18} label={s} style={{ position: 'relative' }} />)}
-                  <span style={{ color: '#aaa', fontSize: 18, alignSelf: 'center' }}>章节 · 关键画面</span>
+                <div style={{ position: 'absolute', left: 14, right: 14, bottom: 10, height: 74, borderRadius: 12, background: '#fff', boxShadow: '0 -4px 16px rgba(0,0,0,.12)', display: 'flex', alignItems: 'center', gap: 8, padding: '0 10px', opacity: lin(t, 0.8, 0.95, 0, 1), transform: `translateY(${(1 - lin(t, 0.8, 0.95, 0, 1)) * 20}px)` }}>
+                  {[0, 1, 2, 3].map((j) => <div key={j} style={{ width: 102, height: 57, overflow: 'hidden', borderRadius: 4, opacity: lin(t, 0.85 + j * 0.05, 0.95 + j * 0.05, 0, 1) }}><div style={{ transform: 'scale(0.62)', transformOrigin: '0 0' }}><KeyframeThumb c={Z} j={j} /></div></div>)}
+                  <span style={{ color: '#61666D', fontSize: 16, marginLeft: 6, whiteSpace: 'nowrap' }}>章节 · 关键画面</span>
                 </div>
               )}
             </>
@@ -119,11 +122,7 @@ export const Cc: React.FC<{ t: number }> = ({ t }) => {
           {card(ph, phone, { ry: lin(t, 1.4, 1.6, 20, 0), dy: (1 - phIn) * 200, o: phIn })}
           {card(CARDS[5], (
             <>
-              {labelBox(CARDS[5])}
-              {[0, 1, 2].map((i) => (
-                <Box key={i} x={30} y={230 + i * 44 - 120} w={400} h={34} r={8} bg="#3a3a40" lc="#ddd" fs={16} label={`新文章 ${i + 1}`} style={{ opacity: lin(t, 2.1 + i * 0.1, 2.2 + i * 0.1, 0, 1), transform: `translateX(${lin(t, 2.1 + i * 0.1, 2.2 + i * 0.1, 60, 0)}px)`, top: 250 + i * 44 }} />
-              ))}
-              {t > 2.4 && <div style={{ position: 'absolute', right: -14, top: -14, background: '#E5484D', color: '#fff', borderRadius: 999, padding: '4px 12px', fontSize: 20 }}>+3</div>}
+              <Rss c={Z} reveal={[0, 1, 2].map((i) => lin(t, 2.1 + i * 0.1, 2.2 + i * 0.1, 0, 1))} badge={t > 2.4} />
             </>
           ), { dx: lin(t, 2.0, 2.2, 400, 0), o: lin(t, 2.0, 2.15, 0, 1) })}
         </Camera>

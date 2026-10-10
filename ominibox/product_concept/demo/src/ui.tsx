@@ -1,5 +1,5 @@
 import React from 'react';
-import { C, Spinner, Tx, lin, sp } from './lib';
+import { C, Spinner, Tx, sp } from './lib';
 
 // OmniBox 网页端（深色）共用部件。坐标系 1920×1080，侧栏宽 300
 
@@ -107,13 +107,3 @@ export const HomeCards: React.FC<{ x: number; y: number; w: number; t: number; a
     </>
   );
 };
-
-/** 灰色占位文字条 */
-export const Bars: React.FC<{ x: number; y: number; n: number; w: number; gap?: number; h?: number; color?: string; reveal?: number }> = ({ x, y, n, w, gap = 30, h = 12, color = '#3d3d3d', reveal = 1 }) => (
-  <>
-    {Array.from({ length: n }).map((_, i) => {
-      const o = lin(reveal * n, i, i + 1, 0, 1);
-      return <div key={i} style={{ position: 'absolute', left: x, top: y + i * gap, width: w * (i % 3 === 2 ? 0.6 : i % 2 ? 0.85 : 1), height: h, borderRadius: h / 2, background: color, opacity: o }} />;
-    })}
-  </>
-);

@@ -9,6 +9,8 @@ import { TOTAL_APP } from './appTimeline';
 import { Hh2 } from './scenes/H2';
 
 const MainAppSlogan: React.FC = () => <MainApp ending={Hh2} />;
+// 成片 v1：线框已换成真实内容，结尾 H2，无时间码；声音由 tools/render-final.mjs 合入（方案二）
+const Final: React.FC = () => <MainApp ending={Hh2} timecode={false} />;
 
 export const Root: React.FC = () => (
   <>
@@ -19,5 +21,6 @@ export const Root: React.FC = () => (
     <Composition id="DemoApp" component={MainApp} durationInFrames={Math.round(TOTAL_APP * FPS)} fps={FPS} width={W} height={H} />
     {/* 结尾改版（方案 A「回文翻转」）：同 DemoApp，只把 H 换成 H2 */}
     <Composition id="DemoSlogan" component={MainAppSlogan} durationInFrames={Math.round(TOTAL_APP * FPS)} fps={FPS} width={W} height={H} />
+    <Composition id="Final" component={Final} durationInFrames={Math.round(TOTAL_APP * FPS)} fps={FPS} width={W} height={H} />
   </>
 );

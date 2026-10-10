@@ -1,5 +1,9 @@
 import React from 'react';
-import { Box, C, Camera, Caption, Cursor, Fill, Logo, MBlur, Spinner, Tx, camBlur, kf, lin, morph, sp, win } from '../lib';
+import { LOCALES } from '../data/content';
+import { ZhihuBody, ZhihuHeader } from '../content/zhihu';
+import { C, Camera, Caption, Cursor, Fill, Logo, MBlur, Spinner, Tx, camBlur, kf, lin, morph, sp, win } from '../lib';
+
+const Z = LOCALES.zh; // 线框里的真实内容（data/locales/zh.ts）
 
 // B 一键收藏 · 浏览器插件（5.0–9.0 s），局部时间 t = 全局 − 5
 // 世界坐标：浏览器窗口 (210,100) 1500×880；窗口内元素用窗口相对坐标
@@ -63,23 +67,23 @@ export const B: React.FC<{ t: number }> = ({ t }) => {
         <Camera c={c}>
           {/* 浏览器窗口 */}
           <div style={{ position: 'absolute', left: WX, top: WY, width: 1500, height: 880, borderRadius: 14, background: '#fff', boxShadow: '0 40px 100px rgba(0,0,0,.25)', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', left: 0, top: 0, width: 1500, height: 44, background: '#DCDCDF' }}>
+            <div style={{ position: 'absolute', left: 0, top: 0, width: 1500, height: 44, background: '#DCDCDF', zIndex: 2 }}>
               {['#FF5F57', '#FEBC2E', '#28C840'].map((col, i) => <div key={i} style={{ position: 'absolute', left: 18 + i * 22, top: 15, width: 13, height: 13, borderRadius: '50%', background: col }} />)}
               <Tx x={110} y={10} s={16} c="#333">浏览器</Tx>
             </div>
-            <div style={{ position: 'absolute', left: 0, top: 44, width: 1500, height: 48, background: '#F2F2F4', borderBottom: '1px solid #ddd' }}>
+            <div style={{ position: 'absolute', left: 0, top: 44, width: 1500, height: 48, background: '#F2F2F4', borderBottom: '1px solid #ddd', zIndex: 2 }}>
               <div style={{ position: 'absolute', left: 110, top: 9, width: 1200, height: 30, borderRadius: 15, background: '#fff', color: '#555', fontSize: 15, lineHeight: '30px', paddingLeft: 16 }}>zhuanlan.zhihu.com/p/7281…</div>
             </div>
-            <div style={{ position: 'absolute', left: ICON.x, top: ICON.y, transform: `scale(${t > 1.1 && t < 1.22 ? 0.92 : 1})` }}>
+            <div style={{ position: 'absolute', left: ICON.x, top: ICON.y, zIndex: 3, transform: `scale(${t > 1.1 && t < 1.22 ? 0.92 : 1})` }}>
               <Logo size={28} />
             </div>
-            {/* 知乎页面（占位） */}
+            {/* 知乎页面 */}
             <div style={{ position: 'absolute', left: 0, top: 92 + scroll, width: 1500, height: 900 }}>
-              <Box x={300} y={20} w={900} h={260} label="知乎页面" fs={40} />
+              <div style={{ position: 'absolute', left: 300, top: 20 }}><ZhihuHeader c={Z} /></div>
               <Tx x={QUOTE.x} y={300} s={30} c="#222" b>AI Agent 元年：普通人如何搭建自己的「第二大脑」？</Tx>
               <div style={{ position: 'absolute', left: QUOTE.x - 4, top: QUOTE.y - 4 - 92, width: QUOTE.w * sel + 8, height: 40, background: '#4A8EF955', borderRadius: 4, outline: flash > 0 ? `3px solid ${C.blue}` : undefined, opacity: t < 4.1 ? 1 : 0 }} />
               <Tx x={QUOTE.x} y={QUOTE.y - 92} s={22} c="#333">真正的第二大脑，不是收藏夹，而是能回答你问题的记忆</Tx>
-              <Box x={300} y={480} w={900} h={320} label="正文（占位）" fs={28} />
+              <div style={{ position: 'absolute', left: 300, top: 480 }}><ZhihuBody c={Z} /></div>
             </div>
             {/* 划词菜单 */}
             {menuP > 0 && (

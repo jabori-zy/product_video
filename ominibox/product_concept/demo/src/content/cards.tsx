@@ -135,7 +135,8 @@ export const XPost: React.FC<{ c: Content }> = ({ c: { x } }) => (
 );
 
 /** RSS 订阅文件夹 460×380（深色，与 OmniBox 一致） */
-export const Rss: React.FC<{ c: Content }> = ({ c: { rss: r } }) => (
+/** reveal：每篇新文章的出现进度（视频里逐篇滑入）；badge：是否显示 +3 */
+export const Rss: React.FC<{ c: Content; reveal?: number[]; badge?: boolean }> = ({ c: { rss: r }, reveal = [1, 1, 1], badge = true }) => (
   <div style={page(460, 380, '#2a2a2e', { color: C.text, padding: 26 })}>
     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
       <div style={{ width: 40, height: 40, borderRadius: 10, background: '#F97316', color: '#fff', fontSize: 22, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📡</div>
@@ -143,10 +144,10 @@ export const Rss: React.FC<{ c: Content }> = ({ c: { rss: r } }) => (
         <div style={{ fontSize: 22, fontWeight: 700 }}>{r.folder}</div>
         <div style={{ fontSize: 13, color: C.muted }}>{r.feeds}</div>
       </div>
-      <div style={{ marginLeft: 'auto', background: '#E5484D', color: '#fff', borderRadius: 999, padding: '4px 12px', fontSize: 18, fontWeight: 700 }}>{r.badge}</div>
+      <div style={{ marginLeft: 'auto', background: '#E5484D', color: '#fff', borderRadius: 999, padding: '4px 12px', fontSize: 18, fontWeight: 700, opacity: badge ? 1 : 0 }}>{r.badge}</div>
     </div>
     {r.articles.map(([feed, title, ago], i) => (
-      <div key={title} style={{ marginTop: i ? 10 : 22, padding: '12px 14px', borderRadius: 10, background: '#3a3a40' }}>
+      <div key={title} style={{ marginTop: i ? 10 : 22, padding: '12px 14px', borderRadius: 10, background: '#3a3a40', opacity: reveal[i], transform: `translateX(${(1 - reveal[i]) * 60}px)` }}>
         <div style={{ display: 'flex', fontSize: 12, color: C.muted }}><span style={{ color: '#FDBA74' }}>● {feed}</span><span style={{ marginLeft: 'auto' }}>{ago}</span></div>
         <div style={{ fontSize: 16, marginTop: 4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{title}</div>
       </div>

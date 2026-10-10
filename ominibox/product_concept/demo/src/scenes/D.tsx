@@ -1,6 +1,10 @@
 import React from 'react';
-import { Band, Box, C, Camera, Caption, Fill, KeyHud, Tx, Words, kf, lin, morph, sp, typed } from '../lib';
-import { Bars, Parsing, Row, Sidebar } from '../ui';
+import { Band, C, Camera, Caption, Fill, KeyHud, Tx, Words, kf, lin, morph, sp, typed } from '../lib';
+import { Parsing, Row, Sidebar } from '../ui';
+import { LOCALES } from '../data/content';
+import { Board, KeyframeThumb, PdfLines, PdfPage, RagFrame } from '../content/understand';
+
+const Z = LOCALES.zh; // 线框里的真实内容（data/locales/zh.ts）
 
 // D 理解 · 万物变成记忆（12.0–18.0 s），局部时间 t = 全局 − 12
 
@@ -60,13 +64,13 @@ const Tile: React.FC<{ i: number; t: number }> = ({ i, t }) => {
         {k.corner && <div style={{ position: 'absolute', right: 16, top: 12, padding: '6px 14px', borderRadius: 999, background: '#4A8EF933', color: '#AFCBFF', fontSize: 18, fontWeight: 600, opacity: q(0.5, 0.65) }}>{k.corner}</div>}
         {i === 0 && (
           <>
-            <Box x={30} y={60} w={240} h={330} r={6} bg="#f2f2f2" lc="#888" fs={22} label="PDF 页面" />
-            <Bars x={300} y={80} n={9} w={420} gap={34} h={14} color="#d6d6d6" reveal={q(0.3, 0.75)} />
+            <div style={{ position: 'absolute', left: 30, top: 60 }}><PdfPage c={Z} /></div>
+            <div style={{ position: 'absolute', left: 300, top: 68 }}><PdfLines c={Z} reveal={q(0.3, 0.75)} w={430} size={17} /></div>
           </>
         )}
         {i === 1 && (
           <>
-            <Box x={30} y={60} w={330} h={330} r={6} bg="#e8e4da" lc="#888" fs={22} label="白板照片" />
+            <div style={{ position: 'absolute', left: 30, top: 60, borderRadius: 6, overflow: 'hidden' }}><Board c={Z} /></div>
             <div style={{ position: 'absolute', left: 30, top: 60 + 330 * q(0.25, 0.6), width: 330, height: 4, background: C.blue, boxShadow: `0 0 16px ${C.blue}`, opacity: t < k.st + 0.62 ? 1 : 0 }} />
             {[0, 1, 2].map((j) => (
               <React.Fragment key={j}>
@@ -92,12 +96,12 @@ const Tile: React.FC<{ i: number; t: number }> = ({ i, t }) => {
         )}
         {i === 3 && (
           <>
-            <Box x={30} y={60} w={330} h={190} r={6} bg="#3a3a40" lc="#ddd" fs={22} label="视频画面 ▶" />
+            <div style={{ position: 'absolute', left: 30, top: 60, borderRadius: 6, overflow: 'hidden' }}><RagFrame c={Z} /></div>
             <div style={{ position: 'absolute', left: 30, top: 275, width: 700, height: 10, borderRadius: 5, background: '#444' }} />
             {[0, 1, 2, 3].map((j) => (
               <React.Fragment key={j}>
                 <div style={{ position: 'absolute', left: 30 + j * 175, top: 275, width: 170 * q(0.2 + j * 0.08, 0.3 + j * 0.08), height: 10, borderRadius: 5, background: ['#4A8EF9', '#22C55E', '#F59E0B', '#EC4899'][j] }} />
-                <Box x={30 + j * 175} y={305} w={165} h={92} r={6} bg="#3a3a40" lc="#ddd" fs={18} label={['引言', '检索', '生成', '评估'][j]} style={{ opacity: q(0.3 + j * 0.08, 0.4 + j * 0.08) }} />
+                <div style={{ position: 'absolute', left: 30 + j * 175, top: 305, opacity: q(0.3 + j * 0.08, 0.4 + j * 0.08) }}><KeyframeThumb c={Z} j={j} /></div>
               </React.Fragment>
             ))}
           </>

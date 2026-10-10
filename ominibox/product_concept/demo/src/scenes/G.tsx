@@ -1,5 +1,10 @@
 import React from 'react';
-import { Box, C, Caption, Fill, Tx, blinkAt, lin, sp } from '../lib';
+import { Box, C, Caption, Fill, Tx, lin, sp } from '../lib';
+import { LOCALES } from '../data/content';
+import { Readme } from '../content/github';
+import { DevAndroid, DevExt, DevIos, DevQQ, DevWeb, DevWechat } from '../content/devices';
+
+const Z = LOCALES.zh; // 线框里的真实内容（data/locales/zh.ts）
 
 // G 开放 · 全平台（35.0–39.0 s），局部时间 t = 全局 − 35
 
@@ -14,15 +19,8 @@ const DEV = [
 const GAP = 40;
 const TOTAL = DEV.reduce((s, d) => s + d.w, 0) + GAP * (DEV.length - 1);
 
-const Eyes: React.FC<{ b: number }> = ({ b }) => (
-  <div style={{ display: 'flex', gap: 14 }}>
-    {[0, 1].map((i) => (
-      <div key={i} style={{ width: 30, height: 26 * (1 - 0.9 * b), borderRadius: '50%', background: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: 13, height: 12 * (1 - 0.9 * b), borderRadius: '50%', background: C.black }} />
-      </div>
-    ))}
-  </div>
-);
+// 设备阵列里的六块真实屏幕（content/devices.tsx，尺寸与 DEV 一致）
+const DEV_VIEW = [DevWeb, DevExt, DevIos, DevAndroid, DevWechat, DevQQ];
 
 const FLASH = [
   { a: 2.0, word: '开源', node: (
@@ -30,7 +28,7 @@ const FLASH = [
       <Box x={0} y={0} w={1100} h={520} r={20} bg="#161b22" border="1px solid #30363d" />
       <Tx x={50} y={50} s={30} c="#58a6ff" b>import-ai / omnibox</Tx>
       <Tx x={50} y={110} s={22} c="#8b949e">GitHub 仓库 · ⭐ Star · Apache-2.0</Tx>
-      <Box x={50} y={180} w={1000} h={290} r={12} bg="#0d1117" lc="#555" fs={28} label="README（占位）" />
+      <div style={{ position: 'absolute', left: 50, top: 180 }}><Readme c={Z} /></div>
     </>
   ) },
   { a: 2.65, word: '私有部署', node: (
@@ -71,9 +69,8 @@ export const Gg: React.FC<{ t: number }> = ({ t }) => {
               const left = x;
               x += d.w + GAP;
               return (
-                <div key={i} style={{ position: 'absolute', left, top: 470 - d.h / 2, width: d.w, height: d.h, borderRadius: i >= 2 && i <= 3 ? 30 : 16, background: '#1c1c1e', border: '2px solid #3a3a3c', transform: `translateZ(${(1 - p) * -600}px)`, opacity: p, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 24 }}>
-                  <div style={{ color: '#bbb', fontSize: 20, fontWeight: 600 }}>{d.label}</div>
-                  <Eyes b={blinkAt(t, [0.9 + i * 0.12])} />
+                <div key={i} style={{ position: 'absolute', left, top: 470 - d.h / 2, width: d.w, height: d.h, transform: `translateZ(${(1 - p) * -600}px)`, opacity: p }}>
+                  {React.createElement(DEV_VIEW[i], { c: Z })}
                 </div>
               );
             })}

@@ -6,38 +6,51 @@ import { C } from '../lib';
 // D 段四宫格里的资料：PDF 页、白板照片、视频画面、章节关键帧
 const CH = ['#4A8EF9', '#22C55E', '#F59E0B', '#EC4899'];
 
-/** PDF 页面 + 提取出的文字（760×360，对应面板 ① 里页面 240×330 与右侧 9 行文字条） */
-export const Pdf: React.FC<{ c: Content }> = ({ c: { pdf: p } }) => (
-  <div style={{ width: 760, height: 360, background: '#2e2e2e', fontFamily: FONT, position: 'relative', overflow: 'hidden' }}>
-    <div style={{ position: 'absolute', left: 30, top: 15, width: 240, height: 330, background: '#fff', borderRadius: 6, padding: '18px 16px', boxSizing: 'border-box', color: '#1F2937', boxShadow: '0 4px 14px rgba(0,0,0,.35)' }}>
-      <div style={{ height: 4, width: 40, background: '#2563EB', borderRadius: 2 }} />
-      <div style={{ fontSize: 17, fontWeight: 800, marginTop: 8 }}>{p.title}</div>
-      <div style={{ fontSize: 9, color: '#6B7280', marginTop: 2 }}>{p.date}</div>
-      <div style={{ fontSize: 10, fontWeight: 700, marginTop: 10 }}>{p.sections[0]}</div>
-      <div style={{ display: 'flex', gap: 5, marginTop: 6 }}>
-        {p.kpis.map(([k, v]) => (
-          <div key={k} style={{ flex: 1, background: '#EFF6FF', borderRadius: 4, padding: '5px 4px' }}>
-            <div style={{ fontSize: 7.5, color: '#6B7280', whiteSpace: 'nowrap', overflow: 'hidden' }}>{k}</div>
-            <div style={{ fontSize: 9, fontWeight: 800, color: '#1D4ED8', whiteSpace: 'nowrap' }}>{v}</div>
-          </div>
-        ))}
-      </div>
-      {/* 柱状图 */}
-      <svg width={208} height={62} style={{ marginTop: 8 }}>
-        {[22, 30, 26, 38, 44, 52].map((h, i) => <rect key={i} x={6 + i * 34} y={60 - h} width={22} height={h} rx={3} fill={i > 3 ? '#2563EB' : '#93C5FD'} />)}
-      </svg>
-      {p.sections.slice(1).map((s) => (
-        <div key={s} style={{ marginTop: 8 }}>
-          <div style={{ fontSize: 10, fontWeight: 700 }}>{s}</div>
-          {[1, 0.92, 0.7].map((w, i) => <div key={i} style={{ height: 4, width: `${w * 100}%`, background: '#E5E7EB', borderRadius: 2, marginTop: 4 }} />)}
+/** PDF 第一页（240×330，D 面板 ① 的页面线框） */
+export const PdfPage: React.FC<{ c: Content }> = ({ c: { pdf: p } }) => (
+  <div style={{ position: 'relative', width: 240, height: 330, background: '#fff', borderRadius: 6, padding: '18px 16px', boxSizing: 'border-box', color: '#1F2937', boxShadow: '0 4px 14px rgba(0,0,0,.35)', fontFamily: FONT, overflow: 'hidden' }}>
+    <div style={{ height: 4, width: 40, background: '#2563EB', borderRadius: 2 }} />
+    <div style={{ fontSize: 17, fontWeight: 800, marginTop: 8 }}>{p.title}</div>
+    <div style={{ fontSize: 9, color: '#6B7280', marginTop: 2 }}>{p.date}</div>
+    <div style={{ fontSize: 10, fontWeight: 700, marginTop: 10 }}>{p.sections[0]}</div>
+    <div style={{ display: 'flex', gap: 5, marginTop: 6 }}>
+      {p.kpis.map(([k, v]) => (
+        <div key={k} style={{ flex: 1, background: '#EFF6FF', borderRadius: 4, padding: '5px 4px' }}>
+          <div style={{ fontSize: 7.5, color: '#6B7280', whiteSpace: 'nowrap', overflow: 'hidden' }}>{k}</div>
+          <div style={{ fontSize: 9, fontWeight: 800, color: '#1D4ED8', whiteSpace: 'nowrap' }}>{v}</div>
         </div>
       ))}
-      <div style={{ position: 'absolute', right: 12, bottom: 8, fontSize: 8, color: '#9CA3AF' }}>1 / 12</div>
     </div>
-    <div style={{ position: 'absolute', left: 300, top: 10, fontSize: 13, color: '#AFCBFF', fontWeight: 700 }}>{p.label}</div>
-    {p.extract.map((s, i) => (
-      <div key={i} style={{ position: 'absolute', left: 300, top: 32 + i * 34, width: 440, fontSize: 16, color: i === 0 ? '#fff' : '#d6d6d6', fontWeight: i === 0 ? 700 : 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{s}</div>
+    {/* 柱状图 */}
+    <svg width={208} height={62} style={{ marginTop: 8 }}>
+      {[22, 30, 26, 38, 44, 52].map((h, i) => <rect key={i} x={6 + i * 34} y={60 - h} width={22} height={h} rx={3} fill={i > 3 ? '#2563EB' : '#93C5FD'} />)}
+    </svg>
+    {p.sections.slice(1).map((s) => (
+      <div key={s} style={{ marginTop: 8 }}>
+        <div style={{ fontSize: 10, fontWeight: 700 }}>{s}</div>
+        {[1, 0.92, 0.7].map((w, i) => <div key={i} style={{ height: 4, width: `${w * 100}%`, background: '#E5E7EB', borderRadius: 2, marginTop: 4 }} />)}
+      </div>
     ))}
+    <div style={{ position: 'absolute', right: 12, bottom: 8, fontSize: 8, color: '#9CA3AF' }}>1 / 12</div>
+  </div>
+);
+
+/** 从 PDF 提取出的文字：9 行（D 面板 ① 的文字条线框），reveal 0→1 逐行出现 */
+export const PdfLines: React.FC<{ c: Content; reveal?: number; gap?: number; size?: number; w?: number }> = ({ c: { pdf: p }, reveal = 1, gap = 34, size = 16, w = 440 }) => (
+  <div style={{ position: 'relative', width: w, height: gap * p.extract.length, fontFamily: FONT }}>
+    {p.extract.map((s, i) => {
+      const o = Math.max(0, Math.min(1, reveal * p.extract.length - i));
+      return <div key={i} style={{ position: 'absolute', left: 0, top: i * gap, width: w, fontSize: size, color: i === 0 ? '#fff' : '#d6d6d6', fontWeight: i === 0 ? 700 : 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', opacity: o, transform: `translateX(${(1 - o) * -12}px)` }}>{s}</div>;
+    })}
+  </div>
+);
+
+/** PDF 页面 + 提取出的文字（760×360，截图用） */
+export const Pdf: React.FC<{ c: Content }> = ({ c }) => (
+  <div style={{ width: 760, height: 360, background: '#2e2e2e', fontFamily: FONT, position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'absolute', left: 30, top: 15 }}><PdfPage c={c} /></div>
+    <div style={{ position: 'absolute', left: 300, top: 10, fontSize: 13, color: '#AFCBFF', fontWeight: 700 }}>{c.pdf.label}</div>
+    <div style={{ position: 'absolute', left: 300, top: 32 }}><PdfLines c={c} /></div>
   </div>
 );
 
@@ -92,8 +105,8 @@ export const RagFrame: React.FC<{ c: Content; play?: boolean }> = ({ c: { bili: 
   );
 };
 
-/** 章节关键帧 690×92：四张 165×92 缩略图，间距 10 */
-export const Keyframes: React.FC<{ c: Content }> = ({ c }) => {
+/** 单张章节关键帧（165×92，D 面板 ④ 的缩略图线框） */
+export const KeyframeThumb: React.FC<{ c: Content; j: number }> = ({ c, j }) => {
   const art = [
     <div style={{ fontSize: 30, fontWeight: 900, color: '#fff', letterSpacing: 2 }}>RAG</div>,
     <svg width={90} height={50}>{[0, 1, 2].map((i) => <rect key={i} x={6 + i * 18} y={6 + i * 4} width={30} height={38} rx={3} fill="#E2E8F0" opacity={0.5 + i * 0.25} />)}<circle cx={68} cy={22} r={11} stroke="#22C55E" strokeWidth={4} fill="none" /><line x1={76} y1={30} x2={86} y2={42} stroke="#22C55E" strokeWidth={4} strokeLinecap="round" /></svg>,
@@ -101,15 +114,18 @@ export const Keyframes: React.FC<{ c: Content }> = ({ c }) => {
     <svg width={90} height={50}>{[18, 30, 24, 40].map((h, i) => <rect key={i} x={6 + i * 16} y={46 - h} width={11} height={h} rx={2} fill="#EC4899" opacity={0.6 + i * 0.1} />)}<path d="M70 26 L77 34 L88 16" stroke="#22C55E" strokeWidth={4} fill="none" strokeLinecap="round" /></svg>,
   ];
   return (
-    <div style={{ width: 690, height: 92, display: 'flex', gap: 10, fontFamily: FONT, background: '#2e2e2e' }}>
-      {c.keyframes.map((s, i) => (
-        <div key={s} style={{ width: 165, height: 92, borderRadius: 6, position: 'relative', overflow: 'hidden', background: 'linear-gradient(160deg,#1E293B,#0F172A)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {art[i]}
-          <div style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: 3, background: CH[i] }} />
-          <div style={{ position: 'absolute', left: 6, bottom: 4, fontSize: 11, color: '#fff', fontWeight: 700, background: 'rgba(0,0,0,.45)', padding: '1px 6px', borderRadius: 3 }}>{String(i + 1).padStart(2, '0')} {s}</div>
-          <div style={{ position: 'absolute', right: 6, bottom: 4, fontSize: 10, color: '#cbd5e1' }}>{['00:00', '02:15', '05:30', '08:10'][i]}</div>
-        </div>
-      ))}
+    <div style={{ width: 165, height: 92, borderRadius: 6, position: 'relative', overflow: 'hidden', background: 'linear-gradient(160deg,#1E293B,#0F172A)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONT }}>
+      {art[j]}
+      <div style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: 3, background: CH[j] }} />
+      <div style={{ position: 'absolute', left: 6, bottom: 4, fontSize: 11, color: '#fff', fontWeight: 700, background: 'rgba(0,0,0,.45)', padding: '1px 6px', borderRadius: 3 }}>{String(j + 1).padStart(2, '0')} {c.keyframes[j]}</div>
+      <div style={{ position: 'absolute', right: 6, bottom: 4, fontSize: 10, color: '#cbd5e1' }}>{['00:00', '02:15', '05:30', '08:10'][j]}</div>
     </div>
   );
 };
+
+/** 章节关键帧 690×92：四张 165×92 缩略图，间距 10（截图用） */
+export const Keyframes: React.FC<{ c: Content }> = ({ c }) => (
+  <div style={{ width: 690, height: 92, display: 'flex', gap: 10, background: '#2e2e2e' }}>
+    {c.keyframes.map((s, j) => <KeyframeThumb key={s} c={c} j={j} />)}
+  </div>
+);

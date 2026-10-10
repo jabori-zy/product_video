@@ -1,4 +1,4 @@
-// 音色：按键、点击、触屏、过渡、小黑（滑动 / 喵 / 弹簧 / 落地），以及乐器（钢琴、电钢、钟琴、马林巴、拨弦、垫音、鼓、贝斯）
+// 音色：按键、点击、触屏、过渡、小黑（喵 / 弹簧 / 落地），以及乐器（钢琴、钟琴、垫音、鼓、贝斯、琶音合成器）
 import path from 'path';
 import { SR, Sig, ar, biquad, decay, delay, gain, len, mtof, noise, readWav, resample, rng, saw, shape, sine, sum } from './dsp';
 
@@ -15,13 +15,6 @@ export const keyMech = (heavy = false, v = 1): Sig => {
   const rattle = heavy ? decay(delay(biquad(noise(0.05, seed()), 'bp', 2400, 4), 0.012), 0.01) : new Float32Array(1);
   return gain(sum(gain(click, 0.55), gain(body, 0.9), gain(thock, heavy ? 0.7 : 0.35), gain(rattle, 0.4)), 0.55 * v * (0.9 + r() * 0.2));
 };
-/** 剪刀脚键盘：更闷、更短 */
-export const keySoft = (heavy = false, v = 1): Sig => {
-  const r = rng(seed());
-  const tap = decay(biquad(noise(0.04, seed()), 'bp', (heavy ? 700 : 1100) * (0.9 + r() * 0.2), 1.8), heavy ? 0.016 : 0.009);
-  const low = decay(sine(heavy ? 140 : 190, 0.05), heavy ? 0.02 : 0.01);
-  return gain(biquad(sum(tap, gain(low, 0.4)), 'lp', 5000), 0.5 * v * (0.85 + r() * 0.3));
-};
 /** 鼠标 / 触控板点击：按下 + 抬起 */
 export const mouseClick = (v = 1): Sig => {
   const one = () => decay(biquad(noise(0.015, seed()), 'bp', 3200, 3), 0.0018);
@@ -29,9 +22,6 @@ export const mouseClick = (v = 1): Sig => {
 };
 /** 触屏点按：轻「嗒」 */
 export const tap = (v = 1): Sig => gain(sum(decay(biquad(noise(0.02, seed()), 'bp', 2600, 2), 0.003), gain(decay(sine(1600, 0.03), 0.006), 0.25)), 0.35 * v);
-/** 触感反馈：低频短振 */
-export const haptic = (v = 1): Sig => gain(sum(decay(sine(170, 0.05), 0.012, 0.002), gain(tap(1), 0.6)), 0.45 * v);
-
 // ---------- 界面 ----------
 export const pop = (v = 1, f = 520): Sig => gain(decay(sine((t) => f + 900 * Math.exp(-t * 60), 0.12), 0.035, 0.002), 0.4 * v);
 /** 铃声（保存成功）：钟形分音 */
@@ -73,8 +63,6 @@ export const impact = (v = 1): Sig => gain(sum(decay(sine((t) => 40 + 80 * Math.
 export const sparkle = (v = 1): Sig => sum(...[96, 100, 103].map((m, i) => gain(delay(bell(m, 0.6, 0.25), i * 0.045), v)));
 
 // ---------- 小黑 ----------
-/** 探头的「滑动」：短而轻的气声，从低到高 */
-export const slide = (v = 1): Sig => gain(swish(0.32, 1, true), 0.9 * v);
 /** 弹簧「嘣～」：频率快速颤动并下滑的三角波 */
 export const boing = (v = 1, f0 = 220, dur = 0.55): Sig => {
   const s = sine((t) => f0 * (1 + 0.9 * Math.exp(-t * 5)) * (1 + 0.18 * Math.exp(-t * 4) * Math.sin(2 * Math.PI * 28 * t)), dur);
@@ -100,21 +88,7 @@ export const piano = (m: number, dur = 2.5, v = 1): Sig => {
   const hammer = gain(decay(biquad(noise(0.03, seed()), 'bp', f * 4, 1), 0.006), 0.15);
   return gain(sum(...parts, hammer), 0.5 * v);
 };
-/** 电钢（FM）：调制指数随时间衰减 */
-export const rhodes = (m: number, dur = 2, v = 1): Sig => {
-  const f = mtof(m), n = len(dur), s = new Float32Array(n);
-  for (let i = 0; i < n; i++) { const t = i / SR, idx = 1.6 * Math.exp(-t * 3); s[i] = Math.sin(2 * Math.PI * f * t + idx * Math.sin(2 * Math.PI * f * t)) * Math.exp(-t / (dur * 0.45)) * Math.min(1, t / 0.004); }
-  return gain(s, 0.35 * v);
-};
 export const glock = (m: number, v = 1): Sig => bell(m, v * 1.3, 0.9);
-export const marimba = (m: number, v = 1): Sig => { const f = mtof(m); return gain(sum(decay(sine(f, 0.8), 0.22, 0.002), gain(decay(sine(f * 4, 0.3), 0.04, 0.001), 0.35)), 0.45 * v); };
-/** 拨弦（Karplus-Strong） */
-export const pluck = (m: number, dur = 1, v = 1): Sig => {
-  const f = mtof(m), p = Math.round(SR / f), n = len(dur), s = new Float32Array(n), r = rng(seed());
-  for (let i = 0; i < p; i++) s[i] = r() * 2 - 1;
-  for (let i = p; i < n; i++) s[i] = 0.497 * (s[i - p] + s[i - p + 1 < i ? i - p + 1 : i - p]);
-  return gain(biquad(s, 'lp', 5000), 0.4 * v);
-};
 /** 垫音和弦：每个音 3 支失谐锯齿，低通、慢起慢收 */
 export const pad = (notes: number[], dur: number, v = 1, cutoff = 1400): Sig => {
   const vs: Sig[] = [];
@@ -124,7 +98,6 @@ export const pad = (notes: number[], dur: number, v = 1, cutoff = 1400): Sig => 
 export const kick = (v = 1): Sig => gain(sum(decay(sine((t) => 48 + 110 * Math.exp(-t * 30), 0.4), 0.13, 0.001), gain(decay(biquad(noise(0.01, seed()), 'hp', 2000), 0.002), 0.3)), 0.9 * v);
 export const snare = (v = 1): Sig => gain(sum(decay(sine(190, 0.15), 0.04, 0.001), gain(decay(biquad(noise(0.25, seed()), 'bp', 2500, 0.8), 0.07), 0.9)), 0.55 * v);
 export const hat = (v = 1, open = false): Sig => gain(decay(biquad(noise(open ? 0.3 : 0.06, seed()), 'hp', 7500), open ? 0.09 : 0.018, 0.0005), 0.3 * v);
-export const shaker = (v = 1): Sig => gain(ar(biquad(noise(0.07, seed()), 'bp', 6000, 1.2), 0.02, 0.04), 0.18 * v);
 export const crash = (v = 1): Sig => gain(decay(biquad(noise(2.5, seed()), 'hp', 4000), 0.7, 0.002), 0.35 * v);
 export const bass = (m: number, dur: number, v = 1): Sig => gain(ar(sum(biquad(saw(mtof(m), dur), 'lp', 380, 1.2), gain(sine(mtof(m), dur), 0.7)), 0.005, 0.05), 0.5 * v);
 export const arp = (m: number, dur = 0.12, v = 1, cutoff = 2400): Sig => gain(ar(biquad(saw(mtof(m), dur), 'lp', cutoff, 2), 0.003, dur * 0.7), 0.3 * v);

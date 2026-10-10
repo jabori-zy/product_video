@@ -1,4 +1,6 @@
-# 小黑 OmniBox 产品介绍片 · 草稿 demo
+# 小黑 OmniBox 产品介绍片
+
+- **成片 v1**：`npm run render:final` → `out/ominibox_product_video_v1.mp4`（≈119 s，1920×1080，30 fps）：手机版时间线 + 结尾方案 A + 线框全部换成真实内容（`src/content/`，文案 `src/data/locales/zh.ts`）+ 方案二声音；不显示时间码
 
 - 成片：`out/demo.mp4`（1920×1080 · 30 fps · 45 s · 无配乐）
 - 依据：`../result/script.md`（时间轴一一对应，右下角黄色标注当前段落和时间码，正式版删除）
@@ -7,7 +9,7 @@
 - 不限时长版：`npm run render:paced` → `out/demo-<秒>s.mp4`（成片已删除，需要时重新渲染）；同一套画面，`src/pace.ts` 把输出时间映射回脚本时间，只放慢不改内容；对应脚本 `../result/script-untimed.md`
 - 手机版：`npm run render:app` → `out/demo-add_more_app.mp4`（≈119 s）；在不限时长版里插入两段手机操作（C+ 手机随手记、E+ 跨端接力），首尾定格在原片同一帧，衔接无缝；对应脚本 `../result/script-add_more_app.md`
 - 结尾改版：`npm run render:slogan` → `out/demo_modify_slogon.mp4`；同手机版，只把 H 段换成方案 A「回文翻转」（`src/scenes/H2.tsx`）；对应脚本 `../result/script-modify_slogon.md`
-- 声音三方案：`npm run audio`（或 `npm run audio -- 2` 只做一套）→ `out/demo_music1/2/3.mp4`；事件表 `audio/cues.ts` 取自画面时间线，音色 `audio/voices.ts`，方案 `audio/plans.ts`；分轨 WAV 在 `audio/out/music<N>/`（不入库）；猫叫为 CC0 录音，见 `audio/samples/CREDITS.md`
+- 声音（方案二：音乐主导、120 BPM 卡拍子）：`npm run audio` → `out/demo_music2.mp4`；事件表 `audio/cues.ts` 取自画面时间线，音色 `audio/voices.ts`，方案 `audio/plans.ts`；分轨 WAV（drums / bass_synth / melody / transitions / ui_keys / xiaohei）在 `audio/out/music2/`（不入库）；猫叫为 CC0 录音，见 `audio/samples/CREDITS.md`
 - 依赖：`npm install`（Remotion 4.0.529）
 
 | 文件 | 内容 |
