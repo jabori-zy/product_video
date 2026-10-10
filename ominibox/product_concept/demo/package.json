@@ -7,6 +7,7 @@
     "studio": "remotion studio",
     "render": "remotion render Demo out/demo.mp4",
     "render:paced": "node tools/render-paced.mjs",
+    "render:content": "node tools/render-content.mjs",
     "still": "remotion still Demo"
   },
   "dependencies": {

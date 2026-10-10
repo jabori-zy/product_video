@@ -1,0 +1,124 @@
+import type { Content } from '../content';
+
+// 简体中文：与视频里已有的文字、result/script.md 原始中文保持一致
+export const zh: Content = {
+  zhihu: {
+    site: '知乎', nav: ['首页', '关注', '推荐', '热榜'], search: '搜索你感兴趣的内容…', column: '专栏 · AI 工具观察',
+    title: 'AI Agent 元年：普通人如何搭建自己的「第二大脑」？',
+    author: '林中猫', bio: '产品经理 · 关注 AI 与个人效率', follow: '+ 关注', date: '发布于 2026-09-21 · IP 属地上海',
+    paras: [
+      '过去一年，大模型从「会聊天」走向「会做事」。Agent 能读你的文件、调用工具、替你完成一串操作——但它们有个共同的短板：记不住你。每次对话都从零开始，你收藏的文章、开过的会、拍下的白板，都散落在各个 App 里。',
+      '所谓「第二大脑」，就是把这些碎片集中到一个地方，让 AI 帮你理解、整理，并在需要时调出来。关键不在于存了多少，而在于能不能用自然语言把它们问出来，并且每一句回答都能追溯到原文。',
+      '我的做法很简单：看到好内容一键收藏，会议录音和照片直接转给助手，每周让它把这些资料整理成一份周报。三个月下来，真正改变的不是收藏数量，而是我开始相信「记得住」这件事可以交给 AI。',
+    ],
+    quote: '真正的第二大脑，不是收藏夹，而是能回答你问题的记忆',
+    upvote: '赞同 3.2 万', comments: '1,284 条评论', share: '分享', save: '收藏',
+  },
+  news: {
+    site: '科技前沿日报', nav: ['要闻', 'AI', '芯片', '创投', '观点'], tag: '头条',
+    headline: '国产大模型推理成本一年下降 90%',
+    dek: '多家厂商密集降价，百万 token 价格进入「几毛钱」时代；业内认为应用层将迎来爆发。',
+    byline: '记者 周亦然 · 2026-10-08 09:30', more: '相关报道',
+    stories: ['开源模型首次在代码基准上追平闭源旗舰', '端侧 AI 芯片出货量同比增长 3 倍', '「AI 原生」应用月活突破 5 亿'],
+  },
+  bili: {
+    site: 'bilibili', title: '10 分钟看懂 RAG：让大模型读懂你的资料', up: '代码熊', views: '48.6 万播放', danmaku: '3,201 弹幕',
+    date: '2026-08-14', time: '03:42 / 10:08', chapters: ['引言', '检索', '生成', '评估'], actions: ['👍 2.4 万', '🪙 8,630', '⭐ 1.9 万', '↗ 分享'],
+    frame: { docs: '你的文档', store: '向量库', retrieve: '检索 Top-K', llm: '大模型', answer: '带引用的回答' },
+  },
+  xhs: {
+    site: '小红书', title: '我的 Notion 替代方案｜效率清单', author: '效率小鹿', likes: '2.1 万', saves: '1.3 万',
+    tiles: ['日程', '笔记', '待办', '知识库', '复盘'], tags: '#效率工具 #第二大脑 #Notion',
+  },
+  x: {
+    name: 'AI Daily', handle: '@ai_daily', text: 'Agents that remember are the next platform shift.', time: '上午 9:41 · 2026年10月7日',
+    stats: ['1,204 转帖', '386 引用', '9,876 喜欢', '2,310 书签'], translate: '翻译帖子',
+  },
+  wechat: {
+    contact: '小黑', pdf: 'Q3 产品复盘.pdf', pdfSize: '2.4 MB', voice: '12″', photo: '白板照片', note: '周会结论 #会议', input: '发送消息',
+    boardLines: ['Q4 目标', 'DAU ×2'],
+  },
+  app: {
+    space: 'Jabori 的空间', tabs: ['资源', '对话'], greet: '晚上好，有什么可以帮你？', ask: '随便问点什么吧', recent: '最近更新',
+    items: [['📕', 'Q3 产品复盘.pdf'], ['🎙', '周会录音.m4a'], ['🖼', '白板照片.jpg'], ['🌐', 'AI Agent 元年…（知乎）']],
+    bottom: ['更多', '录音', '文字'],
+  },
+  rss: {
+    folder: 'RSS 订阅', feeds: '3 个订阅源 · 自动入库', badge: '+3',
+    articles: [
+      ['硅基周刊', '本周 Agent 框架盘点：谁在做长期记忆？', '2 分钟前'],
+      ['产品沉思录', '记忆，是 AI 产品的下一块拼图', '18 分钟前'],
+      ['开源观察', '用 Ollama 在笔记本上跑本地知识库', '1 小时前'],
+    ],
+  },
+  pdf: {
+    file: 'Q3 产品复盘.pdf', title: 'Q3 产品复盘', date: '2026 年 10 月 · 产品部', sections: ['一、核心数据', '二、问题与原因', '三、Q4 计划'],
+    kpis: [['DAU', '12.4 万 ↑18%'], ['次周留存', '41% ↑3pt'], ['收藏量', '86 万 ↑52%']],
+    extract: [
+      'Q3 产品复盘 · 2026 年 10 月',
+      '一、核心数据：DAU 12.4 万，环比 +18%',
+      '次周留存 41%，收藏量 86 万（+52%）',
+      '二、问题：新用户首周激活率偏低',
+      '原因：导入入口分散，插件安装率仅 23%',
+      '三、Q4 计划：插件周五发版',
+      '目标 DAU 翻倍，发布节奏改为双周',
+      '负责人：林 · 评审：周五前完成',
+      '附录：渠道数据与用户访谈纪要',
+    ],
+    label: '提取的文字',
+  },
+  board: { lines: ['Q4 目标：DAU 翻倍', '发布节奏：双周', '负责人：林'], sticky: ['插件!', '周五'] },
+  keyframes: ['引言', '检索', '生成', '评估'],
+  answer: {
+    heads: ['1. 从对话到行动：Agent 开始替你执行任务', '2. 长期记忆成为标配', '3. 个人知识库变成 AI 的上下文'],
+    bodies: [
+      'Agent 不再只回答问题，而是调用工具、创建文件、移动资料，在你确认后完成一整串操作。你收藏的知乎文章把今年称为「AI Agent 元年」。',
+      '会话结束就失忆的助手正在被淘汰。X 上的讨论认为，「记得住」的 Agent 会成为下一个平台级变化；各家产品都在补齐长期记忆。',
+      '与其每次重新粘贴资料，不如让 AI 直接读你的知识库。《10 分钟看懂 RAG》介绍的检索增强，就是把你的文档变成回答的依据。',
+    ],
+    sources: ['AI Agent 元年…（知乎）', 'X · @ai_daily', '10 分钟看懂 RAG（B 站）'],
+    note: '来源',
+  },
+  report: {
+    title: 'AI 动态周报 · 第 40 周', toc: '目录：本周要点 · 重点资料 · 待办', heads: ['一、本周要点', '二、重点资料', '三、待办'],
+    highlights: [
+      'Agent 从对话走向执行：主流产品都上线了工具调用与确认机制。',
+      '长期记忆成为标配，「记得住你」开始成为产品卖点。',
+      '国产大模型推理成本一年下降 90%，应用层迎来窗口期。',
+      'RAG 仍是让 AI 读懂私有资料的主流方案。',
+      '团队内部：插件发版在即，DAU 目标翻倍。',
+    ],
+    sources: [
+      '《AI Agent 元年：普通人如何搭建自己的「第二大脑」？》· 知乎',
+      '《国产大模型推理成本一年下降 90%》· 科技前沿日报',
+      '《10 分钟看懂 RAG》· B 站 · 代码熊',
+      'Q3 产品复盘.pdf · 周会录音.m4a · 白板照片.jpg',
+      'X @ai_daily：Agents that remember are the next platform shift.',
+    ],
+    cols: ['事项', '负责人', '状态'],
+    todos: [['周五前发布插件', '林', '进行中'], ['DAU 目标拆解', '王', '未开始'], ['下周复盘会', '全员', '已排期']],
+  },
+  readme: {
+    repo: 'import-ai / omnibox', tabs: ['Code', 'Issues', 'Pull requests', 'Discussions'],
+    desc: '小黑 OmniBox：你的 AI 知识伙伴。收藏、理解、问答、创作——万物变成记忆，记忆变成万物。',
+    badges: ['License · Apache-2.0', 'Docker · ready', 'Ollama · offline'], quick: '快速开始',
+    cmds: ['git clone https://github.com/import-ai/omnibox.git', 'cd omnibox && docker compose up -d'],
+    feats: ['✓ 网页、文档、图片、音视频统一入库', '✓ 基于原文作答，句句有出处', '✓ 私有部署，配合 Ollama 离线运行'],
+  },
+  devices: {
+    web: { space: 'Jabori 的空间', nav: ['小黑', '通知', '黑友社区'], tabs: ['资源', '对话'], greet: '晚上好，有什么可以帮你？', ask: '随便问点什么吧' },
+    ext: { name: '小黑', save: '📦 保存到小黑', to: '保存到：个人', area: '指定区域 · 按住 ⌥' },
+    ios: { greet: '晚上好', ask: '随便问点什么吧', bottom: ['更多', '录音', '文字'] },
+    android: { title: '资源', items: ['Q3 产品复盘.pdf', '周会录音.m4a', '白板照片.jpg', 'AI 动态周报', '10 分钟看懂 RAG'] },
+    wechat: { title: '小黑', msgs: [[true, '周会结论 #会议'], [false, '已保存到「个人」，打上 #会议 ✓'], [true, '上周会议的待办？'], [false, '共 3 项：插件发版、DAU 拆解、复盘会']] },
+    qq: { title: '小黑', msgs: [[true, '这篇帮我收藏'], [false, '已保存 ✓ 已生成摘要'], [true, '总结一下要点'], [false, '三个要点：执行、记忆、知识库']] },
+  },
+  files: {
+    zhihu: '知乎文章 · AI Agent 元年', news: '新闻站 · 科技前沿日报', bili: 'B站视频页 · 10 分钟看懂 RAG', xhs: '小红书笔记 · Notion 替代方案',
+    x: 'X 帖子 · @ai_daily', wechat: '微信聊天 · 小黑', app: 'OmniBox App · 首页', rss: 'RSS 订阅文件夹',
+    pdf: 'PDF 页面 · Q3 产品复盘', board: '白板照片 · Q4 目标', frame: '视频画面 · RAG 讲解', keyframes: '章节关键帧 · 引言 检索 生成 评估',
+    answer: 'AI 回答 · 三个趋势', report: 'AI 动态周报 · 第 40 周', readme: 'GitHub README · import-ai omnibox',
+    'dev-web': '设备 · 浏览器 OmniBox 网页', 'dev-ext': '设备 · 浏览器插件', 'dev-ios': '设备 · iPhone App', 'dev-android': '设备 · Android',
+    'dev-wechat': '设备 · 微信 小黑', 'dev-qq': '设备 · QQ 小黑',
+  },
+};
