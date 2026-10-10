@@ -1,7 +1,7 @@
 # 小黑 OmniBox · 概念产品片 v1
 
 - 成片：`out/ominibox-concept.mp4`（1920×1080 · 30 fps · 600 帧 · 20 s · −14 LUFS）；封面 `poster.png`
-- 提示词 / 分镜：`../prompt/ominibox_prompt_概念视频v1.md`
+- 提示词 / 分镜：`../prompt/omnibox-concept-video-prompt-v1.md`
 - 重建：`sh build.sh`；预览与调整：`npm run studio`
 
 | 路径 | 作用 |
