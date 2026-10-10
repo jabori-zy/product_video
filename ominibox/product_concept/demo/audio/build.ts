@@ -19,7 +19,7 @@ for (const make of PLANS) {
   const mix = new Bus(END);
   for (const [name, b] of Object.entries(plan.stems)) { if (WET[name]) b.mix(reverb(b, 1, 0.4), WET[name]); mix.mix(b); }
   const L = loudness(mix), g = db(-14 - L);
-  mix.scale(g); limit(mix, db(-2)); // 留出余量：AAC 编码与真峰值会再冒出约 1 dB，成片响度在 render-final 里用 loudnorm 精确校到 −14 LUFS / −1.5 dBTP
+  mix.scale(g); limit(mix, db(-3)); // 留出余量：采样间真峰值与 AAC 编码会再冒出 1–2 dB，成片响度在 render-final 里用 loudnorm 精确校到 −14 LUFS / −1.5 dBTP
   for (const [name, b] of Object.entries(plan.stems)) { b.scale(g); writeWav(path.join(dir, `${name}.wav`), b); }
   writeWav(path.join(dir, 'mix.wav'), mix);
   console.log(`${plan.name}: 分轨 ${Object.keys(plan.stems).join(' / ')} · 原始响度 ${L.toFixed(1)} dB → −14 · ${((Date.now() - t0) / 1000).toFixed(1)} s → ${dir}/mix.wav`);
