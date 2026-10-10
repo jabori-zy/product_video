@@ -10,6 +10,7 @@
     "render:content": "node tools/render-content.mjs",
     "render:app": "remotion render DemoApp out/demo-add_more_app.mp4",
     "render:slogan": "remotion render DemoSlogan out/demo_modify_slogon.mp4",
+    "audio": "esbuild audio/build.ts --bundle --platform=node --format=cjs --log-level=warning --outfile=audio/.build/build.cjs && node audio/.build/build.cjs",
     "still": "remotion still Demo"
   },
   "dependencies": {
