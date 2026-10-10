@@ -10,6 +10,7 @@ import { Ee } from './scenes/E';
 import { Ff } from './scenes/F';
 import { Gg } from './scenes/G';
 import { Hh } from './scenes/H';
+import { toScript } from './pace';
 
 // 八段与转场，时间严格对应 result/script.md
 const SCENES = [
@@ -42,8 +43,10 @@ const Layer: React.FC<{ id: string; T: number; s: number; C: any; x?: number; y?
   </MBlur>
 );
 
-export const Main: React.FC = () => {
-  const T = useCurrentFrame() / FPS;
+// paced：不限时长版，输出时间经节奏表映射回脚本时间，内容不变
+export const Main: React.FC<{ paced?: boolean }> = ({ paced }) => {
+  const sec = useCurrentFrame() / FPS;
+  const T = paced ? toScript(sec) : sec;
   const L: React.ReactNode[] = [];
   const in_ = (a: number, b: number) => T >= a && T < b;
 
@@ -80,7 +83,7 @@ export const Main: React.FC = () => {
       {band(39)}
       {/* 草稿标注：段落与时间码 */}
       <div style={{ position: 'absolute', right: 16, bottom: 12, padding: '4px 10px', borderRadius: 6, background: 'rgba(0,0,0,.55)', color: '#ffd84a', fontSize: 18, fontFamily: 'monospace' }}>
-        DRAFT {cur.id} {cur.name} · {T.toFixed(2)}s
+        DRAFT {cur.id} {cur.name} · {T.toFixed(2)}s{paced ? ` → ${sec.toFixed(1)}s` : ''}
       </div>
     </AbsoluteFill>
   );
