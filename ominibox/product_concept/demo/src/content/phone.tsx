@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Content } from '../data/content';
 import { FONT } from '../fonts';
+import { XiaoheiAvatar } from './avatar';
 import { C, Cat, Logo } from '../lib';
 
 // C 段手机：微信聊天 → OmniBox App（360×720，含机身边框，与线框一致）
@@ -22,7 +23,7 @@ export const WeChat: React.FC<{ c: Content }> = ({ c: { wechat: w } }) => {
   const me = (node: React.ReactNode) => (
     <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', gap: 8, marginTop: 14 }}>
       <Tick />{node}
-      <div style={{ width: 34, height: 34, borderRadius: 5, background: 'linear-gradient(135deg,#60A5FA,#2563EB)', flexShrink: 0 }} />
+      <XiaoheiAvatar size={34} radius={5} />
     </div>
   );
   return (

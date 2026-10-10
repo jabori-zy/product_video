@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Content } from '../data/content';
 import { FONT } from '../fonts';
+import { XiaoheiAvatar } from './avatar';
 
 // 知乎专栏文章页（浏览器内容区，1500×788）：B 段收藏、E 段引用跳转
 const BLUE = '#1772F6';
@@ -12,14 +13,14 @@ export const Zhihu: React.FC<{ c: Content; hl?: boolean }> = ({ c: { zhihu: z },
       <div style={{ color: BLUE, fontSize: 30, fontWeight: 900, letterSpacing: 1 }}>{z.site}</div>
       {z.nav.map((n, i) => <div key={n} style={{ fontSize: 16, color: i === 0 ? '#121212' : '#646464', fontWeight: i === 0 ? 600 : 400 }}>{n}</div>)}
       <div style={{ marginLeft: 20, width: 320, height: 34, borderRadius: 999, background: '#F6F6F6', border: '1px solid #EBEBEB', color: '#8590A6', fontSize: 14, lineHeight: '34px', paddingLeft: 18 }}>{z.search}</div>
-      <div style={{ marginLeft: 'auto', width: 30, height: 30, borderRadius: 6, background: 'linear-gradient(135deg,#FDBA74,#F97316)' }} />
+      <XiaoheiAvatar size={30} radius={6} style={{ marginLeft: 'auto', border: '1px solid #EBEBEB' }} />
     </div>
     {/* 正文卡片：与线框位置一致（标题区 300,20 → 900 宽） */}
     <div style={{ position: 'absolute', left: 300, top: 76, width: 900, height: 760, background: '#fff', borderRadius: 4, padding: '36px 48px', boxSizing: 'border-box' }}>
       <div style={{ fontSize: 14, color: BLUE }}>{z.column}</div>
       <div style={{ fontSize: 30, fontWeight: 700, lineHeight: 1.4, marginTop: 10 }}>{z.title}</div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 20 }}>
-        <div style={{ width: 40, height: 40, borderRadius: 6, background: 'linear-gradient(135deg,#334155,#0F172A)', color: '#FEF6EC', fontSize: 18, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{z.author[0]}</div>
+        <XiaoheiAvatar size={40} radius={6} style={{ border: '1px solid #EBEBEB' }} />
         <div>
           <div style={{ fontSize: 15, fontWeight: 600 }}>{z.author}</div>
           <div style={{ fontSize: 13, color: '#8590A6', marginTop: 2 }}>{z.bio}</div>

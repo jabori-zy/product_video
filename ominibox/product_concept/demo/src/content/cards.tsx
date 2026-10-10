@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Content } from '../data/content';
 import { FONT } from '../fonts';
+import { XiaoheiAvatar } from './avatar';
 import { C } from '../lib';
 import { RagFrame } from './understand';
 
@@ -47,7 +48,7 @@ export const Bili: React.FC<{ c: Content }> = ({ c }) => {
     <div style={page(720, 450, '#fff', { color: '#18191C' })}>
       <div style={{ height: 46, display: 'flex', alignItems: 'center', padding: '0 22px', gap: 14, borderBottom: '1px solid #E3E5E7' }}>
         <div style={{ color: '#00AEEC', fontSize: 22, fontWeight: 900, fontStyle: 'italic' }}>{b.site}</div>
-        <div style={{ marginLeft: 'auto', width: 26, height: 26, borderRadius: '50%', background: '#FB7299' }} />
+        <XiaoheiAvatar size={30} style={{ marginLeft: 'auto', border: '2px solid #FB7299' }} />
       </div>
       <div style={{ padding: '12px 22px 0' }}>
         <div style={{ fontSize: 19, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.title}</div>
@@ -101,7 +102,7 @@ export const Xhs: React.FC<{ c: Content }> = ({ c: { xhs: x } }) => {
         <div style={{ fontSize: 13, color: '#13386C', marginTop: 6 }}>{x.tags}</div>
       </div>
       <div style={{ position: 'absolute', left: 16, right: 16, bottom: 14, display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#666' }}>
-        <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'linear-gradient(135deg,#FCA5A5,#FF2442)' }} />
+        <XiaoheiAvatar size={26} style={{ border: '1px solid #eee' }} />
         {x.author}
         <span style={{ marginLeft: 'auto', color: '#FF2442' }}>♥ {x.likes}</span>
         <span>★ {x.saves}</span>
@@ -114,7 +115,7 @@ export const Xhs: React.FC<{ c: Content }> = ({ c: { xhs: x } }) => {
 export const XPost: React.FC<{ c: Content }> = ({ c: { x } }) => (
   <div style={page(500, 400, '#000', { color: '#E7E9EA', padding: 24 })}>
     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-      <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'linear-gradient(135deg,#1D9BF0,#7C3AED)', color: '#fff', fontWeight: 800, fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>AI</div>
+      <XiaoheiAvatar size={48} />
       <div>
         <div style={{ fontSize: 17, fontWeight: 700 }}>{x.name} <span style={{ color: '#1D9BF0' }}>✔</span></div>
         <div style={{ fontSize: 15, color: '#71767B' }}>{x.handle}</div>
