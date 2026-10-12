@@ -1,9 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 212 188" width="424" height="376">
-  <title>小黑 Xiaohei</title>
-  <!-- 与视频里的 Cat 组件同形（demo/src/lib.tsx），按 assets/xiaohei-character.jpg 的 FRONT 正面描出 -->
-  <path d="M100 176 C60 176 22 170 9 145 C2 128 4 96 18 66 C14 46 14 22 21 11 C27 0 41 -3 48 6 C57 14 66 24 72 32 C88 28 112 28 128 32 C134 24 143 14 152 6 C159 -3 173 0 179 11 C186 22 186 46 182 66 C196 96 198 128 191 145 C178 170 140 176 100 176 Z" fill="#171717"/>
-  <circle cx="60" cy="104" r="22.5" fill="#FEF6EC"/>
-  <circle cx="60" cy="104" r="10" fill="#171717"/>
-  <circle cx="140" cy="104" r="22.5" fill="#FEF6EC"/>
-  <circle cx="140" cy="104" r="10" fill="#171717"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="544 48 448 448" role="img" aria-labelledby="title desc">
+  <title id="title">Black Cat Front Avatar</title>
+  <desc id="desc">Based on the FRONT reference: a rounded black cat head with two upright ears, cream-colored round eyes, and black pupils.</desc>
+  <defs>
+    <radialGradient id="fur" cx="48%" cy="43%" r="72%">
+      <stop offset="0" stop-color="#1d1d1b"/>
+      <stop offset="1" stop-color="#1a1a18"/>
+    </radialGradient>
+    <radialGradient id="eye" cx="46%" cy="40%" r="70%">
+      <stop offset="0" stop-color="#fffdf7"/>
+      <stop offset="1" stop-color="#f8f3e9"/>
+    </radialGradient>
+  </defs>
+  <rect x="544" y="48" width="448" height="448" fill="#fff"/>
+  <g>
+    <path fill="url(#fur)" d="M607.2 224.8
+      C605.8 188.6 607.4 148.1 622.2 120.4
+      C628.4 108.8 636.6 102.7 647.2 104.2
+      C669.0 106.3 695.1 134.5 713.9 163.2
+      C748.5 156.1 786.1 155.8 821.3 163.0
+      C839.5 135.6 865.4 106.1 885.9 104.0
+      C915.0 99.8 929.4 149.3 928.1 224.0
+      C943.1 249.1 951.3 277.1 952.0 304.4
+      C953.1 340.8 942.9 370.5 921.8 393.4
+      C894.3 424.2 843.2 442.5 770.0 443.3
+      C694.0 444.8 642.2 430.7 612.3 399.7
+      C591.6 378.1 582.4 347.7 582.7 311.6
+      C582.5 280.4 590.5 249.8 607.2 224.8 Z"/>
+    <path fill="url(#eye)" d="M694.4 252.7
+      C721.6 252.6 743.7 275.1 743.8 302.6
+      C744.0 330.1 722.3 352.3 695.0 352.4
+      C667.8 352.6 645.3 330.5 645.3 303.0
+      C645.2 275.6 667.2 252.9 694.4 252.7 Z"/>
+    <path fill="url(#eye)" d="M839.6 252.7
+      C867.0 252.3 889.0 274.6 889.4 302.2
+      C889.7 329.7 868.4 352.1 840.7 352.4
+      C813.0 352.7 790.8 330.7 790.4 303.3
+      C790.1 275.7 812.1 253.0 839.6 252.7 Z"/>
+    <ellipse cx="696.9" cy="302.0" rx="25.8" ry="26.2" fill="#20201e"/>
+    <ellipse cx="837.7" cy="302.2" rx="25.7" ry="26.2" fill="#20201e"/>
+  </g>
 </svg>

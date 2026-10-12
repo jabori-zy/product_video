@@ -1,17 +1,11 @@
 import React from 'react';
-import { Img, staticFile } from 'remotion';
+import { CatShapes } from '../lib';
 
-// 小黑头像：从六视图 assets/xiaohei-character.jpg（1536×1024）裁出 FRONT 正面
-const SHEET = { w: 1536, h: 1024 };
-const CROP = { x: 537, y: 40, size: 460 };
-const LABEL_Y = 455; // 头像下方的 FRONT 文字：用白底盖住
-
-export const XiaoheiAvatar: React.FC<{ size: number; radius?: number | string; style?: React.CSSProperties }> = ({ size, radius = '50%', style }) => {
-  const k = size / CROP.size;
-  return (
-    <div style={{ width: size, height: size, borderRadius: radius, overflow: 'hidden', position: 'relative', background: '#fff', flexShrink: 0, ...style }}>
-      <Img src={staticFile('xiaohei-character.jpg')} style={{ position: 'absolute', left: -CROP.x * k, top: -CROP.y * k, width: SHEET.w * k, height: SHEET.h * k, maxWidth: 'none' }} />
-      <div style={{ position: 'absolute', left: 0, right: 0, top: (LABEL_Y - CROP.y) * k, bottom: 0, background: '#fff' }} />
-    </div>
-  );
-};
+// 小黑头像：与 result/xiaohei.svg 相同（白底、原图坐标 544 48 448 448 取景），矢量绘制
+export const XiaoheiAvatar: React.FC<{ size: number; radius?: number | string; style?: React.CSSProperties }> = ({ size, radius = '50%', style }) => (
+  <div style={{ width: size, height: size, borderRadius: radius, overflow: 'hidden', background: '#fff', flexShrink: 0, ...style }}>
+    <svg width={size} height={size} viewBox="544 48 448 448" style={{ display: 'block' }}>
+      <CatShapes />
+    </svg>
+  </div>
+);

@@ -228,28 +228,53 @@ export const Band: React.FC<{ x: number; o?: number; w?: number; reverse?: boole
 );
 
 // ---------- 小黑 ----------
-// 按六视图 assets/xiaohei-character.jpg 的 FRONT 正面描出（原图 x 582–950、y 100–442 → 0.515 倍，左右居中）：
-// 圆头耳朵略外撇、耳间浅凹，头宽、下沿平缓；大圆眼 + 居中圆瞳孔，实心黑无描边
-const CAT = 'M100 176 C60 176 22 170 9 145 C2 128 4 96 18 66 C14 46 14 22 21 11 C27 0 41 -3 48 6 C57 14 66 24 72 32 C88 28 112 28 128 32 C134 24 143 14 152 6 C159 -3 173 0 179 11 C186 22 186 46 182 66 C196 96 198 128 191 145 C178 170 140 176 100 176 Z';
+// 小黑标准形（result/xiaohei.svg，用户提供）：坐标是六视图原图 assets/xiaohei-character.jpg 的像素坐标，原样保留
+const HEAD = 'M607.2 224.8 C605.8 188.6 607.4 148.1 622.2 120.4 C628.4 108.8 636.6 102.7 647.2 104.2 C669.0 106.3 695.1 134.5 713.9 163.2 C748.5 156.1 786.1 155.8 821.3 163.0 C839.5 135.6 865.4 106.1 885.9 104.0 C915.0 99.8 929.4 149.3 928.1 224.0 C943.1 249.1 951.3 277.1 952.0 304.4 C953.1 340.8 942.9 370.5 921.8 393.4 C894.3 424.2 843.2 442.5 770.0 443.3 C694.0 444.8 642.2 430.7 612.3 399.7 C591.6 378.1 582.4 347.7 582.7 311.6 C582.5 280.4 590.5 249.8 607.2 224.8 Z';
+/** 眼白中心/半径、瞳孔位置/半径（瞳孔略向内） */
+const EYES = [
+  { cx: 694.6, cy: 302.5, rx: 49.3, ry: 49.9, px: 696.9, py: 302.0, prx: 25.8, pry: 26.2 },
+  { cx: 839.9, cy: 302.5, rx: 49.5, ry: 49.9, px: 837.7, py: 302.2, prx: 25.7, pry: 26.2 },
+];
+const PUPIL = '#20201e';
 
-/** 小黑猫头。line=深色背景用（底色填充 + 细奶白描边，否则会融进黑底），否则实心黑。look: -1..1 瞳孔左右，blink: 0..1 */
-export const Cat: React.FC<{ w?: number; line?: boolean; fill?: string; stroke?: string; blink?: number; look?: number; lookY?: number }> = ({
-  w = 150, line = true, fill = C.black, stroke = C.cream, blink = 0, look = 0, lookY = 0,
+/** 小黑的图形本体（原图坐标系）。line=深色背景用：头填 fill（场景底色）+ 奶白描边，否则会融进黑底 */
+export const CatShapes: React.FC<{ line?: boolean; fill?: string; stroke?: string; strokeW?: number; blink?: number; look?: number; lookY?: number }> = ({
+  line = false, fill = C.black, stroke = C.cream, strokeW = 8, blink = 0, look = 0, lookY = 0,
 }) => {
+  const id = React.useId().replace(/:/g, '');
   const ey = 1 - 0.92 * blink;
-  const ink = line ? fill : C.ink;
   return (
-    <svg width={w} height={w * 0.88} viewBox="0 0 200 176" style={{ overflow: 'visible', display: 'block' }}>
-      <path d={CAT} fill={ink} stroke={line ? stroke : 'none'} strokeWidth={4} strokeLinejoin="round" />
-      {[60, 140].map((ex) => (
-        <g key={ex} transform={`translate(${ex} 104) scale(1 ${ey})`}>
-          <circle r={22.5} fill={C.cream} />
-          <circle cx={look * 8} cy={lookY * 6} r={10} fill={ink} />
+    <>
+      <defs>
+        <radialGradient id={`fur${id}`} cx="48%" cy="43%" r="72%"><stop offset="0" stopColor="#1d1d1b" /><stop offset="1" stopColor="#1a1a18" /></radialGradient>
+        <radialGradient id={`eye${id}`} cx="46%" cy="40%" r="70%"><stop offset="0" stopColor="#fffdf7" /><stop offset="1" stopColor="#f8f3e9" /></radialGradient>
+      </defs>
+      <path d={HEAD} fill={line ? fill : `url(#fur${id})`} stroke={line ? stroke : 'none'} strokeWidth={strokeW} strokeLinejoin="round" />
+      {EYES.map((e) => (
+        <g key={e.cx} transform={`translate(0 ${e.cy}) scale(1 ${ey}) translate(0 ${-e.cy})`}>
+          <ellipse cx={e.cx} cy={e.cy} rx={e.rx} ry={e.ry} fill={`url(#eye${id})`} />
+          <ellipse cx={e.px + look * 16} cy={e.py + lookY * 12} rx={e.prx} ry={e.pry} fill={PUPIL} />
         </g>
       ))}
-    </svg>
+    </>
   );
 };
+
+// 头部外框（原图坐标）→ 组件的 200×176 画框：等比缩放到 176 高、左右居中，底边对齐（各场景的落脚、logo 探头都按这个框排）
+const HB = { x0: 582.5, x1: 952, y0: 99.8, y1: 444.8 };
+const CS = 176 / (HB.y1 - HB.y0);
+const CAT_TF = `translate(${(200 - (HB.x1 - HB.x0) * CS) / 2 - HB.x0 * CS} ${-HB.y0 * CS}) scale(${CS})`;
+
+/** 小黑猫头。line=深色背景用（底色填充 + 细奶白描边），否则就是标准形。look: -1..1 瞳孔左右，blink: 0..1 */
+export const Cat: React.FC<{ w?: number; line?: boolean; fill?: string; stroke?: string; blink?: number; look?: number; lookY?: number }> = ({
+  w = 150, line = true, fill = C.black, stroke = C.cream, blink = 0, look = 0, lookY = 0,
+}) => (
+  <svg width={w} height={w * 0.88} viewBox="0 0 200 176" style={{ overflow: 'visible', display: 'block' }}>
+    <g transform={CAT_TF}>
+      <CatShapes line={line} fill={fill} stroke={stroke} strokeW={4 / CS} blink={blink} look={look} lookY={lookY} />
+    </g>
+  </svg>
+);
 
 /** logo：蓝色渐变圆角方形，黑猫从底部探头 */
 export const Logo: React.FC<{ size?: number; blink?: number; look?: number }> = ({ size = 220, blink = 0, look = 0 }) => (
