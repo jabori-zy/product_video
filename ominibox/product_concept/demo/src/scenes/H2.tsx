@@ -4,12 +4,12 @@ import { toOut } from '../pace';
 import { textW, useTr } from '../i18n';
 
 // H2 品牌结尾 · 方案 A「回文翻转」（替换 H，见 result/script-modify_slogon.md）
-// 口号逐词出现 → 「万物」「记忆」沿两条弧线互换位置 → 双行整句「记忆变成万物 / 万物变成记忆」→ 开场的线稿小黑跳上「记忆」→
+// 口号逐词出现 → 「万物」「记忆」沿两条弧线互换位置 → 主标题卡「随时随地 / 万物变成记忆 / 记忆变成万物」+ 副标题 → 开场的线稿小黑跳上「记忆」→
 // 「记忆」缩成蓝色圆角方块、小黑钻进去，变成 logo 里探头的猫 → 品牌文字 → 眨眼淡出
 // 局部时间 t = 全局 − 39；节奏按成片秒数 u（经 pace.ts 换算）来写，便于与脚本对时
 
 const ROW_Y = 540; // 口号行中心
-const ROW1 = 470; // v2：互换后第一行上移，第二行「万物 变成 记忆」出现在下面
+// final_v2：互换后的「记忆 变成 万物」下移成第二行，「万物 变成 记忆」回到上面一行；上方「随时随地」、下方副标题
 const GROUND = 790; // 小黑探头时的地面（两行口号下方）
 const BLUE = '#7FB0FF';
 
@@ -42,17 +42,19 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
   const centers = (ws: number[]) => { const tot = ws.reduce((a, b) => a + b, 0) + GAP * (ws.length - 1); let x = 960 - tot / 2; return ws.map((w) => { const c = x + w / 2; x += w + GAP; return c; }); };
   const SLOT = centers(wd); // 互换前（也是第二行）：W1 W2 W3
   const [a3, a2, a1] = centers([wd[2], wd[1], wd[0]]); // 互换后：W3 W2 W1
-  const ROW2 = tr(650, ROW1 + FS * 1.2);
+  const ROW_HI = tr(420, 440), ROW_LO = ROW_HI + tr(180, FS * 1.32);
+  const TOP_Y = tr(255, 300), SUB_Y = tr(790, 715);
   const uRaw = toOut(39 + t) - toOut(39); // 本段成片秒数（0 ≈ 结尾起点）
-  // v2：互换之后插入 2 秒的「双行整句」，这期间原有时间线停在 3.3，之后整体顺延 2 秒
-  const HOLD0 = 3.3, HOLD = 2.0;
+  // 互换之后插入 3.5 秒的主标题卡，这期间原有时间线停在 3.3，之后整体顺延（final_v2：2.0 → 3.5）
+  const HOLD0 = 3.3, HOLD = 3.5;
   const u = uRaw < HOLD0 ? uRaw : Math.max(HOLD0, uRaw - HOLD);
 
-  // ⓪ 双行：第一行「记忆 变成 万物」上移，第二行「万物 变成 记忆」逐词出现
+  // ⓪ 主标题卡：「记忆 变成 万物」下移成第二行，第一行「万物 变成 记忆」逐词出现，再出「随时随地」和副标题
   const rise = uRaw < 3.35 ? 0 : sp(uRaw, 3.35, { damping: 15, mass: 0.8 });
-  const rowY = ROW_Y + (ROW1 - ROW_Y) * rise;
-  const WORD_TOP = rowY - FS / 2; // 第一行字面顶端（小黑落脚处）
+  const rowY = ROW_Y + (ROW_LO - ROW_Y) * rise;
+  const WORD_TOP = ROW_HI - FS / 2; // 第一行字面顶端（小黑落脚处：第一行的蓝色「记忆」）
   const l2 = [3.6, 3.8, 4.0].map((a) => lin(uRaw, a, a + 0.4, 0, 1));
+  const topO = lin(uRaw, 4.2, 4.6, 0, 1), subO = lin(uRaw, 4.5, 4.9, 0, 1);
 
   // ① 逐词出现
   const rev = (a: number) => lin(u, a, a + 0.4, 0, 1);
@@ -75,7 +77,7 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
     const pk = kf(u, [{ t: 3.3, x: -90 }, { t: 3.55, x: 40 }, { t: 3.65, x: 15 }, { t: 3.8, x: 60 }]);
     cat = { x: pk.x, y: GROUND, sx: 1, sy: 1, s: 1 };
   } else if (u < 4.75) {
-    cat = { ...hop(u, 3.95, LAND, { x: 60, y: GROUND }, { x: a3, y: WORD_TOP }, 260, 0.12), s: 1 };
+    cat = { ...hop(u, 3.95, LAND, { x: 60, y: GROUND }, { x: SLOT[2], y: WORD_TOP }, 260, 0.12), s: 1 };
     cat.y += dip;
   }
 
@@ -83,7 +85,7 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
   const fall = lin(u, 4.65, 5.05, 0, 1, (x) => x * x);
   const sq = u < 4.8 ? 0 : sp(u, 4.8, { damping: 15, mass: 0.8 });
   const sqW = wd[2] + (LS - wd[2]) * sq, sqH = FS + (LS - FS) * sq; // 起始 = 「记忆」字框：上沿正好是字面顶端，小黑不跳
-  const sqX = a3 + (960 - a3) * sq, sqY = rowY + (ROW_Y - rowY) * sq;
+  const sqX = SLOT[2] + (960 - SLOT[2]) * sq, sqY = ROW_HI + (ROW_Y - ROW_HI) * sq;
   const sqTop = sqY - sqH / 2;
   const sqO = lin(u, 4.75, 4.95, 0, 1);
   if (u >= 4.75 && u < 5.35) cat = { x: sqX, y: sqTop, sx: 1, sy: 1, s: 1 };
@@ -124,15 +126,24 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
         {/* 口号三词 */}
         {u < 5.1 && (
           <>
-            <Word text={W1} fs={FS} x={wanX} y={wanY + dip + fall * 420} o={r0 * (1 - fall)} blur={(1 - r0) * 12} rot={fall * -25} />
+            <Word text={W1} fs={FS} x={wanX} y={wanY + fall * 420} o={r0 * (1 - fall)} blur={(1 - r0) * 12} rot={fall * -25} />
             <div style={{ position: 'absolute', inset: 0, transform: `rotate(${seesaw}deg)`, transformOrigin: `960px ${rowY}px` }}>
-              <Word text={W2} fs={FS} x={bianX} y={rowY + dip + fall * 460} o={r1 * (1 - fall)} blur={(1 - r1) * 12} rot={fall * 18} />
+              <Word text={W2} fs={FS} x={bianX} y={rowY + fall * 460} o={r1 * (1 - fall)} blur={(1 - r1) * 12} rot={fall * 18} />
             </div>
-            {/* 第二行：万物 变成 记忆（和第一行一起掉落） */}
-            {[W1, W2, W3].map((w, i) => (
-              <Word key={`l2${w}`} text={w} fs={FS} x={SLOT[i]} y={ROW2 + fall * (380 + i * 40)} o={l2[i] * (1 - fall)} blur={(1 - l2[i]) * 12} rot={fall * [22, -14, 26][i]} color={i === 2 ? BLUE : '#fff'} />
+            {/* 第一行：万物 变成 记忆（和第二行一起掉落） */}
+            {/* 小黑踩这一行（蹦床回弹）；「记忆」不掉落，缩成蓝色方块 */}
+            {[W1, W2].map((w, i) => (
+              <Word key={`l2${w}`} text={w} fs={FS} x={SLOT[i]} y={ROW_HI + dip + fall * (380 + i * 40)} o={l2[i] * (1 - fall)} blur={(1 - l2[i]) * 12} rot={fall * [22, -14][i]} />
             ))}
-            <Word text={W3} fs={FS} x={u < 4.75 ? jiX : sqX} y={(u < 4.75 ? jiY : sqY) + dip} o={r2 * (1 - lin(u, 4.75, 4.95, 0, 1))} blur={(1 - r2) * 12} color={BLUE} s={u < 4.75 ? 1 : 1 - 0.3 * sq} />
+            <Word text={W3} fs={FS} x={u < 4.75 ? SLOT[2] : sqX} y={(u < 4.75 ? ROW_HI : sqY) + dip} o={l2[2] * (1 - lin(u, 4.75, 4.95, 0, 1))} blur={(1 - l2[2]) * 12} color={BLUE} s={u < 4.75 ? 1 : 1 - 0.3 * sq} />
+            <Word text={W3} fs={FS} x={jiX} y={jiY + fall * 400} o={r2 * (1 - fall)} blur={(1 - r2) * 12} rot={fall * -20} color={BLUE} />
+            {/* 随时随地 + 副标题 */}
+            {[
+              { y: TOP_Y, o: topO, fs: tr(64, 56), w: 600, c: '#cfcfcf', text: tr('随时随地', 'Anytime, anywhere'), rot: -8 },
+              { y: SUB_Y, o: subO, fs: tr(36, 32), w: 500, c: '#bdbdbd', text: tr('记录、收藏、订阅、整理、问答、创作、分享、协作，一个就够了。', 'Capture, save, subscribe, organize, ask, create, share, collaborate — one app is all you need.'), rot: 6 },
+            ].map((l) => (
+              <div key={l.text} style={{ position: 'absolute', left: 0, top: l.y - l.fs, width: 1920, height: l.fs * 2, lineHeight: `${l.fs * 2}px`, textAlign: 'center', fontSize: l.fs, fontWeight: l.w, color: l.c, opacity: l.o * (1 - fall), filter: l.o < 0.98 ? `blur(${(1 - l.o) * 10}px)` : undefined, transform: `translateY(${fall * 420}px) rotate(${fall * l.rot}deg)`, whiteSpace: 'nowrap', letterSpacing: tr(4, 0) }}>{l.text}</div>
+            ))}
           </>
         )}
 

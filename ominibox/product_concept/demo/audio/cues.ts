@@ -17,8 +17,8 @@ const C0 = insertStart('C+'), E0 = insertStart('E+');
 export const H0 = toOutApp(39); // H2 结尾起点；H2 内部用成片秒 u（见 src/scenes/H2.tsx）
 export const SECTIONS = { A: 0, B: o(5), C: o(9), Cp: C0, D: C0 + INSERTS[0].dur, E: o(ARC_DE), Ep: E0, F: o(30), G: o(35), H: H0 };
 export const BAND_IN = o(4.0); // 文字落进输入框，全乐队进
-/** H2 里互换之后插入的双行整句时长（见 src/scenes/H2.tsx 的 HOLD0 / HOLD） */
-const H_HOLD0 = 3.3, H_HOLD = 2.0;
+/** H2 里互换之后插入的主标题卡时长（见 src/scenes/H2.tsx 的 HOLD0 / HOLD） */
+const H_HOLD0 = 3.3, H_HOLD = 3.5;
 export const LOGO = H0 + 5.8 + H_HOLD; // 小黑钻进方块、logo 成形
 
 /** 全片声音事件（按语言：打字的字数与按键表不同，其余时间相同） */
@@ -126,11 +126,12 @@ export const buildCues = (lang: Lang): Cue[] => {
   for (const k of [37, 37.65, 38.3]) c(o(k), 'impact', { v: 0.7 });
 
   // ---------- H2 结尾（成片秒 = H0 + u）----------
-  const h = (u: number) => H0 + (u < H_HOLD0 ? u : u + H_HOLD); // 互换之后的事件顺延 2 秒
+  const h = (u: number) => H0 + (u < H_HOLD0 ? u : u + H_HOLD); // 互换之后的事件顺延 H_HOLD 秒
   const hRaw = (u: number) => H0 + u;
   for (let i = 0; i < 3; i++) c(h(0.3 + i * 0.45), 'word', { i: i + 6 });
   c(h(2.1), 'swap', { dur: 1.0 });
-  for (let i = 0; i < 3; i++) c(hRaw(3.6 + i * 0.2), 'word', { i: i + 9 }); // 第二行「万物 变成 记忆」
+  for (let i = 0; i < 3; i++) c(hRaw(3.6 + i * 0.2), 'word', { i: i + 9 }); // 第一行「万物 变成 记忆」
+  c(hRaw(4.2), 'line', { i: 0, v: 0.7 }); c(hRaw(4.5), 'line', { i: 1, v: 0.6 }); // 随时随地、副标题
   c(h(3.3), 'slide'); c(h(3.5), 'meow', { i: 1 }); c(h(3.65), 'retract');
   c(h(3.95) - 0.04, 'boing', { i: 2 }); c(h(4.3), 'land', { i: 2 }); c(h(4.32), 'trampoline'); c(h(4.45), 'blink');
   c(h(4.65), 'fall'); c(h(4.8), 'swell', { dur: 0.6 });

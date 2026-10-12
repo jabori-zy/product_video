@@ -1,5 +1,6 @@
 # 小黑 OmniBox 产品介绍片
 
+- **Final v2 成片**：`npm run render:final -- final_v2` → `out/ominibox_product_video_final_v2.mp4`；英文 `npm run render:final -- final_v2 en` → `out/ominibox_product_video_en_final_v2.mp4`（≈128 s；结尾口号改成主标题卡「随时随地 / 万物变成记忆 / 记忆变成万物」+ 副标题，见 `../result/script-final-v2.md`）
 - **Final 成片**：`npm run render:final -- final` → `out/ominibox_product_video_final.mp4`（≈126 s；转场卡小节线、按段编曲、−14 LUFS / −1.5 dBTP、标题垫底、镜头推近；改动见 `../result/script-final.md`）；审片截图 `node tools/stills.mjs [--scale=0.33] <秒>…` → `out/stills/`
 - **英文 Final**：`npm run render:final -- final en` → `out/ominibox_product_video_en_final.mp4`（组件 `FinalEn`，与中文 Final 同一套画面与优化）；只重做声音、不重渲画面：命令末尾加 `--remux`
 - **v2 成片**：`npm run render:final -- v2` → `out/ominibox_product_video_v2.mp4`（≈124 s，1920×1080，30 fps，含方案二声音）；先按当前时间线重建声音，再渲染 Final、合成。脚本 `../result/script-v2.md`；v1 成片保留在 `out/ominibox_product_video_v1.mp4`
