@@ -228,20 +228,23 @@ export const Band: React.FC<{ x: number; o?: number; w?: number; reverse?: boole
 );
 
 // ---------- 小黑 ----------
-const CAT = 'M28 150 C6 120 8 82 32 62 L36 12 C38 4 45 3 50 8 L82 40 C94 37 106 37 118 40 L150 8 C155 3 162 4 164 12 L168 62 C192 82 194 120 172 150 C148 176 52 176 28 150 Z';
+// 按六视图 assets/xiaohei-character.jpg 的 FRONT 正面描出（原图 x 582–950、y 100–442 → 0.515 倍，左右居中）：
+// 圆头耳朵略外撇、耳间浅凹，头宽、下沿平缓；大圆眼 + 居中圆瞳孔，实心黑无描边
+const CAT = 'M100 176 C60 176 22 170 9 145 C2 128 4 96 18 66 C14 46 14 22 21 11 C27 0 41 -3 48 6 C57 14 66 24 72 32 C88 28 112 28 128 32 C134 24 143 14 152 6 C159 -3 173 0 179 11 C186 22 186 46 182 66 C196 96 198 128 191 145 C178 170 140 176 100 176 Z';
 
-/** 小黑猫头。line=线稿（描边 + 填底色），否则实心黑。look: -1..1 瞳孔左右，blink: 0..1 */
+/** 小黑猫头。line=深色背景用（底色填充 + 细奶白描边，否则会融进黑底），否则实心黑。look: -1..1 瞳孔左右，blink: 0..1 */
 export const Cat: React.FC<{ w?: number; line?: boolean; fill?: string; stroke?: string; blink?: number; look?: number; lookY?: number }> = ({
   w = 150, line = true, fill = C.black, stroke = C.cream, blink = 0, look = 0, lookY = 0,
 }) => {
   const ey = 1 - 0.92 * blink;
+  const ink = line ? fill : C.ink;
   return (
     <svg width={w} height={w * 0.88} viewBox="0 0 200 176" style={{ overflow: 'visible', display: 'block' }}>
-      <path d={CAT} fill={line ? fill : C.ink} stroke={line ? stroke : 'none'} strokeWidth={7} strokeLinejoin="round" />
-      {[72, 128].map((ex) => (
+      <path d={CAT} fill={ink} stroke={line ? stroke : 'none'} strokeWidth={4} strokeLinejoin="round" />
+      {[60, 140].map((ex) => (
         <g key={ex} transform={`translate(${ex} 104) scale(1 ${ey})`}>
-          <ellipse rx={19} ry={16} fill={C.cream} />
-          <ellipse cx={look * 7} cy={lookY * 5} rx={9} ry={8.5} fill={line ? fill : C.ink} />
+          <circle r={22.5} fill={C.cream} />
+          <circle cx={look * 8} cy={lookY * 6} r={10} fill={ink} />
         </g>
       ))}
     </svg>

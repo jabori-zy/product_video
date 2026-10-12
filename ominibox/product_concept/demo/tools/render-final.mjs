@@ -22,7 +22,7 @@ run(`npm run audio${en ? ' -- en' : ''}`); // 声音事件表与画面同源：�
 if (remux) run(`npx remotion ffmpeg -v error -y -i ${OUT} -map 0:v -c:v copy ${TMP}`);
 else run(`npx remotion render ${COMP} ${TMP}`);
 // 母带：两遍 loudnorm（先测量，再线性增益）→ −14 LUFS、真峰值 ≤ −1.5 dBTP
-const LN = 'I=-14:TP=-1.5:LRA=20';
+const LN = 'I=-14:TP=-2:LRA=20'; // AAC 编码后真峰值会回升约 0.5 dB，目标留到 −2，成片 ≤ −1.5
 const probe = execSync(`npx remotion ffmpeg -hide_banner -i ${MIX} -af loudnorm=${LN}:print_format=json -f null - 2>&1`, { cwd: root }).toString();
 const m = JSON.parse(probe.slice(probe.lastIndexOf('{'), probe.lastIndexOf('}') + 1));
 const AF = `loudnorm=${LN}:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true,aresample=44100`;
