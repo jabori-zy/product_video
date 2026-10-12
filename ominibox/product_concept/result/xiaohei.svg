@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 212 188" width="424" height="376">
+  <title>小黑 Xiaohei</title>
+  <!-- 与视频里的 Cat 组件同形（demo/src/lib.tsx），按 assets/xiaohei-character.jpg 的 FRONT 正面描出 -->
+  <path d="M100 176 C60 176 22 170 9 145 C2 128 4 96 18 66 C14 46 14 22 21 11 C27 0 41 -3 48 6 C57 14 66 24 72 32 C88 28 112 28 128 32 C134 24 143 14 152 6 C159 -3 173 0 179 11 C186 22 186 46 182 66 C196 96 198 128 191 145 C178 170 140 176 100 176 Z" fill="#171717"/>
+  <circle cx="60" cy="104" r="22.5" fill="#FEF6EC"/>
+  <circle cx="60" cy="104" r="10" fill="#171717"/>
+  <circle cx="140" cy="104" r="22.5" fill="#FEF6EC"/>
+  <circle cx="140" cy="104" r="10" fill="#171717"/>
+</svg>
