@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Easing, interpolate, interpolateColors, spring } from 'remotion';
+import { AbsoluteFill, Easing, Img, interpolate, interpolateColors, spring, staticFile } from 'remotion';
 import { FONT } from './fonts';
 
 // 草稿：30 fps 省资源；所有时间都用秒写，与 script.md 一一对应
@@ -276,14 +276,30 @@ export const Cat: React.FC<{ w?: number; line?: boolean; fill?: string; stroke?:
   </svg>
 );
 
-/** logo：蓝色渐变圆角方形，黑猫从底部探头 */
-export const Logo: React.FC<{ size?: number; blink?: number; look?: number }> = ({ size = 220, blink = 0, look = 0 }) => (
-  <div style={{ width: size, height: size, borderRadius: size * 0.24, background: `linear-gradient(180deg, ${C.blue}, ${C.blue2})`, position: 'relative', overflow: 'hidden', flexShrink: 0 }}>
-    <div style={{ position: 'absolute', left: size * 0.12, top: size * 0.36 }}>
-      <Cat w={size * 0.76} line={false} blink={blink} look={look} />
-    </div>
-  </div>
+/** logo：产品图标（assets/product-icon.png，复制到 public/） */
+export const Logo: React.FC<{ size?: number; style?: React.CSSProperties }> = ({ size = 220, style }) => (
+  <Img src={staticFile('product-icon.png')} width={size} height={size} style={{ display: 'block', flexShrink: 0, ...style }} />
 );
+
+// 绘制版猫 → 产品图标里的猫：两眼中点、眼距、倾角对齐（按 product-icon.png 像素量出，单位 = logo 边长）
+// 绘制版两眼 (0.359, 0.753) (0.641, 0.753)；图标两眼 (0.280, 0.763) (0.613, 0.808)
+const TO_ICON = { ox: 0.5, oy: 0.753, dx: -0.0533, dy: 0.0328, rot: 7.7, s: 1.194 };
+
+/** 绘制版 logo：蓝色渐变圆角方形，黑猫从底部探头（会眨眼）；只在结尾小黑钻进方块的交接里用。
+ *  toIcon 0→1：猫移到产品图标里的位置和大小，之后淡到 Logo（PNG）就不会出现两只猫 */
+export const LogoDrawn: React.FC<{ size?: number; blink?: number; look?: number; toIcon?: number }> = ({ size = 220, blink = 0, look = 0, toIcon = 0 }) => {
+  const k = toIcon, T = TO_ICON;
+  const tf = `translate(${T.dx * size * k}px, ${T.dy * size * k}px) rotate(${T.rot * k}deg) scale(${1 + (T.s - 1) * k})`;
+  return (
+    <div style={{ width: size, height: size, borderRadius: size * 0.24, background: `linear-gradient(180deg, ${C.blue}, ${C.blue2})`, position: 'relative', overflow: 'hidden', flexShrink: 0 }}>
+      <div style={{ position: 'absolute', inset: 0, transformOrigin: `${T.ox * size}px ${T.oy * size}px`, transform: tf }}>
+        <div style={{ position: 'absolute', left: size * 0.12, top: size * 0.36 }}>
+          <Cat w={size * 0.76} line={false} blink={blink} look={look} />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // ---------- 光标与 HUD ----------
 /** macOS 光标：path=[{t,x,y}]，clicks=[秒]，点击时缩小并出现涟漪 */

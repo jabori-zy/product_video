@@ -1,5 +1,5 @@
 import React from 'react';
-import { C, Cat, Fill, Logo, blinkAt, hop, kf, lin, sp } from '../lib';
+import { C, Cat, Fill, Logo, LogoDrawn, blinkAt, hop, inOut, kf, lin, sp } from '../lib';
 import { toOut } from '../pace';
 import { textW, useTr } from '../i18n';
 
@@ -98,7 +98,9 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
     cat = { ...h, s: 1 + (CW / 150 - 1) * g };
   }
   const solid = lin(u, 5.45, 5.8, 0, 1);
-  const logoOn = u >= 5.9; // 交接给 Logo 组件（几何一致，不跳）
+  const logoOn = u >= 5.9; // 交接给 LogoDrawn（几何一致，不跳）
+  const toIcon = inOut(lin(u, 5.95, 6.3, 0, 1)); // 猫挪到产品图标里的姿态
+  const icon = lin(u, 6.25, 6.4, 0, 1); // 对齐后淡到真实产品图标
 
   // ⑥ 品牌文字
   // 英文品牌名更宽：logo + 间距 80 + 文字整体居中（中文保持原来的 −330 / 840）
@@ -160,7 +162,9 @@ export const Hh2: React.FC<{ t: number }> = ({ t }) => {
           )}
           {logoOn && (
             <div style={{ position: 'absolute', left: L0.x, top: L0.y }}>
-              <Logo size={LS} blink={blink} />
+              {icon < 1 && <LogoDrawn size={LS} blink={blink} toIcon={toIcon} />}
+              {/* 小黑落定后淡到真实产品图标 */}
+              {icon > 0 && <Logo size={LS} style={{ position: 'absolute', left: 0, top: 0, opacity: icon }} />}
             </div>
           )}
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { C, Cat, Fill, Logo, blinkAt, lin, sp } from '../lib';
+import { C, Cat, Fill, Logo, LogoDrawn, blinkAt, inOut, lin, sp } from '../lib';
 
 // H 品牌 · 口号（39.0–45.0 s），局部时间 t = 全局 − 39
 
@@ -25,6 +25,8 @@ export const Hh: React.FC<{ t: number }> = ({ t }) => {
   const lineCat = lin(t, 2.9, 3.15, 0, 1);
   const lineCatO = 1 - lin(t, 3.3, 3.45, 0, 1);
   const logoP = sp(t, 3.15, { damping: 12 });
+  const toIcon = inOut(lin(t, 3.45, 3.8, 0, 1));
+  const icon = lin(t, 3.75, 3.9, 0, 1);
   const shift = lin(t, 4.0, 4.35, 0, -330);
   const push = lin(t, 5.2, 6.0, 1, 1.03);
   const fade = lin(t, 5.7, 6.0, 0, 1);
@@ -64,7 +66,9 @@ export const Hh: React.FC<{ t: number }> = ({ t }) => {
         <div style={{ position: 'absolute', inset: 0, transform: `translateX(${shift}px)` }}>
           {/* logo 方块 */}
           <div style={{ position: 'absolute', left: L0.x, top: L0.y, transform: `scale(${logoP})` }}>
-            <Logo size={LS} blink={blink} />
+            {icon < 1 && <LogoDrawn size={LS} blink={blink} toIcon={toIcon} />}
+            {/* 线稿猫收拢后淡到真实产品图标 */}
+            {icon > 0 && <Logo size={LS} style={{ position: 'absolute', left: 0, top: 0, opacity: icon }} />}
           </div>
           {/* 线稿猫头从眼圈周围长出，交接给 logo 里的实心猫 */}
           {t >= 2.9 && lineCatO > 0 && (
