@@ -16,7 +16,7 @@ const ZhihuFav: React.FC = () => (
   <div style={{ width: 16, height: 16, borderRadius: 4, background: '#1772F6', color: '#fff', fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>知</div>
 );
 
-export const BrowserChrome: React.FC<{ w: number; title: string; url: string; logo?: boolean }> = ({ w, title, url, logo = true }) => {
+export const BrowserChrome: React.FC<{ w: number; title: string; url: string; logo?: boolean; fav?: React.ReactNode }> = ({ w, title, url, logo = true, fav }) => {
   const EXT = ['#4285F4', '#F4B400', '#E94235'];
   return (
     <div style={{ position: 'absolute', left: 0, top: 0, width: w, height: CHROME_H, fontFamily: FONT, zIndex: 2 }}>
@@ -24,7 +24,7 @@ export const BrowserChrome: React.FC<{ w: number; title: string; url: string; lo
       <div style={{ position: 'absolute', left: 0, top: 0, width: w, height: 44, background: '#1F1F1F' }}>
         {['#FF5F57', '#FEBC2E', '#28C840'].map((col, i) => <div key={i} style={{ position: 'absolute', left: 18 + i * 22, top: 16, width: 13, height: 13, borderRadius: '50%', background: col }} />)}
         <div style={{ position: 'absolute', left: 92, top: 8, width: 280, height: 36, borderRadius: '10px 10px 0 0', background: '#353535', display: 'flex', alignItems: 'center', gap: 9, padding: '0 12px', boxSizing: 'border-box' }}>
-          <ZhihuFav />
+          {fav ?? <ZhihuFav />}
           <span style={{ flex: 1, color: '#E3E3E3', fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{title}</span>
           <Ic size={14} d={<path d="M18 6 6 18M6 6l12 12" />} />
         </div>

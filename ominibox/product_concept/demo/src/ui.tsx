@@ -1,5 +1,5 @@
 import React from 'react';
-import { C, Logo, Spinner, Tx, W, H, sp } from './lib';
+import { C, Cat, Logo, Spinner, Tx, W, H, sp } from './lib';
 import { useRes, useTr } from './i18n';
 
 // OmniBox 网页端（深色）共用部件。坐标系 1920×1080，侧栏宽 300
@@ -215,5 +215,27 @@ export const HomeCards: React.FC<{ x: number; y: number; w: number; t: number; a
         </>
       ))}
     </>
+  );
+};
+
+/** 完整网页（侧栏资源树 + 聊天首页），笔记本浏览器里用；rows = [图标, 资源名] */
+/** homeO：首页内容（问候、小黑、输入框、卡片）的不透明度；0 时只剩侧栏 + 空主区，与原片 D 开场一致 */
+export const WebHome: React.FC<{ rows: [string, string][]; blink?: number; homeO?: number }> = ({ rows, blink = 0, homeO = 1 }) => {
+  const tr = useTr();
+  return (
+    <div style={{ position: 'absolute', inset: 0 }}>
+      <AppShell />
+      <Sidebar tab={0}>
+        <Tx x={26} y={340} s={15} c={C.muted}>{tr('个人 ⌄', 'Personal ⌄')}</Tx>
+        {rows.map(([ic, name], i) => <Row key={name} y={376 + i * 40} icon={ic} text={name} />)}
+      </Sidebar>
+      <div style={{ position: 'absolute', inset: 0, opacity: homeO, transform: `translateY(${(1 - homeO) * 24}px)` }}>
+      <div style={{ position: 'absolute', left: 300, top: 300, width: 1620, textAlign: 'center', color: '#fff', fontSize: 34, fontWeight: 600 }}>{tr('晚上好，今天有什么可以帮您的吗？', 'Good evening. How can I help you today?')}</div>
+      <div style={{ position: 'absolute', left: 690, top: 455 }}><Cat w={120} fill={C.main} blink={blink} look={0.3} lookY={0.4} /></div>
+      <div style={{ position: 'absolute', left: 830, top: 470, padding: '10px 22px', borderRadius: 999, background: '#383838', color: '#cfcfcf', fontSize: 18 }}>{tr('列出包含"会议"标签的所有资源', 'List all resources tagged "meeting"')}</div>
+      <Composer x={630} y={560} w={960} />
+      <HomeCards x={630} y={850} w={960} t={1} a={-1} />
+      </div>
+    </div>
   );
 };

@@ -1,10 +1,12 @@
 import React from 'react';
-import { Caption, blinkAt, kf, lin } from '../lib';
+import { C, Camera, Caption, blinkAt, inOut, kf, lin } from '../lib';
+import { dCam } from './D';
 import { LOCALES } from '../data/content';
 import { useLang, useRes, useTr } from '../i18n';
 import type { ResKey } from '../copy';
 import { Board } from '../content/understand';
-import { CAM_FULL, CAM_WIDE, Laptop, PHONE, Phone, Stage, phoneToWorld, screenToWorld } from '../mobile/stage';
+import { CAM_FULL, CAM_WIDE, Laptop, PHONE, Phone, Stage, pageToWorld, phoneToWorld } from '../mobile/stage';
+import { WebHome } from '../ui';
 import { BottomBar, ContentTabs, Dialog, HomeComposer, HomeHeader, Ic, M, MoreSheetBody, PH, PW, RecordSheetBody, ResRow, ResToolbar, Sheet, Tap, Toast, spr } from '../mobile/ui';
 
 // C+ 手机随手记（插在 D 开场 12.05 s）：电脑画面拉远成笔记本 → 手机录下周会、拍下白板 → 两条资源化作光点飞进电脑侧栏 → 推回电脑，接 D
@@ -111,7 +113,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
     const p = lin(t, a, a + DOT_FLIGHT, 0, 1, (x) => x * x * (3 - 2 * x));
     if (t < a || p >= 1) return null;
     const from = phoneToWorld(60, ROW0 + i * ROW_STEP + 22, { ...PHONE, x: px });
-    const to = screenToWorld(450, 586 + i * 65); // 原片 D 定格帧里侧栏资源行下方
+    const to = pageToWorld(60, 376 + (3 + i) * 40 + 17); // 浏览器网页里侧栏资源行下方
     const x = from.x + (to.x - from.x) * p, y = from.y + (to.y - from.y) * p - 260 * 4 * p * (1 - p);
     return (
       <React.Fragment key={n.text}>
@@ -125,11 +127,20 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
     );
   });
   const glow = Math.max(0, 1 - Math.abs(t - 13.55) / 0.5);
+  // 电脑：原片定格帧（D 开场推近侧栏的特写）→ 同一个镜头拉远成完整网页 → 缩进 Chrome 窗口；结尾倒放回定格帧
+  // 三段错开叠在一起，像一次连续的拉远：镜头 0.05–1.2，浏览器 0.35–1.35，首页内容 0.5–1.1 淡入
+  const pull = Math.min(lin(t, 0.05, 1.2, 0, 1, inOut), 1 - lin(t, 14.05, 15.15, 0, 1, inOut));
+  const browser = Math.min(lin(t, 0.35, 1.35, 0, 1, inOut), 1 - lin(t, 13.75, 14.85, 0, 1, inOut));
+  const homeO = Math.min(lin(t, 0.5, 1.1, 0, 1), 1 - lin(t, 13.85, 14.45, 0, 1));
+  const c0 = dCam(M1_AT - 12), c1 = { x: 960, y: 540, s: 1, rx: 0, ry: 0 };
+  const webCam = Object.fromEntries((['x', 'y', 's', 'rx', 'ry'] as const).map((k) => [k, (c0[k] ?? c1[k]) + (c1[k] - (c0[k] ?? c1[k])) * pull]));
 
   return (
     <>
       <Stage cam={cam}>
-        <Laptop at={M1_AT} glow={glow} blur={5 * lin(cam.x, 960, CAM_PHONE.x, 0, 1) * lin(cam.s, 1, CAM_PHONE.s, 0, 1)} />
+        {/* 笔记本显示整个浏览器（见上面 pull / browser / homeO） */}
+        <Laptop at={M1_AT} glow={glow} blur={5 * lin(cam.x, 960, CAM_PHONE.x, 0, 1) * lin(cam.s, 1, CAM_PHONE.s, 0, 1)} browser={browser}
+          page={<div style={{ position: 'absolute', inset: 0, background: C.main }}><Camera c={webCam}><WebHome rows={OLD.map(([ic, k]) => [ic, res(k)])} blink={blinkAt(t, [3.0, 9.0])} homeO={homeO} /></Camera></div>} />
         <Phone x={px} y={PHONE.y} k={PHONE.k}>{screen}</Phone>
         {dots}
       </Stage>

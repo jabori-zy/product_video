@@ -3,7 +3,7 @@ import { C, Caption, Spinner, blinkAt, kf, lin, typed } from '../lib';
 import { LOCALES } from '../data/content';
 import { useLang, useRes, useTr } from '../i18n';
 import { TYPED, stepOf, txt, type ResKey } from '../copy';
-import { CAM_FULL, CAM_WIDE, Laptop, PHONE, Phone, Stage, phoneToWorld, screenToWorld } from '../mobile/stage';
+import { CAM_FULL, CAM_WIDE, Laptop, PHONE, Phone, Stage, pageToWorld, phoneToWorld } from '../mobile/stage';
 import { Badge, BottomBar, ChatComposer, ChatHistoryList, ContentTabs, Disclaimer, HomeComposer, HomeHeader, Ic, M, PH, PW, ResRow, ResToolbar, Sheet, Tap, ThreadHeader, spr } from '../mobile/ui';
 
 // E+ 跨端接力（插在 E 26.45 s：周报刚存进资源树）：周报从电脑屏幕里浮起、变形落进手机 → 手机上读周报、
@@ -75,8 +75,10 @@ export const M2: React.FC<{ t: number }> = ({ t }) => {
   // 交接：电脑侧栏那一行 → 浮起 → 变形成手机里的文档
   const lift = lin(t, 1.6, 1.9, 0, 1);
   const hp = spr(t, 1.9, 14);
-  const a = screenToWorld(ROW_SCREEN.x, ROW_SCREEN.y);
-  const a2 = screenToWorld(ROW_SCREEN.x + ROW_SCREEN.w, ROW_SCREEN.y + ROW_SCREEN.h);
+  // 笔记本显示整个浏览器（插段首尾缩放回原片满屏），网页内坐标经 pageToWorld 换到世界坐标
+  const browser = Math.min(lin(t, 0.15, 1.0, 0, 1), 1 - lin(t, 13.6, 14.6, 0, 1));
+  const a = pageToWorld(ROW_SCREEN.x, ROW_SCREEN.y, browser);
+  const a2 = pageToWorld(ROW_SCREEN.x + ROW_SCREEN.w, ROW_SCREEN.y + ROW_SCREEN.h, browser);
   const b = phoneToWorld(0, 0, ph);
   const b2 = phoneToWorld(PW, PH, ph);
   const card = {
@@ -168,7 +170,7 @@ export const M2: React.FC<{ t: number }> = ({ t }) => {
   );
 
   // 回传：手机上的新问答同步回电脑对话（光点）
-  const sp0 = phoneToWorld(200, 420, ph), sp1 = screenToWorld(1100, 520);
+  const sp0 = phoneToWorld(200, 420, ph), sp1 = pageToWorld(1100, 520, browser);
   const sq = lin(t, 12.7, 13.45, 0, 1, (x) => x * x * (3 - 2 * x));
   const sync = t > 12.7 && sq < 1 && (
     <div style={{ position: 'absolute', left: sp0.x + (sp1.x - sp0.x) * sq - 11, top: sp0.y + (sp1.y - sp0.y) * sq - 220 * 4 * sq * (1 - sq) - 11, width: 22, height: 22, borderRadius: '50%', background: '#fff', boxShadow: '0 0 30px 6px #4A8EF9' }} />
@@ -177,7 +179,7 @@ export const M2: React.FC<{ t: number }> = ({ t }) => {
   return (
     <>
       <Stage cam={cam}>
-        <Laptop at={M2_AT} blur={5 * lin(cam.x, 960, CAM_PHONE.x, 0, 1) * lin(cam.s, 1, CAM_PHONE.s, 0, 1)} glow={Math.max(0, 1 - Math.abs(t - 13.5) / 0.4)}>
+        <Laptop at={M2_AT} browser={browser} blur={5 * lin(cam.x, 960, CAM_PHONE.x, 0, 1) * lin(cam.s, 1, CAM_PHONE.s, 0, 1)} glow={Math.max(0, 1 - Math.abs(t - 13.5) / 0.4)}>
           {/* 侧栏里那一行先亮起，再「被拿走」 */}
           {t >= 1.5 && t < 3.2 && <div style={{ position: 'absolute', left: ROW_SCREEN.x, top: ROW_SCREEN.y, width: ROW_SCREEN.w, height: ROW_SCREEN.h, borderRadius: 8, background: `rgba(74,142,249,${0.35 * Math.min(1, lin(t, 1.5, 1.65, 0, 1))})`, boxShadow: `0 0 0 2px rgba(74,142,249,${0.8 * (1 - hp)})` }} />}
         </Laptop>

@@ -49,6 +49,8 @@ const CAM = [
   { t: 5.5, x: 960, y: 540, s: 1.2 },
 ];
 const rowY = (i: number) => TREE0 + i * 40;
+/** D 的镜头（局部时间）：M1 插段从 D 开场定格帧出发，用同一个镜头拉远 */
+export const dCam = (t: number) => kf(t, CAM);
 /** ⌘J 搜索弹窗（屏幕坐标） */
 const MODAL = { x: 250, y: 150, w: 1420, h: 560 };
 const sel = (label: string, w: number, mt: number) => (
