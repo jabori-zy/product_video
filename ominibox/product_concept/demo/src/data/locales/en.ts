@@ -3,16 +3,20 @@ import type { Content } from '../content';
 // English: wording follows result/script.md and product-features-and-slogans.md
 export const en: Content = {
   zhihu: {
-    site: 'Zhihu', nav: ['Home', 'Following', 'For you', 'Trending'], search: 'Search topics you care about…', column: 'Column · AI Tools Watch',
+    site: 'Zhihu', nav: ['Following', 'For you', 'Trending', 'Columns', 'Circles'], works: 'AI Works', story: 'Stories', search: 'Search topics you care about…',
+    zhida: 'Ask', msg: 'Alerts', dm: 'Messages',
     title: 'The Year of AI Agents: How Can Anyone Build a Second Brain?',
-    author: 'Cat in the Woods', bio: 'Product manager · AI & personal productivity', follow: '+ Follow', date: 'Published 2026-09-21 · Shanghai',
+    author: 'Cat in the Woods', bio: 'Product manager · AI & personal productivity', voters: '32k people upvoted this article', date: 'Published 2026-09-21 11:20 · Shanghai',
     paras: [
       'Over the past year, large models went from talking to doing. Agents read your files, call tools and carry out whole sequences of steps for you. But they share one weakness: they forget you. Every chat starts from zero, while the articles you saved, the meetings you held and the whiteboards you photographed sit scattered across apps.',
       'A second brain gathers those fragments in one place, so AI can understand and organize them and bring them back when you need them. What matters is not how much you store, but whether you can ask for it in plain language and trace every answer back to its source.',
       'My routine is simple: save good content in one click, forward meeting recordings and photos to my assistant, and have it turn everything into a weekly report. Three months in, what changed is not how much I save, but that I now trust AI to remember for me.',
     ],
     quote: "A true second brain isn't a bookmark folder; it's a memory that can answer your questions.",
-    upvote: 'Upvote 32k', comments: '1,284 comments', share: 'Share', save: 'Save',
+    upvote: 'Upvote 32k', comments: '1,284 comments', like: 'Like', share: 'Share', save: 'Save',
+    about: 'About the author', stats: [['Answers', '128'], ['Articles', '56'], ['Followers', '23k']], follow: 'Follow', message: 'Message',
+    hot: 'Trending searches', refresh: 'Refresh', hotTag: 'Hot',
+    hotItems: [['AI agent long-term memory', '4.1M'], ['Second brain tools', '3.9M'], ['RAG explained', '3.0M'], ['Notion alternatives', '2.5M'], ['LLM price cuts', '2.3M'], ['Personal knowledge base', '2.0M']],
   },
   news: {
     site: 'Tech Frontier Daily', nav: ['Top', 'AI', 'Chips', 'Startups', 'Opinion'], tag: 'Top story',
@@ -22,17 +26,23 @@ export const en: Content = {
     stories: ['Open model matches closed flagships on coding benchmarks', 'On-device AI chip shipments triple year over year', '"AI-native" apps pass 500 million monthly users'],
   },
   bili: {
-    site: 'bilibili', title: 'Understand RAG in 10 Minutes: Teach an LLM Your Own Data', up: 'Code Bear', views: '486k views', danmaku: '3,201 comments',
-    date: '2026-08-14', time: '03:42 / 10:08', chapters: ['Intro', 'Retrieval', 'Generation', 'Evaluation'], actions: ['👍 24k', '🪙 8,630', '⭐ 19k', '↗ Share'],
+    site: 'bilibili', nav: ['Home', 'Anime', 'Live', 'Games', 'Shop'], search: 'RAG explained', upload: 'Upload',
+    title: 'Understand RAG in 10 Minutes: Teach an LLM Your Own Data', up: 'Code Bear', views: '486k', danmaku: '3,201', date: '2026-08-14 20:00:00', copyright: 'No reposting without permission',
+    time: '03:42 / 10:08', chapters: ['Intro', 'Retrieval', 'Generation', 'Evaluation'], online: '1,024 watching now', dmHint: 'Send a friendly bullet comment', send: 'Send',
+    actions: ['24k', '8,630', '19k', '4,512'],
     frame: { docs: 'Your docs', store: 'Vector store', retrieve: 'Top-K search', llm: 'LLM', answer: 'Cited answer' },
   },
   xhs: {
-    site: 'Xiaohongshu', title: 'My Notion Alternative: A Productivity Checklist', author: 'Productive Fawn', likes: '21k', saves: '13k',
-    tiles: ['Calendar', 'Notes', 'To-dos', 'Wiki', 'Review'], tags: '#productivity #secondbrain #Notion',
+    site: 'Xiaohongshu', title: 'My Notion Alternative: A Productivity Checklist',
+    body: 'Three years on Notion, then I switched to a knowledge base I can just ask: saves, notes and to-dos in one place.',
+    tags: '#productivity #secondbrain #Notion', date: '10-05 Shanghai', author: 'Productive Fawn', follow: 'Follow',
+    likes: '21k', saves: '13k', comments: '368', commentsTotal: '368 comments', input: 'Say something...',
+    cover: ['My Notion', 'alternative', 'is here'], tiles: ['Calendar', 'Notes', 'To-dos', 'Wiki', 'Review'],
   },
   x: {
-    name: 'AI Daily', handle: '@ai_daily', text: 'Agents that remember are the next platform shift.', time: '9:41 AM · Oct 7, 2026',
-    stats: ['1,204 Reposts', '386 Quotes', '9,876 Likes', '2,310 Bookmarks'], translate: '',
+    header: 'Post', name: 'AI Daily', handle: '@ai_daily', date: 'Oct 7', text: 'Agents that remember are the next platform shift.', translate: '',
+    counts: ['386', '1.2K', '9.8K', '480K'], nav: ['Home', 'Explore', 'Notifications', 'Chat'],
+    media: { title: 'Agent Memory Stack', layers: ['Working memory', 'Episodic memory', 'Semantic memory', 'Your knowledge base'] },
   },
   wechat: {
     contact: 'Xiaohei', pdf: 'Q3 Product Review.pdf', pdfSize: '2.4 MB', voice: '12″', photo: 'Whiteboard', note: 'Weekly meeting conclusions #meeting', input: 'Message',

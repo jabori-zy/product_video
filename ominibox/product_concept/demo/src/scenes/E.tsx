@@ -5,7 +5,7 @@ import { LOCALES } from '../data/content';
 import { textW, useLang, useRes, useTr } from '../i18n';
 import { TYPED, stepOf, txt, type ResKey } from '../copy';
 import { AnswerBody, ReportLines, ReportRow } from '../content/answers';
-import { ZhihuBody, ZhihuHeader } from '../content/zhihu';
+import { ZhihuPage } from '../content/zhihu';
 import { TREE0 } from './D';
 
 
@@ -283,12 +283,9 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
                 {['#FF5F57', '#FEBC2E', '#28C840'].map((col) => <div key={col} style={{ width: 13, height: 13, borderRadius: '50%', background: col }} />)}
                 <div style={{ marginLeft: 80, width: 900, height: 28, borderRadius: 14, background: '#fff', color: '#555', fontSize: 15, lineHeight: '28px', paddingLeft: 16 }}>zhuanlan.zhihu.com/p/7281…</div>
               </div>
+              {/* 原文页面，引文被定位并黄色高亮 */}
+              <ZhihuPage c={Z} w={1400} h={816} sel={lin(t, 5.1, 5.25, 0, 1)} selColor="#FDE68A" />
             </div>
-            <div style={{ position: 'absolute', left: 420, top: 200 }}><ZhihuHeader c={Z} w={1080} h={300} /></div>
-            <Tx x={420} y={508} s={26} c="#121212" b>{Z.zhihu.title}</Tx>
-            <div style={{ position: 'absolute', left: 416, top: 556, width: 640 * lin(t, 5.1, 5.25, 0, 1) + 10, height: 40, background: '#FDE68A', borderRadius: 4 }} />
-            <Tx x={420} y={560} s={tr(24, 21)} c="#222">{Z.zhihu.quote}</Tx>
-            <div style={{ position: 'absolute', left: 420, top: 630 }}><ZhihuBody c={Z} w={1080} h={280} /></div>
           </div>
         )}
       </MBlur>

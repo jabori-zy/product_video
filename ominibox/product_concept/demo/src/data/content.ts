@@ -5,17 +5,31 @@ import { en } from './locales/en';
 
 export type Content = {
   zhihu: {
-    site: string; nav: string[]; search: string; column: string; title: string;
-    author: string; bio: string; follow: string; date: string;
-    paras: string[]; quote: string; upvote: string; comments: string; share: string; save: string;
+    // 顶栏（与知乎网页版一致：导航、搜索、直答、消息、私信）
+    site: string; nav: string[]; works: string; story: string; search: string; zhida: string; msg: string; dm: string;
+    // 专栏文章
+    title: string; author: string; bio: string; voters: string; date: string;
+    paras: string[]; quote: string; upvote: string; comments: string; like: string; share: string; save: string;
+    // 右栏：关于作者 + 大家都在搜
+    about: string; stats: [string, string][]; follow: string; message: string; hot: string; refresh: string; hotTag: string; hotItems: [string, string][];
   };
   news: { site: string; nav: string[]; tag: string; headline: string; dek: string; byline: string; more: string; stories: string[] };
   bili: {
-    site: string; title: string; up: string; views: string; danmaku: string; date: string; time: string;
-    chapters: string[]; actions: string[]; frame: { docs: string; store: string; retrieve: string; llm: string; answer: string };
+    site: string; nav: string[]; search: string; upload: string;
+    title: string; up: string; views: string; danmaku: string; date: string; copyright: string; time: string;
+    chapters: string[]; online: string; dmHint: string; send: string;
+    /** 点赞、投币、收藏、转发的数字 */
+    actions: string[]; frame: { docs: string; store: string; retrieve: string; llm: string; answer: string };
   };
-  xhs: { site: string; title: string; author: string; likes: string; saves: string; tiles: string[]; tags: string };
-  x: { name: string; handle: string; text: string; time: string; stats: string[]; translate: string };
+  xhs: {
+    site: string; title: string; body: string; tags: string; date: string; author: string; follow: string;
+    likes: string; saves: string; comments: string; commentsTotal: string; input: string; cover: string[]; tiles: string[];
+  };
+  x: {
+    header: string; name: string; handle: string; date: string; text: string; translate: string;
+    /** 回复、转帖、喜欢、浏览 */
+    counts: string[]; nav: string[]; media: { title: string; layers: string[] };
+  };
   wechat: { contact: string; pdf: string; pdfSize: string; voice: string; photo: string; note: string; input: string; boardLines: string[] };
   app: {
     space: string; tabs: [string, string]; greet: string; ask: string; recent: string;

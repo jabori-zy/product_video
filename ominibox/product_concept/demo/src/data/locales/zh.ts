@@ -3,16 +3,20 @@ import type { Content } from '../content';
 // 简体中文：与视频里已有的文字、result/script.md 原始中文保持一致
 export const zh: Content = {
   zhihu: {
-    site: '知乎', nav: ['首页', '关注', '推荐', '热榜'], search: '搜索你感兴趣的内容…', column: '专栏 · AI 工具观察',
+    site: '知乎', nav: ['关注', '推荐', '热榜', '专栏', '圈子'], works: 'AI Works', story: '故事', search: '搜索你感兴趣的内容…',
+    zhida: '直答', msg: '消息', dm: '私信',
     title: 'AI Agent 元年：普通人如何搭建自己的「第二大脑」？',
-    author: '林中猫', bio: '产品经理 · 关注 AI 与个人效率', follow: '+ 关注', date: '发布于 2026-09-21 · IP 属地上海',
+    author: '林中猫', bio: '产品经理 · 关注 AI 与个人效率', voters: '3.2 万人赞同了该文章', date: '发布于 2026-09-21 11:20・上海',
     paras: [
       '过去一年，大模型从「会聊天」走向「会做事」。Agent 能读你的文件、调用工具、替你完成一串操作——但它们有个共同的短板：记不住你。每次对话都从零开始，你收藏的文章、开过的会、拍下的白板，都散落在各个 App 里。',
       '所谓「第二大脑」，就是把这些碎片集中到一个地方，让 AI 帮你理解、整理，并在需要时调出来。关键不在于存了多少，而在于能不能用自然语言把它们问出来，并且每一句回答都能追溯到原文。',
       '我的做法很简单：看到好内容一键收藏，会议录音和照片直接转给助手，每周让它把这些资料整理成一份周报。三个月下来，真正改变的不是收藏数量，而是我开始相信「记得住」这件事可以交给 AI。',
     ],
     quote: '真正的第二大脑，不是收藏夹，而是能回答你问题的记忆',
-    upvote: '赞同 3.2 万', comments: '1,284 条评论', share: '分享', save: '收藏',
+    upvote: '赞同 3.2 万', comments: '1,284 条评论', like: '喜欢', share: '分享', save: '收藏',
+    about: '关于作者', stats: [['回答', '128'], ['文章', '56'], ['关注者', '2.3 万']], follow: '关注她', message: '发私信',
+    hot: '大家都在搜', refresh: '换一换', hotTag: '热',
+    hotItems: [['AI Agent 长期记忆', '412 万'], ['第二大脑工具推荐', '386 万'], ['RAG 原理通俗讲解', '297 万'], ['Notion 平替', '254 万'], ['大模型降价潮', '233 万'], ['个人知识库搭建', '201 万']],
   },
   news: {
     site: '科技前沿日报', nav: ['要闻', 'AI', '芯片', '创投', '观点'], tag: '头条',
@@ -22,17 +26,23 @@ export const zh: Content = {
     stories: ['开源模型首次在代码基准上追平闭源旗舰', '端侧 AI 芯片出货量同比增长 3 倍', '「AI 原生」应用月活突破 5 亿'],
   },
   bili: {
-    site: 'bilibili', title: '10 分钟看懂 RAG：让大模型读懂你的资料', up: '代码熊', views: '48.6 万播放', danmaku: '3,201 弹幕',
-    date: '2026-08-14', time: '03:42 / 10:08', chapters: ['引言', '检索', '生成', '评估'], actions: ['👍 2.4 万', '🪙 8,630', '⭐ 1.9 万', '↗ 分享'],
+    site: 'bilibili', nav: ['首页', '番剧', '直播', '游戏中心', '会员购'], search: 'RAG 原理', upload: '投稿',
+    title: '10 分钟看懂 RAG：让大模型读懂你的资料', up: '代码熊', views: '48.6万', danmaku: '3201', date: '2026-08-14 20:00:00', copyright: '未经作者授权，禁止转载',
+    time: '03:42 / 10:08', chapters: ['引言', '检索', '生成', '评估'], online: '1024 人正在看', dmHint: '发个友善的弹幕见证当下', send: '发送',
+    actions: ['2.4万', '8630', '1.9万', '4512'],
     frame: { docs: '你的文档', store: '向量库', retrieve: '检索 Top-K', llm: '大模型', answer: '带引用的回答' },
   },
   xhs: {
-    site: '小红书', title: '我的 Notion 替代方案｜效率清单', author: '效率小鹿', likes: '2.1 万', saves: '1.3 万',
-    tiles: ['日程', '笔记', '待办', '知识库', '复盘'], tags: '#效率工具 #第二大脑 #Notion',
+    site: '小红书', title: '我的 Notion 替代方案｜效率清单',
+    body: '用了三年 Notion，最后换成了能直接问的知识库：收藏、笔记、待办放一起，想找什么问一句就行。',
+    tags: '#效率工具 #第二大脑 #Notion', date: '10-05 上海', author: '效率小鹿', follow: '关注',
+    likes: '2.1万', saves: '1.3万', comments: '368', commentsTotal: '共 368 条评论', input: '说点什么...',
+    cover: ['Notion', '替代方案', '我选了它'], tiles: ['日程', '笔记', '待办', '知识库', '复盘'],
   },
   x: {
-    name: 'AI Daily', handle: '@ai_daily', text: 'Agents that remember are the next platform shift.', time: '上午 9:41 · 2026年10月7日',
-    stats: ['1,204 转帖', '386 引用', '9,876 喜欢', '2,310 书签'], translate: '翻译帖子',
+    header: '帖子', name: 'AI Daily', handle: '@ai_daily', date: '10月7日', text: 'Agents that remember are the next platform shift.', translate: '显示翻译',
+    counts: ['386', '1,204', '9,876', '48万'], nav: ['主页', '探索', '通知', '聊天'],
+    media: { title: 'Agent Memory Stack', layers: ['Working memory', 'Episodic memory', 'Semantic memory', 'Your knowledge base'] },
   },
   wechat: {
     contact: '小黑', pdf: 'Q3 产品复盘.pdf', pdfSize: '2.4 MB', voice: '12″', photo: '白板照片', note: '周会结论 #会议', input: '发送消息',

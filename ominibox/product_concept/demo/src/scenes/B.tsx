@@ -1,7 +1,7 @@
 import React from 'react';
 import { LOCALES } from '../data/content';
-import { textW, useLang, useTr } from '../i18n';
-import { ZhihuBody, ZhihuHeader } from '../content/zhihu';
+import { useLang, useTr } from '../i18n';
+import { ZhihuPage, zhihuQuote } from '../content/zhihu';
 import { C, Camera, Caption, Cursor, Fill, Logo, MBlur, Spinner, Tx, camBlur, kf, lin, morph, sp, win } from '../lib';
 
 
@@ -32,16 +32,19 @@ const BTN = [
   { t: 2.6, x: 560, y: 112, w: 380, h: 46, r: 23 },
 ];
 
-const QUOTE = { x: 350, y: 520, w: 640 };
-const QY = QUOTE.y - 40; // 页面下滚 40 后引文在窗口内的 y
+const PAGE_Y = 92, PAGE_H = 788, SCROLL = 40; // 知乎页面在窗口里的位置；开场下滚 40
 
 export const B: React.FC<{ t: number }> = ({ t }) => {
   const lang = useLang(), tr = useTr();
   const Z = LOCALES[lang]; // 线框里的真实内容（data/locales）
-  const QW = lang === 'en' ? textW(Z.zhihu.quote, 20, 400) : QUOTE.w; // 选区宽度 = 引文实际宽度
+  // 引文位置由知乎页面排版算出（content/zhihu.tsx），选区、光标、划词菜单都跟着它
+  const q = zhihuQuote(Z.zhihu, 1500);
+  const QUOTE = { x: q.x, y: PAGE_Y + q.y };
+  const QY = QUOTE.y - SCROLL; // 下滚后引文在窗口内的 y
+  const QEND = { x: q.x + (q.lines > 1 ? q.lastW : q.w), y: QY + q.lineH * (q.lines - 0.5) };
   const c = kf(t, CAM);
   const [bx, by] = camBlur(t, CAM);
-  const scroll = lin(t, 0, 0.8, 0, -40);
+  const scroll = lin(t, 0, 0.8, 0, SCROLL);
   const cardP = sp(t, 1.2);
   const cardO = 1 - lin(t, 2.6, 2.9, 0, 1);
   const m = morph(t, BTN, { damping: 12, mass: 0.8 });
@@ -57,9 +60,9 @@ export const B: React.FC<{ t: number }> = ({ t }) => {
     { t: 1.25, ...toW(ICON.x + 16, ICON.y + 16) },
     { t: 1.7, ...toW(1334, 167) },
     { t: 2.1, ...toW(1334, 167) },
-    { t: 2.9, ...toW(QUOTE.x, QY + 14) },
-    { t: 3.0, ...toW(QUOTE.x, QY + 14) },
-    { t: 3.3, ...toW(QUOTE.x + QW, QY + 14) },
+    { t: 2.9, ...toW(QUOTE.x, QY + q.lineH / 2) },
+    { t: 3.0, ...toW(QUOTE.x, QY + q.lineH / 2) },
+    { t: 3.3, ...toW(QEND.x, QEND.y) },
     { t: 3.5, ...toW(QUOTE.x + 300, QY - 40) },
     { t: 4.2, ...toW(QUOTE.x + 300, QY - 40) },
   ];
@@ -80,13 +83,9 @@ export const B: React.FC<{ t: number }> = ({ t }) => {
             <div style={{ position: 'absolute', left: ICON.x, top: ICON.y, zIndex: 3, transform: `scale(${t > 1.1 && t < 1.22 ? 0.92 : 1})` }}>
               <Logo size={28} />
             </div>
-            {/* 知乎页面 */}
-            <div style={{ position: 'absolute', left: 0, top: 92 + scroll, width: 1500, height: 900 }}>
-              <div style={{ position: 'absolute', left: 300, top: 20 }}><ZhihuHeader c={Z} /></div>
-              <Tx x={QUOTE.x} y={300} s={30} c="#222" b>{Z.zhihu.title}</Tx>
-              <div style={{ position: 'absolute', left: QUOTE.x - 4, top: QUOTE.y - 4 - 92, width: QW * sel + 8, height: 40, background: '#4A8EF955', borderRadius: 4, outline: flash > 0 ? `3px solid ${C.blue}` : undefined, opacity: t < 4.1 ? 1 : 0 }} />
-              <Tx x={QUOTE.x} y={QUOTE.y - 92} s={tr(22, 20)} c="#333">{Z.zhihu.quote}</Tx>
-              <div style={{ position: 'absolute', left: 300, top: 480 }}><ZhihuBody c={Z} /></div>
+            {/* 知乎页面（按真实网页还原，选区画在引文底下） */}
+            <div style={{ position: 'absolute', left: 0, top: PAGE_Y, width: 1500, height: PAGE_H }}>
+              <ZhihuPage c={Z} w={1500} h={PAGE_H} scroll={scroll} sel={t < 4.1 ? sel : 0} selOutline={flash > 0 ? C.blue : undefined} />
             </div>
             {/* 划词菜单 */}
             {menuP > 0 && (
