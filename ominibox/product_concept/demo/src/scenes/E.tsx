@@ -1,11 +1,12 @@
 import React from 'react';
 import { Band, C, Camera, Caption, Cat, Cursor, Fill, MBlur, Spinner, Tx, W, Words, blinkAt, inOut, kf, lin, morph, sp, typed } from '../lib';
-import { Composer, HomeCards, Row, Sidebar } from '../ui';
+import { AppShell, Composer, HomeCards, OI, Row, Sidebar } from '../ui';
 import { LOCALES } from '../data/content';
 import { textW, useLang, useRes, useTr } from '../i18n';
 import { TYPED, stepOf, txt, type ResKey } from '../copy';
 import { AnswerBody, ReportLines, ReportRow } from '../content/answers';
 import { ZhihuPage } from '../content/zhihu';
+import { BrowserChrome, CHROME_H } from '../content/browser';
 import { TREE0 } from './D';
 
 
@@ -52,6 +53,8 @@ const CAM = [
 ];
 
 const COMP_HOME = { x: 630, y: 560, w: 960 };
+/** 对话页右上角「分享」图标中心；E → F 的圆形展开从这里开始（Main.tsx） */
+export const SHARE = { x: 1790, y: 46 };
 const COMP_CHAT = { x: 630, y: 900, w: 960, h: 120 };
 
 const Bubble: React.FC<{ y: number; text: string; o: number }> = ({ y, text, o }) => (
@@ -94,7 +97,6 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
   );
   const history = (
     <div style={{ opacity: histO }}>
-      <Tx x={190} y={340} s={16} c={C.muted}>🔍　＋</Tx>
       {(() => {
         let y = 370;
         let n = 0;
@@ -130,8 +132,8 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
   const q1Fade = lin(t, 5.6, 5.8, 0, 1);
   const status =
     t < 3.2 ? <><Spinner t={t} size={16} /> {tr('思考中…', 'Thinking…')}</> :
-    t < 3.5 ? <span>{tr('深度思考 ⌃', 'Deep thinking ⌃')}<div style={{ fontSize: 15, color: '#777', marginTop: 6 }}>{typed(t, 3.2, tr('用户在问收藏资料里的趋势，先检索知识库里与 AI Agent 相关的内容……', 'The user asks about trends in their saved sources. Search the knowledge base for AI agent content first…'), tr(0.006, 0.0026))}</div></span> :
-    t < 3.7 ? <><Spinner t={t} size={16} /> {tr('搜索中...', 'Searching...')}</> : <span>{tr('深度思考 ⌄', 'Deep thinking ⌄')}</span>;
+    t < 3.5 ? <span style={{ color: C.text, fontWeight: 600, fontSize: 16 }}>{tr('深度思考', 'Deep thinking')}<div style={{ fontSize: 15, color: '#777', marginTop: 6, fontWeight: 400 }}>{typed(t, 3.2, tr('用户在问收藏资料里的趋势，先检索知识库里与 AI Agent 相关的内容……', 'The user asks about trends in their saved sources. Search the knowledge base for AI agent content first…'), tr(0.006, 0.0026))}</div></span> :
+    t < 3.7 ? <><Spinner t={t} size={16} /> {tr('搜索中...', 'Searching...')}</> : <span style={{ display: 'flex', alignItems: 'center', width: 960, paddingBottom: 12, borderBottom: '1px solid #3a3a3a', color: C.text, fontSize: 16, fontWeight: 600 }}>{tr('深度思考', 'Deep thinking')}<OI.down size={18} color={C.muted} style={{ marginLeft: 'auto' }} /></span>;
   const heads = Z.answer.heads;
 
   // 引用 → 知乎原文 → 甩回（内部甩镜）
@@ -176,7 +178,7 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
       <MBlur id="e-whip" bx={wb}>
         <div style={{ position: 'absolute', inset: 0, transform: `translateX(${chatOff}px)` }}>
           <Camera c={c}>
-            <div style={{ position: 'absolute', left: 0, top: 0, width: 1920, height: 1080, background: C.main }} />
+            <AppShell />
             <Sidebar tab={tab}>{tree}{history}</Sidebar>
 
             {/* 聊天首页 */}
@@ -190,7 +192,11 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
 
             {/* 对话页 */}
             <div style={{ position: 'absolute', inset: 0, opacity: chatO }}>
-              <div style={{ position: 'absolute', right: 30, top: 24, padding: '8px 18px', borderRadius: 10, background: '#333', color: '#fff', fontSize: 18, boxShadow: t > 11.7 ? `0 0 0 3px ${C.blue}, 0 0 30px ${C.blue}` : undefined }}>{tr('⤴ 分享', '⤴ Share')}</div>
+              {/* 对话页顶栏：标题 + 分享 / 新对话 / 更多（真实网页） */}
+              <div style={{ position: 'absolute', left: 330, top: 30, color: C.text, fontSize: 19, fontWeight: 600 }}>{tr('收藏资料里的 AI Agent 趋势', 'AI agent trends in my saves')}</div>
+              <div style={{ position: 'absolute', left: SHARE.x - 20, top: SHARE.y - 20, width: 40, height: 40, borderRadius: 10, background: t > 11.7 ? '#3a3a3a' : undefined, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: t > 11.7 ? `0 0 0 3px ${C.blue}, 0 0 30px ${C.blue}` : undefined }}><OI.forward size={24} /></div>
+              <div style={{ position: 'absolute', left: SHARE.x + 30, top: SHARE.y - 12 }}><OI.chatPlus size={24} /></div>
+              <div style={{ position: 'absolute', left: SHARE.x + 72, top: SHARE.y - 12 }}><OI.more size={24} /></div>
               <div style={{ position: 'absolute', inset: 0, opacity: 1 - q1Fade, transform: `translateY(${-q1Fade * 200}px)` }}>
                 <Bubble y={100} text={txt(TYPED.q1, lang)} o={chatO} />
                 <div style={{ position: 'absolute', left: 630, top: 175, color: C.muted, fontSize: 18, display: 'flex', gap: 8, alignItems: 'center', width: 960 }}>{status}</div>
@@ -206,6 +212,10 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
                     </React.Fragment>
                   );
                 })}
+                {/* 回答下方的操作：重新生成、复制、保存、分享 */}
+                <div style={{ position: 'absolute', left: 630, top: 618, display: 'flex', gap: 28, opacity: lin(t, 4.45, 4.6, 0, 1) }}>
+                  <OI.refresh size={22} color={C.muted} /><OI.copy size={22} color={C.muted} /><OI.save size={22} color={C.muted} /><OI.forward size={22} color={C.muted} />
+                </div>
                 {t > 4.65 && t < 4.95 && (
                   <div style={{ position: 'absolute', left: tr(880, BADGE2_X + 8), top: 400, padding: '14px 20px', borderRadius: 12, background: '#3a3a3a', border: '1px solid #555', color: '#ddd', fontSize: 18, transform: `scale(${sp(t, 4.65)})`, transformOrigin: 'left top' }}>{tr('来源：AI Agent 元年…（知乎）· 段落', 'Source: The Year of AI Agents… (Zhihu) · paragraph')}</div>
                 )}
@@ -215,8 +225,8 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
               <div style={{ position: 'absolute', inset: 0, opacity: q2O }}>
                 <Bubble y={100} text={txt(TYPED.q2, lang)} o={q2O} />
                 {t < 8.3 && (
-                  <div style={{ position: 'absolute', left: 630, top: 842, display: 'flex', gap: 28, color: C.muted, fontSize: 22, opacity: docInner }}>
-                    <span>⟳</span><span>⧉</span><span style={{ color: t > 7.75 ? '#fff' : C.muted }}>⬇</span><span>↗</span>
+                  <div style={{ position: 'absolute', left: 630, top: 842, display: 'flex', gap: 28, alignItems: 'center', color: C.muted, fontSize: 22, opacity: docInner }}>
+                    <OI.refresh size={22} color={C.muted} /><OI.copy size={22} color={C.muted} /><OI.save size={22} color={t > 7.75 ? '#fff' : C.muted} /><OI.forward size={22} color={C.muted} />
                     {t > 7.7 && <span style={{ fontSize: 16, background: '#111', color: '#fff', padding: '4px 10px', borderRadius: 6 }}>{tr('将当前回复保存至个人空间', 'Save this response to personal space')}</span>}
                   </div>
                 )}
@@ -279,12 +289,9 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
           <div style={{ position: 'absolute', inset: 0, transform: `translateX(${chatOff + W}px)`, background: C.desk }}>
             {/* 浏览器窗口里的知乎原文 */}
             <div style={{ position: 'absolute', left: 260, top: 110, width: 1400, height: 860, borderRadius: 14, background: '#fff', overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,.25)' }}>
-              <div style={{ height: 44, background: '#DCDCDF', display: 'flex', alignItems: 'center', gap: 8, padding: '0 18px' }}>
-                {['#FF5F57', '#FEBC2E', '#28C840'].map((col) => <div key={col} style={{ width: 13, height: 13, borderRadius: '50%', background: col }} />)}
-                <div style={{ marginLeft: 80, width: 900, height: 28, borderRadius: 14, background: '#fff', color: '#555', fontSize: 15, lineHeight: '28px', paddingLeft: 16 }}>zhuanlan.zhihu.com/p/7281…</div>
-              </div>
+              <BrowserChrome w={1400} title={`${Z.zhihu.title} - ${Z.zhihu.site}`} url="zhuanlan.zhihu.com/p/7281…" />
               {/* 原文页面，引文被定位并黄色高亮 */}
-              <ZhihuPage c={Z} w={1400} h={816} sel={lin(t, 5.1, 5.25, 0, 1)} selColor="#FDE68A" />
+              <div style={{ position: 'absolute', left: 0, top: CHROME_H }}><ZhihuPage c={Z} w={1400} h={860 - CHROME_H} sel={lin(t, 5.1, 5.25, 0, 1)} selColor="#FDE68A" /></div>
             </div>
           </div>
         )}

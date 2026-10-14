@@ -6,7 +6,7 @@ import { A } from './scenes/A';
 import { B } from './scenes/B';
 import { Cc } from './scenes/C';
 import { Dd } from './scenes/D';
-import { Ee } from './scenes/E';
+import { Ee, SHARE } from './scenes/E';
 import { Ff } from './scenes/F';
 import { Gg } from './scenes/G';
 import { Hh } from './scenes/H';
@@ -66,10 +66,10 @@ export const Main: React.FC<{ paced?: boolean; at?: number; label?: boolean; end
   if (in_(11.85, ARC_DE + 0.25)) L.push(<Layer key="D" id="D" T={T} s={12} C={Dd} style={{ opacity: lin(T, 11.85, 12.05, 0, 1) }} />);
   // D → E：光带擦除
   if (in_(ARC_DE - 0.25, 30.2)) L.push(<Layer key="E" id="E" T={T} s={18} C={Ee} style={{ clipPath: T < ARC_DE + 0.25 ? `inset(0 ${Math.max(0, W - arcX(T, ARC_DE))}px 0 0)` : undefined }} />);
-  // E → F：右上角「分享」放大成米白画布
+  // E → F：右上角「分享」图标放大成米白画布
   if (in_(29.8, 35.15)) {
     const r = lin(T, 29.8, 30.2, 0, 2300);
-    L.push(<Layer key="F" id="F" T={T} s={30} C={Ff} {...w35.out} style={{ clipPath: T < 30.2 ? `circle(${r}px at 1835px 44px)` : undefined }} />);
+    L.push(<Layer key="F" id="F" T={T} s={30} C={Ff} {...w35.out} style={{ clipPath: T < 30.2 ? `circle(${r}px at ${SHARE.x}px ${SHARE.y}px)` : undefined }} />);
   }
   if (in_(34.85, 39.25)) L.push(<Layer key="G" id="G" T={T} s={35} C={Gg} {...w35.in} />);
   // G → H：光带擦除

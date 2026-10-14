@@ -1,6 +1,6 @@
 import React from 'react';
 import { Band, C, Camera, Caption, Fill, KeyHud, Tx, Words, kf, lin, morph, sp, typed } from '../lib';
-import { Parsing, Row, Sidebar } from '../ui';
+import { AppShell, OI, Parsing, ResIcon, Row, Sidebar } from '../ui';
 import { LOCALES } from '../data/content';
 import { useLang, useRes, useTr } from '../i18n';
 import { TYPED, stepOf, txt, type ResKey } from '../copy';
@@ -49,6 +49,13 @@ const CAM = [
   { t: 5.5, x: 960, y: 540, s: 1.2 },
 ];
 const rowY = (i: number) => TREE0 + i * 40;
+/** ⌘J 搜索弹窗（屏幕坐标） */
+const MODAL = { x: 250, y: 150, w: 1420, h: 560 };
+const sel = (label: string, w: number, mt: number) => (
+  <div style={{ marginTop: mt, width: w, height: 44, borderRadius: 8, border: '1px solid #444', boxSizing: 'border-box', display: 'flex', alignItems: 'center', padding: '0 14px', fontSize: 16, color: C.text }}>
+    {label}<OI.down size={18} color={C.muted} style={{ marginLeft: 'auto' }} />
+  </div>
+);
 /** C 段光点的汇聚点：新资源行落脚处（世界坐标），以及 D 开场镜头下它在画面上的位置（C 的光点飞向这里） */
 const LAND_WORLD = { x: 40, y: rowY(5) + 17 };
 export const LAND_SCREEN = (() => { const c = kf(0, CAM); return { x: (LAND_WORLD.x - c.x) * c.s + 960, y: (LAND_WORLD.y - c.y) * c.s + 540 }; })();
@@ -70,7 +77,7 @@ const Tile: React.FC<{ i: number; t: number }> = ({ i, t }) => {
   return (
     <div style={{ position: 'absolute', left: m.x, top: m.y, width: m.w, height: m.h, borderRadius: m.r, background: '#2e2e2e', border: '1px solid #3d3d3d', overflow: 'hidden', opacity: 1 - collapse, transform: `scale(${1 - 0.1 * collapse})` }}>
       <div style={{ position: 'absolute', inset: 0, opacity: o }}>
-        <Tx x={20} y={14} s={20} b>{NEW[k.row][0]} {res(NEW[k.row][1])}</Tx>
+        <div style={{ position: 'absolute', left: 20, top: 16, display: 'flex', alignItems: 'center', gap: 10, color: C.text, fontSize: 20, fontWeight: 700 }}><ResIcon icon={NEW[k.row][0]} size={22} />{res(NEW[k.row][1])}</div>
         {k.corner && <div style={{ position: 'absolute', right: 16, top: 12, padding: '6px 14px', borderRadius: 999, background: '#4A8EF933', color: '#AFCBFF', fontSize: 18, fontWeight: 600, opacity: q(0.5, 0.65) }}>{L(k.corner)}</div>}
         {i === 0 && (
           <>
@@ -169,28 +176,55 @@ export const Dd: React.FC<{ t: number }> = ({ t }) => {
   return (
     <Fill bg={C.main}>
       <Camera c={c}>
-        <div style={{ position: 'absolute', left: 0, top: 0, width: 1920, height: 1080, background: C.main }} />
+        <AppShell />
         <Sidebar tab={0}>{tree}{dots}</Sidebar>
         {TILES.map((_, i) => <Tile key={i} i={i} t={t} />)}
       </Camera>
       <Caption t={t} a={4.0} b={4.5} text={tr('自动打标签', 'Automatically tagged')} y={930} size={56} plate />
+      {/* ⌘J 搜索：按真实网页的搜索弹窗还原（输入行 + 资源结果 + 右侧筛选） */}
       {t >= 4.5 && t < 5.7 && (
-        <div style={{ position: 'absolute', left: 560, top: 260, width: 800, height: 420, borderRadius: 20, background: 'rgba(48,48,48,.92)', border: '1px solid #555', boxShadow: '0 30px 80px rgba(0,0,0,.5)', transform: `scale(${(0.6 + 0.4 * sP) * lin(t, 4.6, 5.4, 1, 1.3)})`, opacity: Math.min(sP * 1.5, 1) }}>
-          <div style={{ position: 'absolute', left: 24, top: 22, width: 752, height: 56, borderRadius: 12, background: '#262626', color: '#fff', fontSize: 24, lineHeight: '56px', paddingLeft: 20, boxSizing: 'border-box' }}>
-            🔍 {q || <span style={{ color: C.muted }}>{tr('搜索', 'Search')}</span>}
-          </div>
-          {res.map((r, i) => {
-            const p = sp(t, 5.15 + i * 0.07);
-            return (
-              <div key={i} style={{ position: 'absolute', left: 24, top: 104 + i * 98, width: 752, height: 84, borderRadius: 12, background: '#3a3a3a', padding: '12px 18px', boxSizing: 'border-box', opacity: p, transform: `translateY(${(1 - p) * 20}px)` }}>
-                <div style={{ color: '#fff', fontSize: 20, fontWeight: 600 }}>{r[0]}</div>
-                <div style={{ color: '#bbb', fontSize: 18, marginTop: 4 }}>
-                  {r[1]}<span style={{ color: '#7FB0FF' }}>{r[2]}</span>{r[3]}<span style={{ color: '#7FB0FF' }}>{r[4]}</span>{r[5]}
+        <>
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,.55)', opacity: Math.min(sP * 1.5, 1) }} />
+          <div style={{ position: 'absolute', left: MODAL.x, top: MODAL.y, width: MODAL.w, height: MODAL.h, borderRadius: 16, background: '#1F1F1F', border: '1px solid #333', boxShadow: '0 30px 80px rgba(0,0,0,.5)', overflow: 'hidden', transformOrigin: '50% 40%', transform: `scale(${(0.92 + 0.08 * sP) * lin(t, 4.6, 5.4, 1, 1.06)})`, opacity: Math.min(sP * 1.5, 1) }}>
+            {/* 输入行 */}
+            <div style={{ position: 'absolute', left: 0, top: 0, width: MODAL.w, height: 70, borderBottom: '1px solid #333', display: 'flex', alignItems: 'center', gap: 14, padding: '0 26px', boxSizing: 'border-box' }}>
+              <OI.search size={24} color="#ddd" />
+              <span style={{ flex: 1, color: '#fff', fontSize: 24, fontWeight: 600 }}>{q || <span style={{ color: C.muted, fontWeight: 400 }}>{tr('搜索', 'Search')}</span>}{t < 5.15 && <span style={{ display: 'inline-block', width: 2, height: 26, background: '#fff', marginLeft: 2, verticalAlign: 'middle' }} />}</span>
+              <span style={{ color: '#ddd', fontSize: 18 }}>{tr('清除', 'Clear')}</span>
+              <span style={{ width: 1, height: 22, background: '#444' }} />
+              <OI.close size={22} color="#ddd" />
+            </div>
+            {/* 资源结果 */}
+            <div style={{ position: 'absolute', left: 30, top: 92, color: C.muted, fontSize: 18, fontWeight: 600 }}>{tr('资源', 'Resources')}</div>
+            {res.map((r, i) => {
+              const p = sp(t, 5.15 + i * 0.07);
+              const [ic, ...name] = r[0].split(' ');
+              return (
+                <div key={i} style={{ position: 'absolute', left: 22, top: 128 + i * 104, width: 1000, height: 92, borderRadius: 12, background: i === 0 ? '#3A3A3A' : undefined, padding: '14px 20px 0 58px', boxSizing: 'border-box', opacity: p, transform: `translateY(${(1 - p) * 20}px)` }}>
+                  <div style={{ position: 'absolute', left: 20, top: 17 }}><ResIcon icon={ic} size={24} /></div>
+                  <div style={{ color: '#fff', fontSize: 22, fontWeight: 700 }}>{name.join(' ')}</div>
+                  <div style={{ color: '#a3a3a3', fontSize: 18, marginTop: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {r[1]}<span style={{ color: '#8AB4FF' }}>{r[2]}</span>{r[3]}<span style={{ color: '#8AB4FF' }}>{r[4]}</span>{r[5]}
+                  </div>
                 </div>
+              );
+            })}
+            {/* 右侧筛选 */}
+            <div style={{ position: 'absolute', left: 1046, top: 70, width: 1, height: MODAL.h - 70, background: '#333' }} />
+            <div style={{ position: 'absolute', left: 1074, top: 92, width: 330, color: C.text }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span style={{ fontSize: 22, fontWeight: 700 }}>{tr('筛选', 'Filters')}</span>
+                <span style={{ marginLeft: 'auto', fontSize: 14, color: C.muted }}>{tr('条件行剩余：2 / 3', 'Rows left: 2 / 3')}</span>
               </div>
-            );
-          })}
-        </div>
+              <div style={{ fontSize: 17, fontWeight: 600, marginTop: 26 }}>{tr('匹配下列条件', 'Match these conditions')}</div>
+              {sel(tr('全部', 'All'), 130, 12)}
+              <div style={{ fontSize: 17, fontWeight: 600, marginTop: 22 }}>{tr('条件 1', 'Condition 1')}</div>
+              <div style={{ display: 'flex', gap: 12 }}>{sel(tr('标题', 'Title'), 159, 12)}{sel(tr('包含', 'Contains'), 159, 12)}</div>
+              <div style={{ marginTop: 12, height: 44, borderRadius: 8, border: '1px solid #444', color: C.muted, fontSize: 16, lineHeight: '44px', paddingLeft: 14 }}>{tr('请输入关键词', 'Enter a keyword')}</div>
+              <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 8, fontSize: 17 }}><OI.plus size={18} />{tr('添加条件', 'Add condition')}</div>
+            </div>
+          </div>
+        </>
       )}
       <KeyHud t={t} a={4.5} b={5.0} text="⌘ J" />
       <Caption t={t} a={4.8} b={5.45} text={tr('⌘J，一搜就到', '⌘J. Search. Found.')} y={880} size={60} plate />

@@ -30,6 +30,24 @@ export type Content = {
     /** 回复、转帖、喜欢、浏览 */
     counts: string[]; nav: string[]; media: { title: string; layers: string[] };
   };
+  // C 段走廊：三张来源卡片按真实搜索结果页还原（assets/screenshot/bilibili.png、xiaohongshu.png、x.png）
+  biliSearch: {
+    nav: string[]; icons: string[]; btn: string; tabs: [string, string][]; sorts: string[]; more: string;
+    /** 标题里标红的搜索词 */
+    kw: string[];
+    /** 视频：标题、UP 主、日期、播放、弹幕、时长、封面大字（第 0 条是收藏的那支，封面用 RAG 讲解画面） */
+    videos: { title: string; up: string; date: string; views: string; dm: string; dur: string; cover: string[] }[];
+  };
+  xhsSearch: {
+    query: string; tabs: string[]; filter: string; chips: string[]; hot: string; hotItems: string[];
+    /** 笔记：标题、作者、日期、点赞；封面文字。第 0 条是收藏的那篇（沿用 xhs 的封面） */
+    notes: { title: string; author: string; date: string; likes: string; cover: string[] }[];
+  };
+  xSearch: {
+    query: string; tabs: string[]; name: string; handle: string; date: string; translated: string; showOriginal: string;
+    lines: string[]; more: string; counts: string[];
+    paper: { kicker: string; title: string; sub: string; layers: string[]; abstract: string; footer: string };
+  };
   wechat: { contact: string; pdf: string; pdfSize: string; voice: string; photo: string; note: string; input: string; boardLines: string[] };
   app: {
     space: string; tabs: [string, string]; greet: string; ask: string; recent: string;
@@ -72,9 +90,9 @@ export type Slug =
 export const ITEMS: { slug: Slug; w: number; h: number; where: string }[] = [
   { slug: 'zhihu', w: 1500, h: 788, where: 'B 知乎页面 + 正文（5.0–9.0 s / 9.3–16.9 s）；E 引用跳转（22.9–23.5 s / 48.4–49.6 s）' },
   { slug: 'news', w: 720, h: 450, where: 'C 新闻站页面（9.0–9.5 s / 16.9–18.1 s）' },
-  { slug: 'bili', w: 720, h: 450, where: 'C B 站视频页（9.5–10.0 s / 18.1–19.5 s）' },
-  { slug: 'xhs', w: 500, h: 400, where: 'C 小红书页面（10.0–10.5 s / 19.5–21.2 s）' },
-  { slug: 'x', w: 500, h: 400, where: 'C X 帖子（10.0–10.5 s / 19.5–21.2 s）' },
+  { slug: 'bili', w: 720, h: 450, where: 'C B 站搜索结果页（9.5–10.0 s / 18.1–19.5 s）' },
+  { slug: 'xhs', w: 500, h: 400, where: 'C 小红书搜索结果页（10.0–10.5 s / 19.5–21.2 s）' },
+  { slug: 'x', w: 500, h: 400, where: 'C X 搜索结果页（10.0–10.5 s / 19.5–21.2 s）' },
   { slug: 'wechat', w: 360, h: 720, where: 'C 手机 · 微信（10.5–11.0 s / 21.2–22.9 s）' },
   { slug: 'app', w: 360, h: 720, where: 'C 手机 · OmniBox App（11.0–11.5 s / 22.9–24.3 s）' },
   { slug: 'rss', w: 460, h: 380, where: 'C RSS 订阅文件夹 + 新文章 1–3（11.0–11.5 s / 22.9–24.3 s）' },

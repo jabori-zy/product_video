@@ -2,11 +2,13 @@ import React from 'react';
 import { LOCALES } from '../data/content';
 import { useLang, useTr } from '../i18n';
 import { ZhihuPage, zhihuQuote } from '../content/zhihu';
+import { BrowserChrome } from '../content/browser';
 import { C, Camera, Caption, Cursor, Fill, Logo, MBlur, Spinner, Tx, camBlur, kf, lin, morph, sp, win } from '../lib';
 
 
 // B 一键收藏 · 浏览器插件（5.0–9.0 s），局部时间 t = 全局 − 5
 // 世界坐标：浏览器窗口 (210,100) 1500×880；窗口内元素用窗口相对坐标
+// 窗口是深色 Chrome（content/browser.tsx，对照真实插件录屏），工具栏右侧 (1440,56) 是小黑插件图标
 
 const WX = 210, WY = 100;
 const ICON = { x: 1440, y: 56 }; // 小黑插件图标（窗口相对，28×28）
@@ -73,13 +75,7 @@ export const B: React.FC<{ t: number }> = ({ t }) => {
         <Camera c={c}>
           {/* 浏览器窗口 */}
           <div style={{ position: 'absolute', left: WX, top: WY, width: 1500, height: 880, borderRadius: 14, background: '#fff', boxShadow: '0 40px 100px rgba(0,0,0,.25)', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', left: 0, top: 0, width: 1500, height: 44, background: '#DCDCDF', zIndex: 2 }}>
-              {['#FF5F57', '#FEBC2E', '#28C840'].map((col, i) => <div key={i} style={{ position: 'absolute', left: 18 + i * 22, top: 15, width: 13, height: 13, borderRadius: '50%', background: col }} />)}
-              <Tx x={110} y={10} s={16} c="#333">{tr('浏览器', 'Browser')}</Tx>
-            </div>
-            <div style={{ position: 'absolute', left: 0, top: 44, width: 1500, height: 48, background: '#F2F2F4', borderBottom: '1px solid #ddd', zIndex: 2 }}>
-              <div style={{ position: 'absolute', left: 110, top: 9, width: 1200, height: 30, borderRadius: 15, background: '#fff', color: '#555', fontSize: 15, lineHeight: '30px', paddingLeft: 16 }}>zhuanlan.zhihu.com/p/7281…</div>
-            </div>
+            <BrowserChrome w={1500} title={`${Z.zhihu.title} - ${Z.zhihu.site}`} url="zhuanlan.zhihu.com/p/7281…" logo={false} />
             <div style={{ position: 'absolute', left: ICON.x, top: ICON.y, zIndex: 3, transform: `scale(${t > 1.1 && t < 1.22 ? 0.92 : 1})` }}>
               <Logo size={28} />
             </div>

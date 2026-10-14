@@ -10,9 +10,9 @@ Real content for every wireframe in the demo video (`demo/out/demo-add_more_app.
 |---|---|---|---|
 | 01 | `zh/01 知乎文章 · AI Agent 元年.png`<br>`en/01 Zhihu Article · The Year of AI Agents.png` | 1500×788 | B 知乎页面 + 正文（5.0–9.0 s / 9.3–16.9 s）；E 引用跳转（22.9–23.5 s / 48.4–49.6 s） |
 | 02 | `zh/02 新闻站 · 科技前沿日报.png`<br>`en/02 News Site · Tech Frontier Daily.png` | 720×450 | C 新闻站页面（9.0–9.5 s / 16.9–18.1 s） |
-| 03 | `zh/03 B站视频页 · 10 分钟看懂 RAG.png`<br>`en/03 Bilibili Video · Understand RAG in 10 Minutes.png` | 720×450 | C B 站视频页（9.5–10.0 s / 18.1–19.5 s） |
-| 04 | `zh/04 小红书笔记 · Notion 替代方案.png`<br>`en/04 Xiaohongshu Post · My Notion Alternative.png` | 500×400 | C 小红书页面（10.0–10.5 s / 19.5–21.2 s） |
-| 05 | `zh/05 X 帖子 · @ai_daily.png`<br>`en/05 X Post · @ai_daily.png` | 500×400 | C X 帖子（10.0–10.5 s / 19.5–21.2 s） |
+| 03 | `zh/03 B站搜索页 · RAG 原理.png`<br>`en/03 Bilibili Search · RAG explained.png` | 720×450 | C B 站搜索结果页（9.5–10.0 s / 18.1–19.5 s） |
+| 04 | `zh/04 小红书搜索页 · Notion 替代.png`<br>`en/04 Xiaohongshu Search · Notion alternative.png` | 500×400 | C 小红书搜索结果页（10.0–10.5 s / 19.5–21.2 s） |
+| 05 | `zh/05 X 搜索页 · agents memory.png`<br>`en/05 X Search · agents memory.png` | 500×400 | C X 搜索结果页（10.0–10.5 s / 19.5–21.2 s） |
 | 06 | `zh/06 微信聊天 · 小黑.png`<br>`en/06 WeChat Chat · Xiaohei.png` | 360×720 | C 手机 · 微信（10.5–11.0 s / 21.2–22.9 s） |
 | 07 | `zh/07 OmniBox App · 首页.png`<br>`en/07 OmniBox App · Home.png` | 360×720 | C 手机 · OmniBox App（11.0–11.5 s / 22.9–24.3 s） |
 | 08 | `zh/08 RSS 订阅文件夹.png`<br>`en/08 RSS Subscription Folder.png` | 460×380 | C RSS 订阅文件夹 + 新文章 1–3（11.0–11.5 s / 22.9–24.3 s） |

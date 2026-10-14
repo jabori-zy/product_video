@@ -1,7 +1,7 @@
 import React from 'react';
 import { interpolateColors } from 'remotion';
 import { C, Cat, Fill, KeyHud, Tx, W, blinkAt, hop, kf, lin, sp, typed } from '../lib';
-import { Composer, HomeCards, Sidebar } from '../ui';
+import { Composer, HomeCards, PanelFrame, Sidebar } from '../ui';
 import { textW, useLang, useTr } from '../i18n';
 import { OPEN_TEXT_EN, TYPED, openKeys, stepOf, txt } from '../copy';
 
@@ -139,6 +139,8 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
       {/* 对话页：侧栏滑入、小黑回复 */}
       {t >= 4.25 && (
         <>
+          {/* 真实网页：主区是内缩的圆角面板，侧栏滑入时一起套出面板边 */}
+          <PanelFrame o={lin(t, 4.25, 4.5, 0, 1)} />
           <Sidebar tab={0} x={sideX} />
           <Tx x={420} y={210} s={26} w={1100} c={C.text}>{reply}</Tx>
         </>

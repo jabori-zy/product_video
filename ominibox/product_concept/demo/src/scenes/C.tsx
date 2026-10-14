@@ -3,8 +3,9 @@ import { random } from 'remotion';
 import { C, Camera, Caption, Fill, MBlur, Pill, camBlur, kf, lin, sp } from '../lib';
 import { LOCALES } from '../data/content';
 import { useLang, useTr } from '../i18n';
-import { Bili, News, Rss, XPost, Xhs } from '../content/cards';
-import { App } from '../content/phone';
+import { News, Rss } from '../content/cards';
+import { BiliSearch, XSearch, XhsSearch } from '../content/search';
+import { App, WeChat } from '../content/phone';
 import { KeyframeThumb } from '../content/understand';
 import { LAND_SCREEN } from './D';
 
@@ -12,26 +13,27 @@ import { LAND_SCREEN } from './D';
 // C 万物入口 · 随时随地（9.0–12.0 s），局部时间 t = 全局 − 9
 // 世界坐标里排一条 3D 卡片走廊，镜头每半拍甩到下一张
 
+// k：卡片放大倍数（页面按原尺寸排版，整体放大显示，字更清楚）；走廊间距和镜头随放大后的尺寸排
 const CARDS = [
-  { id: 'news', x: 0, w: 720, h: 450, ry: 18, save: 0.2 },
-  { id: 'bili', x: 900, w: 720, h: 450, ry: -18, save: 0.7 },
-  { id: 'xhs', x: 1640, w: 500, h: 400, ry: 14, save: 1.15 },
-  { id: 'x', x: 2200, w: 500, h: 400, ry: -14, save: 1.25 },
-  { id: 'phone', x: 3000, w: 360, h: 720, ry: 0, save: -1 },
-  { id: 'rss', x: 3480, w: 460, h: 380, ry: -10, save: 2.35 },
+  { id: 'news', x: 0, w: 720, h: 450, k: 1.36, ry: 9, save: 0.2 },
+  { id: 'bili', x: 1160, w: 720, h: 450, k: 1.36, ry: -9, save: 0.7 },
+  { id: 'xhs', x: 2170, w: 500, h: 400, k: 1.44, ry: 7, save: 1.15 },
+  { id: 'x', x: 2950, w: 500, h: 400, k: 1.44, ry: -7, save: 1.25 },
+  { id: 'phone', x: 3840, w: 360, h: 720, k: 1.2, ry: 0, save: -1 },
+  { id: 'rss', x: 4390, w: 460, h: 380, k: 1.3, ry: -6, save: 2.35 },
 ];
 
 const CAM = [
-  { t: -0.2, x: 0, y: 540, s: 1 },
-  { t: 0.35, x: 0, y: 540, s: 1 },
-  { t: 0.5, x: 900, y: 540, s: 1 },
-  { t: 0.85, x: 900, y: 540, s: 1 },
-  { t: 1.0, x: 1920, y: 540, s: 0.85 },
-  { t: 1.35, x: 1920, y: 540, s: 0.85 },
-  { t: 1.5, x: 3000, y: 540, s: 0.9 },
-  { t: 1.95, x: 3000, y: 540, s: 0.9 },
-  { t: 2.1, x: 3240, y: 540, s: 0.9 },
-  { t: 2.5, x: 1675, y: 540, s: 0.42 },
+  { t: -0.2, x: 0, y: 540, s: 1.08 },
+  { t: 0.35, x: 0, y: 540, s: 1.08 },
+  { t: 0.5, x: 1160, y: 540, s: 1.08 },
+  { t: 0.85, x: 1160, y: 540, s: 1.08 },
+  { t: 1.0, x: 2560, y: 540, s: 1.0 },
+  { t: 1.35, x: 2560, y: 540, s: 1.0 },
+  { t: 1.5, x: 3840, y: 540, s: 1.0 },
+  { t: 1.95, x: 3840, y: 540, s: 1.0 },
+  { t: 2.1, x: 4110, y: 540, s: 1.0 },
+  { t: 2.5, x: 2130, y: 540, s: 0.36 },
 ];
 
 // 光点汇聚到 D 开场镜头下新资源行的位置（随 D 的镜头算，不写死）
@@ -40,21 +42,23 @@ const TARGET = LAND_SCREEN;
 export const Cc: React.FC<{ t: number }> = ({ t }) => {
   const lang = useLang(), tr = useTr();
   const Z = LOCALES[lang]; // 线框里的真实内容（data/locales）
-  const WECHAT = tr(['📄 Q3 产品复盘.pdf', '🎤 0:12', '🖼 白板照片', '周会结论 #会议'], ['📄 Q3 Product Review.pdf', '🎤 0:12', '🖼 Whiteboard photo', 'Meeting conclusions #meeting']);
   const c = kf(t, CAM);
   const [bx, by] = camBlur(t, CAM);
   const shrink = 1 - lin(t, 2.45, 2.6, 0, 1);
   const dim = lin(t, 2.0, 2.2, 0, 0.35);
 
-  const card = (k: any, inner: React.ReactNode, extra: any = {}) => (
-    <div key={k.id} style={{ position: 'absolute', left: k.x - k.w / 2 + (extra.dx || 0), top: 540 - k.h / 2 + (extra.dy || 0), width: k.w, height: k.h, transform: `perspective(1600px) rotateY(${extra.ry ?? k.ry}deg) scale(${shrink})`, opacity: (extra.o ?? 1) * (shrink > 0 ? 1 : 0) }}>
-      {inner}
-      {k.save >= 0 && t >= k.save && <Pill x={k.w / 2} y={-30} text={tr('✓ 已保存', '✓ Saved')} s={sp(t, k.save)} />}
-    </div>
-  );
+  const card = (k: any, inner: React.ReactNode, extra: any = {}) => {
+    const w = k.w * k.k, h = k.h * k.k; // 显示尺寸
+    return (
+      <div key={k.id} style={{ position: 'absolute', left: k.x - w / 2 + (extra.dx || 0), top: 540 - h / 2 + (extra.dy || 0), width: w, height: h, transform: `perspective(2400px) rotateY(${extra.ry ?? k.ry}deg) scale(${shrink})`, opacity: (extra.o ?? 1) * (shrink > 0 ? 1 : 0) }}>
+        <div style={{ position: 'absolute', left: 0, top: 0, width: k.w, height: k.h, transform: `scale(${k.k})`, transformOrigin: '0 0' }}>{inner}</div>
+        {k.save >= 0 && t >= k.save && <Pill x={w / 2} y={-34} text={tr('✓ 已保存', '✓ Saved')} s={sp(t, k.save) * 1.15} />}
+      </div>
+    );
+  };
 
-  // 线框 → 真实页面（content/cards.tsx，尺寸与卡片一致）
-  const PAGE: Record<string, React.FC<{ c: typeof LOCALES.zh }>> = { news: News, bili: Bili, xhs: Xhs, x: XPost };
+  // 线框 → 真实页面（尺寸与卡片一致）；B 站、小红书、X 按真实搜索结果页还原（content/search.tsx）
+  const PAGE: Record<string, React.FC<{ c: typeof LOCALES.zh }>> = { news: News, bili: BiliSearch, xhs: XhsSearch, x: XSearch };
   const pageOf = (k: any) => { const P = PAGE[k.id]; return <P c={Z} />; };
 
   // 手机：微信 → OmniBox App
@@ -63,18 +67,8 @@ export const Cc: React.FC<{ t: number }> = ({ t }) => {
   const app = lin(t, 2.0, 2.15, 0, 1);
   const phone = (
     <div style={{ position: 'absolute', inset: 0, borderRadius: 48, background: '#111', border: '8px solid #333', overflow: 'hidden', boxSizing: 'border-box' }}>
-      <div style={{ opacity: 1 - app }}>
-        <div style={{ height: 70, background: '#1e1e1e', color: '#fff', fontSize: 24, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', paddingBottom: 10, boxSizing: 'border-box' }}>{tr('微信 · 小黑', 'WeChat · Xiaohei')}</div>
-        {WECHAT.map((m, i) => {
-          const a = 1.55 + i * 0.125;
-          const p = sp(t, a);
-          return (
-            <div key={m} style={{ position: 'absolute', right: 22, top: 100 + i * 80, padding: '12px 16px', borderRadius: 10, background: '#95EC69', color: '#111', fontSize: 20, opacity: p, transform: `scale(${0.7 + 0.3 * p})`, transformOrigin: 'right center' }}>
-              {m} {t > a + 0.1 && <span style={{ color: '#1a7f37' }}>✓</span>}
-            </div>
-          );
-        })}
-      </div>
+      {/* 微信（深色模式，content/phone.tsx 按真实截图还原）：四条消息逐条弹出 */}
+      <div style={{ position: 'absolute', left: -8, top: -8, opacity: 1 - app }}><WeChat c={Z} reveal={[0, 1, 2, 3].map((i) => sp(t, 1.55 + i * 0.125))} /></div>
       <div style={{ position: 'absolute', inset: 0, opacity: app }}>
         <div style={{ position: 'absolute', left: -8, top: -8 }}><App c={Z} /></div>
         {t > 2.15 && (
@@ -92,8 +86,8 @@ export const Cc: React.FC<{ t: number }> = ({ t }) => {
   if (t >= 2.45) {
     CARDS.forEach((k, ci) => {
       for (let j = 0; j < 6; j++) {
-        const sx0 = (k.x - c25.x) * c25.s + 960 + (random(`dx${ci}${j}`) - 0.5) * k.w * c25.s;
-        const sy0 = 540 + (random(`dy${ci}${j}`) - 0.5) * k.h * c25.s;
+        const sx0 = (k.x - c25.x) * c25.s + 960 + (random(`dx${ci}${j}`) - 0.5) * k.w * k.k * c25.s;
+        const sy0 = 540 + (random(`dy${ci}${j}`) - 0.5) * k.h * k.k * c25.s;
         const st = 2.5 + (ci * 6 + j) * 0.006;
         for (let g = 0; g < 4; g++) {
           const p = lin(t - g * 0.025, st, st + 0.42, 0, 1, (x) => x * x);
@@ -123,12 +117,12 @@ export const Cc: React.FC<{ t: number }> = ({ t }) => {
               )}
             </>
           )))}
-          {card(ph, phone, { ry: lin(t, 1.4, 1.6, 20, 0), dy: (1 - phIn) * 200, o: phIn })}
+          {card(ph, phone, { ry: lin(t, 1.4, 1.6, 16, 0), dy: (1 - phIn) * 240, o: phIn })}
           {card(CARDS[5], (
             <>
               <Rss c={Z} reveal={[0, 1, 2].map((i) => lin(t, 2.1 + i * 0.1, 2.2 + i * 0.1, 0, 1))} badge={t > 2.4} />
             </>
-          ), { dx: lin(t, 2.0, 2.2, 400, 0), o: lin(t, 2.0, 2.15, 0, 1) })}
+          ), { dx: lin(t, 2.0, 2.2, 500, 0), o: lin(t, 2.0, 2.15, 0, 1) })}
         </Camera>
       </MBlur>
       <div style={{ position: 'absolute', inset: 0, background: '#000', opacity: dim }} />
