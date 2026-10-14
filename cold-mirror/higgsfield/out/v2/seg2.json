@@ -1,0 +1,83 @@
+[
+  {
+    "created_at": "2026-10-14T10:46:53.928163Z",
+    "display_name": "Seedance 2.5",
+    "id": "95afee3f-1dfa-40ef-baec-afffae1752a5",
+    "job_type": "seedance_2_5",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "9:16",
+      "bitrate_mode": "standard",
+      "draft": true,
+      "draft_job_id": null,
+      "duration": 10,
+      "extension_mode": null,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 854,
+      "medias": [
+        {
+          "data": {
+            "id": "935aa6b7-9dd4-4231-b27b-9923676df957",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/935aa6b7-9dd4-4231-b27b-9923676df957.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "c183d7e7-caaa-46b7-b704-ccc8df7576da",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/c183d7e7-caaa-46b7-b704-ccc8df7576da.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "4c68c341-b20c-497c-b3df-89dc84f5bc39",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/4c68c341-b20c-497c-b3df-89dc84f5bc39.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "23472b7b-9114-4a40-b35a-3608bd008a94",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/23472b7b-9114-4a40-b35a-3608bd008a94.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "29088921-8454-4421-9dfe-616276a41bd6",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/29088921-8454-4421-9dfe-616276a41bd6.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "bb3874c4-c0aa-4704-9d95-7681467e12ff",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/bb3874c4-c0aa-4704-9d95-7681467e12ff.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "default",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "Vertical 9:16 cinematic commercial, golden-hour city street, handheld, fast-cut multi-shot, white lace camisole and gold chain choker throughout. Identity lock: it is the same woman in every shot, with exactly the face of image 1 (same eyes, nose, lips, face shape, skin and makeup). The face never changes; only the hair changes. Images 2–6 are this same woman with different hair; copy each hairstyle exactly and keep her face from image 1. Shot 1 (0–2s): she walks toward camera along a tree-lined street with the ash-blonde cut of image 2, raises her phone for a selfie. Shot 2 (2–4s): phone-screen POV; shutter flash; in the photo her hair is now the black-and-red wolf cut of image 3; pull back to reveal the real her on the street also has that wolf cut; a red bus passes in the foreground and wipes the frame. Shot 3 (4–6s): side tracking shot at a zebra crossing, she has the high orange ponytail of image 4, hops off the kerb mid-stride taking a selfie, ponytail swinging; whip pan. Shot 4 (6–8s): through a café window, she sits with a latte, hair in the honey-brown waves of image 5, lifts the cup then takes a selfie; a glass door edge slides across the frame. Shot 5 (8–10s): locked selfie framing, her face centred and smiling, with the twin tails of image 6, the background changing on each beat: graffiti wall, rooftop at dusk, riverside rail. Photoreal. ",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "480p",
+      "speedramp": "auto",
+      "width": 480
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_104653_95afee3f-1dfa-40ef-baec-afffae1752a5.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_104653_95afee3f-1dfa-40ef-baec-afffae1752a5_thumbnail.webp"
+  }
+]

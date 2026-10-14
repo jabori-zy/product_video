@@ -1,0 +1,75 @@
+[
+  {
+    "created_at": "2026-10-14T10:47:40.780596Z",
+    "display_name": "Seedance 2.5",
+    "id": "52da8853-19b2-46bd-87f4-7289f60cc2f6",
+    "job_type": "seedance_2_5",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "9:16",
+      "bitrate_mode": "standard",
+      "draft": true,
+      "draft_job_id": null,
+      "duration": 8,
+      "extension_mode": null,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 854,
+      "medias": [
+        {
+          "data": {
+            "id": "94282e17-41b4-49bd-878d-eb539d3bb275",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/94282e17-41b4-49bd-878d-eb539d3bb275.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "325fefe9-5c58-4d71-9f98-104c22d764c0",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/325fefe9-5c58-4d71-9f98-104c22d764c0.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "adaccce4-1ee8-4a6b-bed2-81359974d2bf",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/adaccce4-1ee8-4a6b-bed2-81359974d2bf.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "7892b8c5-d0e2-4789-8d1c-f01f648aa789",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/7892b8c5-d0e2-4789-8d1c-f01f648aa789.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "fb8d2c1e-9887-4a69-8eef-3ba13da5ebf0",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/fb8d2c1e-9887-4a69-8eef-3ba13da5ebf0.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "default",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "Vertical 9:16 cinematic commercial, golden-hour avenue in one-point perspective, white lace camisole and gold chain choker. Identity lock: it is the same woman in every shot, with exactly the face of image 1 (same eyes, nose, lips, face shape, skin and makeup). The face never changes; only the hair changes. Images 2–5 are this same woman with different hair; copy each hairstyle exactly and keep her face from image 1. Shot 1 (0–5s): the camera is directly in front of her and dollies backward at her pace; she walks straight toward the lens, looking into camera. She starts with the short brown curls of image 2. Every two steps, exactly as her foot lands, her hairstyle changes instantly with a soft light pulse: to the blonde fishtail braid of image 3, then the high bun of image 4, then the long platinum hime cut of image 5. Never change mid-stride, and her face stays the same. Shot 1 continues (5–6.5s): she keeps walking while the camera pulls back, tilts up toward the warm sky, and orbits around to her left side. Shot 2 (6.5–8s): she walks past a boutique window; focus racks to her reflection in the glass; a lamp-post shadow sweeps across and the window becomes a tall smart mirror in a barbershop, where she sits in the barber chair while a barber's scissors close on her hime cut. Photoreal, smooth motion. ",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "480p",
+      "speedramp": "auto",
+      "width": 480
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_104740_52da8853-19b2-46bd-87f4-7289f60cc2f6.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_104740_52da8853-19b2-46bd-87f4-7289f60cc2f6_thumbnail.webp"
+  }
+]

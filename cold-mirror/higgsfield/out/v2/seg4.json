@@ -1,0 +1,34 @@
+[
+  {
+    "created_at": "2026-10-14T10:45:01.929865Z",
+    "display_name": "Seedance 2.5",
+    "id": "df87f712-44de-4699-99fb-592290518e4a",
+    "job_type": "seedance_2_5",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "9:16",
+      "bitrate_mode": "standard",
+      "draft": true,
+      "draft_job_id": null,
+      "duration": 6,
+      "extension_mode": null,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 854,
+      "medias": [],
+      "model": "default",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "Vertical 9:16 product film. A large tall portrait smart mirror with a slim brushed-metal bezel on a round metal pedestal stands centre frame, filling about half the frame height, in a seamless studio. Lighting comes ONLY from overhead: three spotlights above snap on one after another and beam down onto the mirror, then hold. There are no lights on or around the mirror frame: no bulbs, no LED strip, no glowing border. The beams light the mirror brightly; a soft highlight sweeps across the clean glass; a pool of light and a reflection on the glossy grey floor; light haze in the beams. The camera slowly orbits and pushes in. No people, no text. Premium, minimal, photoreal, well exposed. ",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "480p",
+      "speedramp": "auto",
+      "width": 480
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_104501_df87f712-44de-4699-99fb-592290518e4a.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_104501_df87f712-44de-4699-99fb-592290518e4a_thumbnail.webp"
+  }
+]

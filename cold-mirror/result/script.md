@@ -73,7 +73,7 @@ Columns: **TC** = timecode · **Bar** = music bar · **Shot / camera** · **Acti
 
 | # | TC | Bar | Shot / camera | Action | Transition out |
 |---|---|---|---|---|---|
-| 14 | 0:30–0:32 | 16 | **Dark studio, mirror centre frame, slow orbit and push-in.** | Three overhead spotlights snap on, one per beat (left, right, centre), each with a click. Then a ring of vanity bulbs around the frame lights up one by one. The glass shows her final reflection for a moment, then turns to clean lit glass with a light pool and a reflection on the floor. | — |
+| 14 | 0:30–0:32 | 16 | **Dark studio, mirror centre frame, slow orbit and push-in.** | Three overhead spotlights snap on, one per beat (left, right, centre), each with a click. The light comes only from these overhead lamps; there are no lights on or around the mirror frame. The glass shows her final reflection for a moment, then turns to clean lit glass with a light pool and a reflection on the floor. | — |
 | 15 | 0:32–0:34 | 17 | **Same studio, all lights on.** | A light sweep runs across the glass. On beat 3 (0:33) the slogan 「先改变，再看见」 (*First change, then see*) drops into the empty space above the mirror, one half per beat. | White flash. |
 | 16 | 0:34–0:36 | 18 | **Hold, white card. The film ends here.** | The lychee logo and **Cold Mirror** sit above the slogan line, which still reads 「先改变，再看见」. 「改变」 then moves to the end, trading places with 「看见」 (one arcs over, one under), to land on **「先看见，再改变」** (*See it first. Then change.*). The English line and the disclaimer *呈现为AI效果，实际请与发型师沟通* follow. No CHANGE letters. | Final chord rings out. |
 
@@ -111,14 +111,15 @@ These looks contrast in **length** (long → short → up-do), **shape** (straig
 
 1. **Identity first.** `model.JPG` is the only photo of her. Turn it into a character sheet before anything else (front, ¾, profile, full body, same outfit), then train a Soul ID from that sheet. Every shot after that uses the Soul ID.
 2. **Keyframes before motion.** For every look, make a still from the *same* base frame with image-edit, using the matching library image as the hair reference. Then animate with image-to-video using start and end frames. This is what keeps her face identical across looks.
-3. **Locked-composition shots (5, 11, 12) are stills, not video.** Generate one base selfie, then hair-edit it 12 times, and add parallax or a slight handheld drift in compositing. They will be faster to make and more consistent.
-4. **Bridges are the hardest shots.** Generate Shot 6 as two clips:
+3. **Hairstyle references must show her face.** Never pass a hairstyle-library photo (another model) straight to the video model, because the face drifts to that model. First make a still of *her* with each hairstyle (`higgsfield/looks.sh`, Seedream 5.0 Pro), then reference only those stills.
+4. **Locked-composition shots (5, 11, 12) are stills, not video.** Generate one base selfie, then hair-edit it 12 times, and add parallax or a slight handheld drift in compositing. They will be faster to make and more consistent.
+5. **Bridges are the hardest shots.** Generate Shot 6 as two clips:
    - (a) push-in on the mirror, ending on the glass plane;
    - (b) a street reveal that starts from a matching frame.
    Join them in the edit on the refraction ripple. Make Shot 13 the same way: (a) reflection rack-focus, (b) barbershop pull-back.
-5. **Clip length ≤ 5 s.** No shot in this script is longer than 2 s on screen, so generate each with handles of at least 1 s on both sides.
-6. **Device.** The repo has no hardware photo. Generate the hero device (portrait mirror + base) once with the product-photoshoot skill, approve it, and use it as a fixed reference in Shots 1–6, 13 and 14.
-7. **Remotion preview.** Built in `../demo/` → `demo/out/demo_v4.mp4` (vertical, 36 s; `demo_v1.mp4` is the landscape cut, `demo_v2`/`demo_v3` earlier vertical cuts). All timing is in `demo/src/timing.json` (24 fps, 120 BPM, one shot per bar); the picture, the music and the asset script all read it. Swap the placeholders for Higgsfield clips shot by shot.
+6. **Clip length ≤ 5 s.** No shot in this script is longer than 2 s on screen, so generate each with handles of at least 1 s on both sides.
+7. **Device.** The repo has no hardware photo. Generate the hero device (portrait mirror + base) once with the product-photoshoot skill, approve it, and use it as a fixed reference in Shots 1–6, 13 and 14.
+8. **Remotion preview.** Built in `../demo/` → `demo/out/demo_v4.mp4` (vertical, 36 s; `demo_v1.mp4` is the landscape cut, `demo_v2`/`demo_v3` earlier vertical cuts). All timing is in `demo/src/timing.json` (24 fps, 120 BPM, one shot per bar); the picture, the music and the asset script all read it. Swap the placeholders for Higgsfield clips shot by shot.
 
 ---
 
