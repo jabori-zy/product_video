@@ -37,13 +37,13 @@ music.fill(1);
 for (let j = Math.floor(sec(K.silence[0]) * SR); j < Math.floor(sec(K.silence[1]) * SR); j++) music[j] = 0;
 
 // ── 音乐：K-pop 舞曲 / EDM，A 小调，每小节一个和弦 Am – F – C – G（vi–IV–I–V）──
-// 段落（小节，1 起）：1–2 前奏 · 3–5 主歌 · 6 Build（军鼓滚奏 + 噪声上升 + 滤波打开，最后半拍静音）
-//                   · 7–12 Drop（四踩、泵感 supersaw、808、高八度主旋律、人声切片）· 13 半速 · 14–15 收 · 16 尾和弦
+// 段落（小节，1 起；全片 18 小节）：1–2 前奏 · 3–5 主歌 · 6 Build（军鼓滚奏 + 噪声上升 + 滤波打开，最后半拍静音）
+//                   · 7–14 Drop（四踩、泵感 supersaw、808、高八度主旋律、人声切片）· 15 半速 · 16–17 收 · 18 尾和弦
 const PROG = [[57, 60, 64, 69], [53, 57, 60, 65], [55, 60, 64, 67], [55, 59, 62, 67]];
 const ROOT = [33, 29, 36, 31];                       // 808 根音（A1 F1 C2 G1）
 const chordAt = (bar) => PROG[bar % 4];
 const S16 = BEAT / 4;
-const DROP = [6, 12];                                // Drop 的小节下标范围 [6, 12)
+const DROP = [6, 14];                                // Drop 的小节下标范围 [6, 14)：第 7–14 小节，盖住 S12 整段街头行走和运镜
 const inDrop = (bar) => bar >= DROP[0] && bar < DROP[1];
 
 // Build 结尾、Drop 之前空半拍
@@ -51,9 +51,9 @@ for (let j = Math.floor((6 * BAR - BEAT / 2) * SR); j < Math.floor(6 * BAR * SR)
 
 // Supersaw：7 根失谐锯齿，两级一阶低通；Drop 里每拍被底鼓「压」一下（sidechain 泵感）
 const DET = [-0.11, -0.065, -0.03, 0, 0.03, 0.065, 0.11]; // 半音
-const cutoffAt = (bar, u) => bar < 2 ? 500 + 900 * (bar + u) / 2 : bar < 5 ? 1300 : bar === 5 ? 1300 + 5500 * u ** 2 : inDrop(bar) ? 5200 : bar === 12 ? 900 : 2200;
-const sawGain = (bar) => bar < 2 ? 0.035 : bar < 5 ? 0.022 : bar === 5 ? 0.03 : inDrop(bar) ? 0.045 : bar === 12 ? 0.03 : 0.026;
-for (let b = 0; b < 15; b++) {
+const cutoffAt = (bar, u) => bar < 2 ? 500 + 900 * (bar + u) / 2 : bar < 5 ? 1300 : bar === 5 ? 1300 + 5500 * u ** 2 : inDrop(bar) ? 5200 : bar === 14 ? 900 : 2200;
+const sawGain = (bar) => bar < 2 ? 0.035 : bar < 5 ? 0.022 : bar === 5 ? 0.03 : inDrop(bar) ? 0.045 : bar === 14 ? 0.03 : 0.026;
+for (let b = 0; b < 17; b++) {
   const t0 = b * BAR, len = BAR + 0.05;
   for (const m of chordAt(b)) {
     DET.forEach((d, v) => {
@@ -146,14 +146,14 @@ for (let b = DROP[0]; b < DROP[1]; b++) {
   CHOP16.forEach((i) => chop(t0 + i * S16, chordAt(b)[3]));
   if (b === DROP[1] - 1) for (let i = 12; i < 16; i++) snare(t0 + i * S16, 0.12 + 0.03 * (i - 12));   // 结尾过门
 }
-// 第 13 小节：半速，第 3 拍一个 kick，人声切片带回声
-{ const t0 = 12 * BAR; kick(t0 + 2 * BEAT, 0.8); sub(t0 + 2 * BEAT, ROOT[0], BEAT * 2); clap(t0 + 3 * BEAT + BEAT / 2, 0.15);
+// 第 15 小节（S13）：半速，第 3 拍一个 kick，人声切片带回声
+{ const t0 = 14 * BAR; kick(t0 + 2 * BEAT, 0.8); sub(t0 + 2 * BEAT, ROOT[0], BEAT * 2); clap(t0 + 3 * BEAT + BEAT / 2, 0.15);
   [0, 1, 2, 3].forEach((k) => chop(t0 + 2 * BEAT + k * 3 * S16, 69, 0.14 * 0.55 ** k, 0.16)); }
-// 第 14–15 小节：每小节下拍一个 kick，八分镲轻轻走，给字母音让位
-for (const b of [13, 14]) { kick(b * BAR, 0.55); sub(b * BAR, ROOT[b % 4], BEAT * 2, 0.25); for (let e = 1; e < 8; e += 2) hat(b * BAR + e * BEAT / 2, 0.03); }
-// 第 16 小节：尾和弦（supersaw 长音）+ 808 磁带停转
-for (const m of [57, 60, 64, 71]) DET.forEach((d, v) => { const f = hz(m + d); let y = 0, ph = v * 0.21; add(15 * BAR, BAR + 1.4, (t) => { ph += f / SR; ph -= Math.floor(ph); y += 0.08 * (ph * 2 - 1 - y); return y * Math.min(1, t / 0.02) * Math.exp(-t / 1.3); }, { gain: 0.03, pan: (v - 3) / 4.5, bed: true }); });
-kick(15 * BAR, 0.8); sub(15 * BAR, ROOT[0], BAR, 0.4, true);
+// 第 16–17 小节（S14–S15）：每小节下拍一个 kick，八分镲轻轻走，给灯光和标语让位
+for (const b of [15, 16]) { kick(b * BAR, 0.55); sub(b * BAR, ROOT[b % 4], BEAT * 2, 0.25); for (let e = 1; e < 8; e += 2) hat(b * BAR + e * BEAT / 2, 0.03); }
+// 第 18 小节（S16）：尾和弦（supersaw 长音）+ 808 磁带停转
+for (const m of [57, 60, 64, 71]) DET.forEach((d, v) => { const f = hz(m + d); let y = 0, ph = v * 0.21; add(17 * BAR, BAR + 1.4, (t) => { ph += f / SR; ph -= Math.floor(ph); y += 0.08 * (ph * 2 - 1 - y); return y * Math.min(1, t / 0.02) * Math.exp(-t / 1.3); }, { gain: 0.03, pan: (v - 3) / 4.5, bed: true }); });
+kick(17 * BAR, 0.8); sub(17 * BAR, ROOT[0], BAR, 0.4, true);
 
 // ── 音效（都挂在画面的关键帧上，不受静音段影响） ──
 // 玻璃「叮」：S1 光线起
@@ -178,7 +178,9 @@ add(sec(288), 2.2, (t) => rnd() * Math.exp(-t / 0.5) * 0.6 + Math.sin(2 * Math.P
 // 快门：咔嚓（两个短促的瞬态）
 const shutter = (f, g = 0.35) => { add(sec(f), 0.03, (t) => rnd() * Math.exp(-t / 0.004), { gain: g }); add(sec(f) + 0.045, 0.04, (t) => rnd() * Math.exp(-t / 0.006), { gain: g * 0.8 }); };
 [K.shutter8, K.shutter9, ...K.montage].forEach((f) => shutter(f));
-K.flicker.forEach((f) => sweep(f, 4, 0.2));   // S12 街头行走：每次换造型一道短促的扫光声
+K.walkLooks.slice(1).forEach((f) => sweep(f, 4, 0.22));   // S12 街头行走：双脚落地换造型时一道短促的扫光声
+// S12 运镜（拉远 → 上摇 → 环绕）：一阵慢慢上扬的呼啸
+{ let y = 0; const a = sec(K.camBack[0]), len = sec(K.camOrbit[1] - K.camBack[0]); add(a, len, (t, u) => { y += (0.01 + 0.08 * u) * (rnd() - y); return y * Math.sin(Math.PI * u); }, { gain: 0.4 }); }
 // 公交车 / 甩镜头：左到右的呼啸
 const whoosh = (f0, f1, g) => { let y = 0; const len = sec(f1 - f0); add(sec(f0), len, (t, u) => { y += (0.02 + 0.2 * Math.sin(Math.PI * u)) * (rnd() - y); return y * Math.sin(Math.PI * u); }, { gain: g, pan: 0 }); };
 whoosh(K.bus[0] - 4, K.bus[1] + 4, 0.5); whoosh(K.whip[0], K.whip[1] + 2, 0.4);
@@ -199,7 +201,8 @@ add(sec(K.snip) + 0.05, 0.1, (t) => (Math.sin(2 * Math.PI * 3600 * t) + rnd() * 
 // 换位：两个词交叉时一阵轻的「嗖」
 { let y = 0; const len = sec(K.swap[1] - K.swap[0]); add(sec(K.swap[0]), len, (t, u) => { y += 0.1 * (rnd() - y); return y * Math.sin(Math.PI * u); }, { gain: 0.3 }); }
 
-function at(n) { return (n - 1) * T.bar; }
+// 第 n 镜的起点：前面各镜小节数（shotBars）之和，和 src/timing.ts 一致
+function at(n) { return T.shotBars.slice(0, n - 1).reduce((a, b) => a + b, 0) * T.bar; }
 
 // ── 写 WAV、量响度、归一 ──
 function write(file, gain) {

@@ -41,6 +41,12 @@ export const walkFront = (phase: number): Pose => {
   return pose({ lHip: -5 + 3 * s, rHip: 5 + 3 * s, lKn: 12 * Math.max(0, s), rKn: -12 * Math.max(0, -s), lSh: -10 - 6 * s, rSh: 10 - 6 * s, lEl: -6, rEl: 6, dy: -6 * Math.abs(s) });
 };
 
+// 正面朝镜头走（S12）：每步抬起的那条腿膝盖外顶、小腿收回，脚离地；phase 每 π 一步，phase = kπ 时双脚都着地
+export const walkToward = (phase: number): Pose => {
+  const s = Math.sin(phase), L = Math.max(0, s), R = Math.max(0, -s);
+  return pose({ lHip: -5 - 12 * L, lKn: 30 * L, rHip: 5 + 12 * R, rKn: -30 * R, lSh: -10 - 10 * R, rSh: 10 + 10 * L, lEl: -10, rEl: 10, dy: -8 * Math.abs(s) });
+};
+
 type Pt = [number, number];
 const D = Math.PI / 180;
 const limb = (p: Pt, a: number, len: number): Pt => [p[0] + len * Math.sin(a * D), p[1] + len * Math.cos(a * D)];
@@ -84,7 +90,8 @@ const backHair = (c: Pt, hair: Hair, view: View, swing: number) => {
   const tail = (bx: number, by: number, a: number, l: number, k: string) => (
     <path key={k} d={`M ${bx - 12} ${by} Q ${bx - 18} ${by + l * 0.55} ${bx} ${by + l} Q ${bx + 18} ${by + l * 0.55} ${bx + 12} ${by} Z`} fill={hair.color} transform={`rotate(${a} ${bx} ${by})`} />
   );
-  if (hair.shape === 'ponytail') out.push(view === 'side' ? tail(cx - R * 0.8, cy - R * 0.7, -30 + swing, 115, 't') : tail(cx + R * 0.5, cy - R * 0.9, 20 + swing * 0.4, 100, 't'));
+  // 马尾 / 辫子：侧面挂在后脑；正面和背面从耳后垂到右肩前，看得见
+  if (hair.shape === 'ponytail') out.push(view === 'side' ? tail(cx - R * 0.8, cy - R * 0.7, -30 + swing, 115, 't') : tail(cx + R * 0.85, cy - 2, 6 + swing * 0.4, 125, 't'));
   if (hair.shape === 'twin') { out.push(tail(cx - R * 0.95, cy - 4, -12 + swing * 0.5, 105, 't1')); out.push(tail(cx + R * 0.95, cy - 4, 12 + swing * 0.5, 105, 't2')); }
   return out;
 };

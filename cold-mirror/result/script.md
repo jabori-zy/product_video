@@ -1,7 +1,7 @@
 # Cold Mirror · Promo Film Script
 
 **Working title:** 《同一个她》 *One Face, Every Look*
-**Length:** 32 s (16 bars)
+**Length:** 36 s (18 bars). S12, the street walk, runs 3 bars; every other shot runs 1 bar.
 **Format:** 1080×1920 vertical (9:16), 24 fps. Frame every shot for vertical.
 **Music:** 120 BPM, so 1 beat = 0.5 s = 12 frames and 1 bar = 2 s = 48 frames. Every hair change lands on a beat.
 **Production:** Higgsfield makes the final full-HD shots. Remotion makes the timing preview (animatic), using the stills in `../assets/` as stand-ins.
@@ -36,7 +36,7 @@ The film is a loop: barbershop → street → barbershop.
 | Mirror UI | `assets/screenshot/发色库_*.png`, `换发色成功_*.png` | Use only real elements: the 发色库 card grid, the name chip in the top-left corner (e.g. 「奶茶粉紫」), and the vertical compare line. |
 | Hair colours | `assets/hair_colors/*.png` | The names on screen must match the library exactly (see §5). |
 | Hairstyles | `assets/hairstyles_woman/*.png` | Same rule. |
-| End card | `cold-mirror-icon.png` | A dark studio with the mirror lit centre stage, then a white card. The word **CHANGE** is set as clean type in empty space and never laid over an image. |
+| End card | `cold-mirror-icon.png` | A dark studio with the mirror lit centre stage, then a white card with the logo and the slogan. Type sits in empty space and is never laid over an image. |
 
 **Grade:** Act 1 is warm tungsten barbershop light with deep shadows. Act 2 is golden-hour street, airy and handheld. Act 3 is clean white studio, matching the home page.
 
@@ -57,7 +57,7 @@ Columns: **TC** = timecode · **Bar** = music bar · **Shot / camera** · **Acti
 | 5 | 0:08–0:10 | 5 | **Same mirror CU, locked.** Four changes, one per beat. | Tap, sweep: 「奶白金」. Tap, sweep: 「玫瑰酒红」. Tap, sweep: 「雾霾蓝」. On the 4th beat the tab switches from colour to style, then sweep: **「初恋蓬松短发」** (airy, ash-blonde — the real app result on her). She laughs and tilts her head. Her reflection tilts with her. | Bridge 1 starts. |
 | 6 | 0:10–0:12 | 6 | **★ BRIDGE 1: through the mirror.** One continuous push-in from the OTS position *into* the reflection. The mirror frame slides past the lens edges. | As the camera pushes, the reflection fills the frame. Inside the reflection, she turns and walks toward the shop door behind her. The 「BARBER」 sign on the door reads **mirrored**. The camera crosses the glass plane in a soft refraction ripple, the sign flips so it **reads correctly**, the door swings open, and sunlight floods in. We are now in reality, behind her, following her onto the street. She keeps the short airy cut. | Overexposure from the open door, on the downbeat. |
 
-### ACT 2 — Street: every selfie, a new her (0:12 – 0:26, bars 7–13)
+### ACT 2 — Street: every selfie, a new her (0:12 – 0:30, bars 7–15)
 
 | # | TC | Bar | Shot / camera | Action | Transition out |
 |---|---|---|---|---|---|
@@ -66,16 +66,16 @@ Columns: **TC** = timecode · **Bar** = music bar · **Shot / camera** · **Acti
 | 9 | 0:16–0:18 | 9 | **Wide profile tracking** beside a crosswalk; the bus clears the frame. | After the wipe: **「元气高马尾」** (high ponytail) with 「落日橘」 colour. She hops off the kerb, takes a selfie mid-step, and the ponytail swings. | On the shutter, a whip pan to the right. |
 | 10 | 0:18–0:20 | 10 | **Medium shot through a café window.** She sits by the glass and reflections slide across it. | She lands in frame. **「法式温柔卷」** with 「蜂蜜茶色」 colour. She lifts a cup and takes a selfie beside the latte. A **glass-door edge** slides across the frame as someone opens the door. | The door edge acts as the sweep line. |
 | 11 | 0:20–0:22 | 11 | **★ Selfie montage, locked composition.** Phone-screen frame, with her face always in the same position, the same smile and the same chain choker. Only the hair and the background change. | One look per beat, **4 looks**: 「日系双马尾」 at a graffiti wall → 「挂耳染短发」 on a rooftop at dusk → 「海边大波浪」 + 「烟铂灰」 on a riverside rail → 「云髻盘发」 under neon. The shutter sound is the hi-hat. | Accelerate. |
-| 12 | 0:22–0:24 | 12 | **Cut from the selfies to the street: side-on tracking shot, she walks right to left without stopping.** | The walk stays smooth and continuous while her look changes fast, one per half-beat (0.25 s), each time a vertical light line sweeps across her: 克莱因蓝 · 草莓红 · 抹茶色 · 羊毛卷短发 · 利落短直发 · 蓬松鱼骨辫 · 高丸子头 · 优雅公主切. Lamp posts and paving lines stream past. | Hard stop on the last look. One beat of silence. |
-| 13 | 0:24–0:26 | 13 | **★ BRIDGE 2: back into the mirror.** Medium shot that pans with her past a boutique window, then **racks focus** onto her reflection in the glass. | She lowers the phone, settles on **「优雅公主切」**, and walks past a shop window. The camera holds on her reflection in the glass. A lamp post's vertical shadow sweeps across the reflection. The background behind it dissolves from street to barbershop, and the boutique glass turns into the Cold Mirror's surface. The camera pulls back: she is back in the barber chair in front of Cold Mirror. A barber's comb lifts her hair, and scissors close. **The look she previewed is now being cut for real.** | The scissors close on the downbeat. Cut to white. |
+| 12 | 0:22–0:28 | 12–14 | **★ Cut from the selfies to the street. The camera is in front of her, leading backwards at her pace, down a one-point-perspective avenue.** Then, after the fourth look: **pull back → tilt up → orbit** around to her left side. | She walks straight toward the camera and looks into the lens. Every **two steps**, at the instant both feet are planted (never mid-stride), her hairstyle changes with a quick light pulse: 羊毛卷短发 → 蓬松鱼骨辫 → 高丸子头 → 优雅公主切. After the fourth look she keeps walking while the camera pulls back, tilts up to the sky and orbits until she is side-on, walking left. | She walks out frame left. One beat of silence. |
+| 13 | 0:28–0:30 | 15 | **★ BRIDGE 2: back into the mirror.** Medium shot that pans with her past a boutique window, then **racks focus** onto her reflection in the glass. | She lowers the phone, settles on **「优雅公主切」**, and walks past a shop window. The camera holds on her reflection in the glass. A lamp post's vertical shadow sweeps across the reflection. The background behind it dissolves from street to barbershop, and the boutique glass turns into the Cold Mirror's surface. The camera pulls back: she is back in the barber chair in front of Cold Mirror. A barber's comb lifts her hair, and scissors close. **The look she previewed is now being cut for real.** | The scissors close on the downbeat. Cut to white. |
 
-### ACT 3 — End card (0:26 – 0:32, bars 14–16)
+### ACT 3 — End card (0:30 – 0:36, bars 16–18)
 
 | # | TC | Bar | Shot / camera | Action | Transition out |
 |---|---|---|---|---|---|
-| 14 | 0:26–0:28 | 14 | **Dark studio, mirror centre frame, slow orbit and push-in.** | Three overhead spotlights snap on, one per beat (left, right, centre), each with a click. Then a ring of vanity bulbs around the frame lights up one by one. The glass shows her final reflection for a moment, then turns to clean lit glass with a light pool and a reflection on the floor. | — |
-| 15 | 0:28–0:30 | 15 | **Same studio, all lights on.** | A light sweep runs across the glass. At 0:29 the slogan 「先改变，再看见」 (*First change, then see*) drops into the empty space above the mirror, one half per beat. | White flash. |
-| 16 | 0:30–0:32 | 16 | **Hold, white card.** | **CHANGE**, the lychee logo and **Cold Mirror** sit above the slogan line, which still reads 「先改变，再看见」. At 0:30 the words 「改变」 and 「看见」 trade places, one arcing over and one under, to land on **「先看见，再改变」** (*See it first. Then change.*). The English line and the disclaimer *呈现为AI效果，实际请与发型师沟通* follow. | Final chord rings out. |
+| 14 | 0:30–0:32 | 16 | **Dark studio, mirror centre frame, slow orbit and push-in.** | Three overhead spotlights snap on, one per beat (left, right, centre), each with a click. Then a ring of vanity bulbs around the frame lights up one by one. The glass shows her final reflection for a moment, then turns to clean lit glass with a light pool and a reflection on the floor. | — |
+| 15 | 0:32–0:34 | 17 | **Same studio, all lights on.** | A light sweep runs across the glass. On beat 3 (0:33) the slogan 「先改变，再看见」 (*First change, then see*) drops into the empty space above the mirror, one half per beat. | White flash. |
+| 16 | 0:34–0:36 | 18 | **Hold, white card. The film ends here.** | The lychee logo and **Cold Mirror** sit above the slogan line, which still reads 「先改变，再看见」. 「改变」 then moves to the end, trading places with 「看见」 (one arcs over, one under), to land on **「先看见，再改变」** (*See it first. Then change.*). The English line and the disclaimer *呈现为AI效果，实际请与发型师沟通* follow. No CHANGE letters. | Final chord rings out. |
 
 **Slogan:** the film shows 「先改变，再看见」 first and then swaps its two words into the final 「先看见，再改变」. Other options considered:
 - 「先看见，再改变」 — *See it first. Then change.* (recommended, because it matches the preview → cut story)
@@ -86,13 +86,13 @@ Columns: **TC** = timecode · **Bar** = music bar · **Shot / camera** · **Acti
 
 ## 4. Sound
 
-**Style:** Korean dance-pop / EDM at 120 BPM in A minor (Am–F–C–G). Bars 1–5 build up from a filtered intro; bar 6 is the build (snare roll, noise riser, the last half-beat silent); the drop lands on bar 7 as she steps through the mirror (four-on-the-floor kick, pumping supersaw, 808, vocal chops).
+**Style:** Korean dance-pop / EDM at 120 BPM in A minor (Am–F–C–G). Bars 1–5 build up from a filtered intro; bar 6 is the build (snare roll, noise riser, the last half-beat silent); the drop lands on bar 7 as she steps through the mirror and carries through bar 14, the end of the street walk (four-on-the-floor kick, pumping supersaw, 808, vocal chops).
 
 - **Bars 1–2:** room tone, a glass "ting" when the light runs down the edge, and a soft synth pad.
 - **Bars 3–6:** a minimal pluck groove. Each mirror sweep gets a glassy *shhk* riser of about 6 frames, and each tap is a soft click. Bridge 1 gets a reverse-reverb swell into the door opening, and the sunlight hits on the downbeat with the full beat dropping in.
-- **Bars 7–12:** the full track. The phone shutter is a percussion element: on the beat in bars 8–11 and on half-beats in bar 12. Add the whoosh of the passing bus.
-- **Bar 12 → 13:** hard cut to one beat of silence, then street ambience and a single scissor *snip* on the bar-13 downbeat. The beat returns, half-time.
-- **Bars 14–16:** each letter clicks into place as one note of a rising arpeggio. Final chord.
+- **Bars 7–14:** the full track. The phone shutter is a percussion element: on the beat in bars 8–11 and on half-beats in bar 12. Add the whoosh of the passing bus.
+- **Bar 14 → 15:** hard cut to one beat of silence, then street ambience and a single scissor *snip* on the bar-13 downbeat. The beat returns, half-time.
+- **Bars 16–18:** a click on each studio light, chimes as the slogan halves land and as the words swap, then the final chord.
 - Mix to −14 LUFS, true peak −2 dBTP (same as the other deliverables).
 
 ---
@@ -118,7 +118,7 @@ These looks contrast in **length** (long → short → up-do), **shape** (straig
    Join them in the edit on the refraction ripple. Make Shot 13 the same way: (a) reflection rack-focus, (b) barbershop pull-back.
 5. **Clip length ≤ 5 s.** No shot in this script is longer than 2 s on screen, so generate each with handles of at least 1 s on both sides.
 6. **Device.** The repo has no hardware photo. Generate the hero device (portrait mirror + base) once with the product-photoshoot skill, approve it, and use it as a fixed reference in Shots 1–6, 13 and 14.
-7. **Remotion preview.** Built in `../demo/` → `demo/out/demo_v3.mp4` (vertical; `demo_v1.mp4` is the landscape cut, `demo_v2.mp4` the first vertical cut). All timing is in `demo/src/timing.json` (24 fps, 120 BPM, one shot per bar); the picture, the music and the asset script all read it. Swap the placeholders for Higgsfield clips shot by shot.
+7. **Remotion preview.** Built in `../demo/` → `demo/out/demo_v4.mp4` (vertical, 36 s; `demo_v1.mp4` is the landscape cut, `demo_v2`/`demo_v3` earlier vertical cuts). All timing is in `demo/src/timing.json` (24 fps, 120 BPM, one shot per bar); the picture, the music and the asset script all read it. Swap the placeholders for Higgsfield clips shot by shot.
 
 ---
 

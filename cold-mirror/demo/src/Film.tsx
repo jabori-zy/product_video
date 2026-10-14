@@ -1,7 +1,7 @@
-// 全片：按全局帧选镜头（每镜 1 小节）。扫屏转场时下一镜提前垫在底下，由上一镜自己裁掉露出来。
+// 全片：按全局帧选镜头（镜头长度见 timing.json 的 shotBars）。扫屏转场时下一镜提前垫在底下，由上一镜自己裁掉露出来。
 import React from 'react';
 import { AbsoluteFill, Audio, staticFile, useCurrentFrame } from 'remotion';
-import { K, BAR, BEAT, FPS, SHOTS, fade, at } from './timing';
+import { K, BAR, BEAT, FPS, SHOTS, fade, at, shotAt } from './timing';
 import { S1, S2, S3, S4, S5, S6 } from './scenes/Act1';
 import { S7, S8, S9, S10, S11, S12, S13 } from './scenes/Act2';
 import { S14, S15, S16 } from './scenes/Act3';
@@ -25,7 +25,7 @@ const tc = (g: number) => {
 
 export const Film: React.FC = () => {
   const g = useCurrentFrame();
-  const n = Math.floor(g / BAR) + 1;
+  const n = shotAt(g), bar = Math.floor(g / BAR) + 1;
   const layers = SCENES.map((Scene, i) => ({ Scene, k: i + 1 })).filter(({ k }) => k === n || (k === n + 1 && g >= at(k) - (PRE[k] ?? 0)));
   return (
     <AbsoluteFill style={{ background: '#000' }}>
@@ -34,7 +34,7 @@ export const Film: React.FC = () => {
       {/* 预览标注：镜号、时间码、小节.拍 */}
       <div style={{ position: 'absolute', left: 24, top: 18, padding: '4px 12px', background: 'rgba(0,0,0,.6)', color: '#FFE14D', fontFamily: '"PingFang SC",monospace', fontSize: 22, borderRadius: 4 }}>{SHOTS[n - 1]}</div>
       <div style={{ position: 'absolute', right: 24, bottom: 16, padding: '4px 12px', background: 'rgba(0,0,0,.6)', color: '#FFE14D', fontFamily: 'Menlo,monospace', fontSize: 22, borderRadius: 4 }}>
-        {tc(g)}　bar {n}.{Math.floor((g % BAR) / BEAT) + 1}
+        {tc(g)}　bar {bar}.{Math.floor((g % BAR) / BEAT) + 1}
       </div>
       <Audio src={staticFile('soundtrack.wav')} />
     </AbsoluteFill>

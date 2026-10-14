@@ -2,12 +2,12 @@
   "name": "cold-mirror-demo",
   "version": "1.0.0",
   "private": true,
-  "description": "Cold Mirror 宣传片预览（Remotion animatic，竖版 1080×1920，32 s，按 ../result/script.md）",
+  "description": "Cold Mirror 宣传片预览（Remotion animatic，竖版 1080×1920，36 s，按 ../result/script.md）",
   "type": "module",
   "scripts": {
     "studio": "remotion studio",
     "music": "node tools/music.mjs",
-    "render": "node tools/music.mjs && remotion render ColdMirrorDemo out/demo_v3.mp4",
+    "render": "node tools/music.mjs && remotion render ColdMirrorDemo out/demo_v4.mp4",
     "still": "remotion still ColdMirrorDemo"
   },
   "dependencies": {

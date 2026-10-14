@@ -3,7 +3,7 @@ import React from 'react';
 import { AbsoluteFill } from 'remotion';
 import { C, K, LOOKS, FONT, W, H, at, seg, fade, pop, lerp, shake, EASE, OUT, IN, lastIndex } from '../timing';
 import { Mirror, Photo, Phone, StreetBg, ShopBg, Bokeh, LightLine, Chip, StandIn, Note } from '../lib';
-import { Stick, STAND, SEATED, pose, mix, poseAt, walk, walkFront, joints, toScreen, Hair } from '../stick';
+import { Stick, STAND, SEATED, pose, mix, poseAt, walk, walkFront, walkToward, joints, toScreen, Hair } from '../stick';
 
 type P = { g: number };
 const isLib = (img: string) => img.startsWith('lib/');
@@ -188,36 +188,74 @@ export const S11: React.FC<P> = ({ g }) => {
   );
 };
 
-// S12 从自拍切到街头：她（火柴人）在街上一路走（镜头侧面跟拍，动作连贯不停），每半拍一道光线扫过，发型和发色换一次；最后停在「优雅公主切」
-export const S12: React.FC<P> = ({ g }) => {
-  const s = at(12), L = LOOKS.s12, T = K.flicker;
-  const i = Math.max(0, lastIndex(g, T));
-  const cur = L[i].hair as Hair, prev = L[Math.max(0, i - 1)].hair as Hair;
-  const body = walk((g - s) * 0.42, 30);
-  // 光线 4 帧扫过人物（左 → 右），线左边是新造型
-  const p = i === 0 ? 1 : seg(g, T[i], T[i] + 4, EASE), lx = lerp(300, 780, p);
-  const enter = seg(g, s, s + 5, OUT);                     // 从自拍切过来：开头几帧带一点横向运动模糊
-  const fig = (hair: Hair) => <Stick x={540} y={1660} h={1000} pose={body} view="side" flip hair={hair} swing={-Math.sin((g - s) * 0.42) * 12} />;
-  const scroll = (g - s) * 28;                             // 她朝左走，镜头跟拍，街景往右流
+// S12 ★ 从自拍切到街头，镜头在她正前方：她朝镜头走、直视镜头，每两步（一个步态周期、双脚落地的那一刻）换一个发型，绝不在迈步中途换；
+// 四个发型之后，镜头慢慢拉远、再上摇、再绕到她左侧环绕，她一直在走。最后停在侧面朝左，接 S13 她从右往左走过橱窗
+const VP: [number, number] = [540, 1000];                // 街道的灭点
+const FEET: [number, number] = [540, 1660];              // 她脚底在画面里的位置（镜头倒退跟拍，她的位置不变）
+const Avenue: React.FC<{ g: number; yaw: number }> = ({ g, yaw }) => {
+  const s = at(12), t = g - s;
+  const far = -260 * Math.sin(yaw), near = (z: number) => -900 * Math.sin(yaw) / z;   // 环绕时的视差：越近移得越多
+  const [vx, vy] = VP;
+  // 镜头往后退：路边的东西离镜头越来越远，往灭点缩
+  const depth = (z0: number, span = 5.5) => 1 + ((z0 + t * 0.045) % span);
   return (
-    <AbsoluteFill style={{ overflow: 'hidden' }}>
+    <AbsoluteFill style={{ overflow: 'visible' }}>
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
+        <defs>
+          <linearGradient id="sky12" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#6c8fc7" /><stop offset="0.55" stopColor="#ffcf8a" /><stop offset="1" stopColor="#ff9e6e" /></linearGradient>
+          <linearGradient id="wallL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#4a3424" /><stop offset="1" stopColor="#a8754e" /></linearGradient>
+          <linearGradient id="wallR" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stopColor="#3e2c20" /><stop offset="1" stopColor="#9a6c48" /></linearGradient>
+          <linearGradient id="road12" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#7a6e66" /><stop offset="1" stopColor="#3a3634" /></linearGradient>
+        </defs>
+        {/* 天空：往上留得很高，上摇时露出来 */}
+        <rect x={-1600 + far} y={-1600} width={4300} height={2700} fill="url(#sky12)" />
+        <g transform={`translate(${far} 0)`}>
+          {/* 两侧楼面，往灭点收 */}
+          <polygon points={`-1600,-1500 ${vx - 170},${vy - 330} ${vx - 170},${vy} -1600,3200`} fill="url(#wallL)" />
+          <polygon points={`2700,-1500 ${vx + 170},${vy - 330} ${vx + 170},${vy} 2700,3200`} fill="url(#wallR)" />
+          {/* 楼面上一排排窗（透视线） */}
+          {[0.15, 0.3, 0.45, 0.6, 0.75].map((k, i) => <g key={i} stroke="rgba(255,230,190,.25)" strokeWidth={6}>
+            <line x1={-1600} y1={-1500 + 4700 * k} x2={vx - 170} y2={vy - 330 + 330 * k} /><line x1={2700} y1={-1500 + 4700 * k} x2={vx + 170} y2={vy - 330 + 330 * k} /></g>)}
+          {/* 路面和人行道 */}
+          <polygon points={`${vx - 170},${vy} ${vx + 170},${vy} 2700,3200 -1600,3200`} fill="url(#road12)" />
+          <line x1={vx - 90} y1={vy} x2={-300} y2={3200} stroke="#cfc7bd" strokeWidth={10} opacity={0.6} />
+          <line x1={vx + 90} y1={vy} x2={1380} y2={3200} stroke="#cfc7bd" strokeWidth={10} opacity={0.6} />
+        </g>
+        {/* 地砖横缝：随镜头后退往灭点流 */}
+        {Array.from({ length: 7 }, (_, i) => { const z = depth(i * 0.8); const y = vy + 1000 / z; const hw = 170 + 1500 / z;
+          return <line key={`p${i}`} x1={vx - hw + near(z)} y1={y} x2={vx + hw + near(z)} y2={y} stroke="rgba(255,255,255,.18)" strokeWidth={Math.max(1, 8 / z)} />; })}
+        {/* 两侧路灯杆：从画面边缘出现，往灭点缩小 */}
+        {Array.from({ length: 6 }, (_, i) => { const z = depth(i * 0.92), side = i % 2 ? 1 : -1; const bx = vx + side * 820 / z + near(z), by = vy + 1000 / z, hh = 1700 / z;
+          return <g key={`l${i}`}><rect x={bx - 14 / z} y={by - hh} width={28 / z} height={hh} fill="#2a2420" />
+            <circle cx={bx - side * 40 / z} cy={by - hh} r={36 / z} fill="#fff3d6" opacity={0.9} /></g>; })}
+      </svg>
+      <Bokeh g={g} n={10} color={C.gold} seed={51} area={[-200, -600, W + 200, 900]} opacity={0.5} drift={1} />
+    </AbsoluteFill>
+  );
+};
+export const S12: React.FC<P> = ({ g }) => {
+  const s = at(12), L = LOOKS.s12;
+  const i = Math.max(0, lastIndex(g, K.walkLooks)), t0 = K.walkLooks[i];
+  const phase = 2 * Math.PI * (g - s) / 24;               // 一个周期 = 两步（每拍一步）
+  const back = seg(g, K.camBack[0], K.camBack[1], EASE), tilt = seg(g, K.camTilt[0], K.camTilt[1], EASE);
+  const yaw = seg(g, K.camOrbit[0], K.camOrbit[1], EASE) * 80 * Math.PI / 180;
+  const sideOn = yaw > 55 * Math.PI / 180;
+  const cam = lerp(1, 0.62, back);
+  const enter = seg(g, s, s + 5, OUT);                     // 从自拍切过来：开头几帧带一点横向运动模糊
+  const pulse = fade(g, t0, t0, t0 + 1, t0 + 3) * (i > 0 ? 1 : 0);   // 换发型那一刻（双脚落地）一道光
+  const hair = L[i].hair as Hair;
+  return (
+    <AbsoluteFill style={{ overflow: 'hidden', background: '#6c8fc7' }}>
       <HBlur id="enter12" amount={(1 - enter) * 50} />
-      <AbsoluteFill style={{ transform: `translateX(${(1 - enter) * -500}px)`, filter: enter < 0.99 ? 'url(#enter12)' : undefined }}>
-        <StreetBg g={g} tint={['#ffd59a', '#ff9e6e']} />
-        {/* 路灯杆和人行道砖缝：跟拍时往右流过 */}
-        {Array.from({ length: 3 }, (_, k) => {
-          const x = ((k * 760 + scroll * 1.6) % 2280) - 600;
-          return <div key={k} style={{ position: 'absolute', left: x, top: 260, width: 34, height: 1400, background: 'linear-gradient(90deg,#2a2622,#5a524a 60%,#2a2622)', filter: 'blur(3px)' }} />;
-        })}
-        {Array.from({ length: 8 }, (_, k) => {
-          const x = ((k * 300 + scroll) % 2400) - 600;
-          return <div key={k} style={{ position: 'absolute', left: x, top: 1120, width: 6, height: 800, background: 'rgba(255,255,255,.12)', transform: 'skewX(-35deg)', transformOrigin: '0 0' }} />;
-        })}
-        {p < 1 ? (<>
-          <AbsoluteFill style={{ clipPath: `inset(0 0 0 ${lx}px)` }}>{fig(prev)}</AbsoluteFill>
-          <AbsoluteFill style={{ clipPath: `inset(0 ${W - lx}px 0 0)` }}>{fig(cur)}</AbsoluteFill>
-          <LightLine x={lx} />
-        </>) : fig(cur)}
+      <AbsoluteFill style={{ transform: `translate(${(1 - enter) * -500}px, ${420 * tilt}px) scale(${cam})`, transformOrigin: `${FEET[0]}px ${FEET[1]}px`,
+        filter: enter < 0.99 ? 'url(#enter12)' : undefined }}>
+        <Avenue g={g} yaw={yaw} />
+        {/* 她：正面朝镜头走、直视镜头；环绕到 55° 之后换成侧面（朝左） */}
+        <div style={{ position: 'absolute', inset: 0, transform: sideOn ? undefined : `scaleX(${Math.cos(yaw)})`, transformOrigin: `${FEET[0]}px 0` }}>
+          <Stick x={FEET[0]} y={FEET[1]} h={1000} pose={sideOn ? walk(phase, 30) : walkToward(phase)} view={sideOn ? 'side' : 'front'} flip={sideOn} hair={hair}
+            swing={sideOn ? -Math.sin(phase) * 12 : 0} />
+        </div>
+        {pulse > 0 && <LightLine x={FEET[0]} opacity={pulse} />}
       </AbsoluteFill>
       <Chip text={L[i].name} />
     </AbsoluteFill>

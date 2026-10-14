@@ -5,8 +5,11 @@ import { spring, Easing } from 'remotion';
 export const W = T.width, H = T.height;
 export const FPS = T.fps, BEAT = T.beat, BAR = T.bar, TOTAL = T.total, K = T.k, LOOKS = T.looks, SWEEP = T.sweepDur;
 export const SHOTS = T.shots, GRID = T.grid;
-// 第 n 镜（1 起）的全局起点：每镜 1 小节
-export const at = (n: number) => (n - 1) * BAR;
+// 第 n 镜（1 起）的全局起点：前面各镜的小节数（shotBars）之和
+const STARTS = T.shotBars.reduce((a, b, i) => [...a, a[i] + b * T.bar], [0]);
+export const at = (n: number) => STARTS[n - 1];
+// 全局帧 g 属于第几镜
+export const shotAt = (g: number) => Math.max(1, STARTS.filter((s, i) => i < T.shotBars.length && g >= s).length);
 
 export const EASE = Easing.bezier(0.65, 0, 0.35, 1);
 export const OUT = Easing.bezier(0.16, 1, 0.3, 1);
