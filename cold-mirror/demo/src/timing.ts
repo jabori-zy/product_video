@@ -2,6 +2,7 @@
 import T from './timing.json';
 import { spring, Easing } from 'remotion';
 
+export const W = T.width, H = T.height;
 export const FPS = T.fps, BEAT = T.beat, BAR = T.bar, TOTAL = T.total, K = T.k, LOOKS = T.looks, SWEEP = T.sweepDur;
 export const SHOTS = T.shots, GRID = T.grid;
 // 第 n 镜（1 起）的全局起点：每镜 1 小节

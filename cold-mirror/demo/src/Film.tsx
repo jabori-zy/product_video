@@ -15,6 +15,7 @@ const flash = (g: number) => Math.max(
   fade(g, K.sun[0], 288, 288, K.sun[1]),
   ...[K.shutter8, K.shutter9].map((t) => fade(g, t - 1, t, t, t + 2)),
   fade(g, K.snip + 1, at(14), at(14), at(14) + 3),
+  fade(g, at(16) - 3, at(16), at(16), at(16) + 4),   // 暗色影棚 → 白色收尾卡
 );
 
 const tc = (g: number) => {

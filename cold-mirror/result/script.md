@@ -2,7 +2,7 @@
 
 **Working title:** 《同一个她》 *One Face, Every Look*
 **Length:** 32 s (16 bars)
-**Format:** 1920×1080, 16:9 master, 24 fps. Keep the centre 9:16 column safe so a vertical social cut can be cropped from the same footage.
+**Format:** 1080×1920 vertical (9:16), 24 fps. Frame every shot for vertical.
 **Music:** 120 BPM, so 1 beat = 0.5 s = 12 frames and 1 bar = 2 s = 48 frames. Every hair change lands on a beat.
 **Production:** Higgsfield makes the final full-HD shots. Remotion makes the timing preview (animatic), using the stills in `../assets/` as stand-ins.
 
@@ -36,7 +36,7 @@ The film is a loop: barbershop → street → barbershop.
 | Mirror UI | `assets/screenshot/发色库_*.png`, `换发色成功_*.png` | Use only real elements: the 发色库 card grid, the name chip in the top-left corner (e.g. 「奶茶粉紫」), and the vertical compare line. |
 | Hair colours | `assets/hair_colors/*.png` | The names on screen must match the library exactly (see §5). |
 | Hairstyles | `assets/hairstyles_woman/*.png` | Same rule. |
-| End card | `assets/screenshot/home 页.png`, `cold-mirror-icon.png` | Glossy black letters N C G H A E scattered on white. They are an anagram of **CHANGE**, so the end card unscrambles them. |
+| End card | `cold-mirror-icon.png` | A dark studio with the mirror lit centre stage, then a white card. The word **CHANGE** is set as clean type in empty space and never laid over an image. |
 
 **Grade:** Act 1 is warm tungsten barbershop light with deep shadows. Act 2 is golden-hour street, airy and handheld. Act 3 is clean white studio, matching the home page.
 
@@ -73,8 +73,8 @@ Columns: **TC** = timecode · **Bar** = music bar · **Shot / camera** · **Acti
 
 | # | TC | Bar | Shot / camera | Action | Transition out |
 |---|---|---|---|---|---|
-| 14 | 0:26–0:28 | 14 | **Studio, slow orbit** around the device on seamless white, in the style of the home page: soft shadows, scissors, dryer and comb laid around it. | The mirror surface shows her final reflection for a moment, then returns to plain reflection. The six glossy black letters **N C G H A E** sit scattered around the base, exactly as on the home page. | — |
-| 15 | 0:28–0:30 | 15 | **Top-down, locked.** | On the beat, the letters slide and click into place, one per half-beat, to spell **CHANGE**. | — |
+| 14 | 0:26–0:28 | 14 | **Dark studio, mirror centre frame, slow orbit and push-in.** | Three overhead spotlights snap on, one per beat (left, right, centre), each with a click. Then a ring of vanity bulbs around the frame lights up one by one. The glass shows her final reflection for a moment, then turns to clean lit glass with a light pool and a reflection on the floor. | — |
+| 15 | 0:28–0:30 | 15 | **Same studio, all lights on.** | A light sweep runs across the glass. The letters **CHANGE** drop one per half-beat into a row in the empty space above the mirror, never over an image. | White flash. |
 | 16 | 0:30–0:32 | 16 | **Hold.** | The lychee logo and **Cold Mirror** fade in, followed by the slogan. Small disclaimer at the bottom: *呈现为AI效果，实际请与发型师沟通* ("AI-rendered result; please confirm with your stylist"), adapted from the app's own disclaimer. | Final chord rings out. |
 
 **Slogan options** (choose one):
@@ -118,7 +118,7 @@ These looks contrast in **length** (long → short → up-do), **shape** (straig
    Join them in the edit on the refraction ripple. Make Shot 13 the same way: (a) reflection rack-focus, (b) barbershop pull-back.
 5. **Clip length ≤ 5 s.** No shot in this script is longer than 2 s on screen, so generate each with handles of at least 1 s on both sides.
 6. **Device.** The repo has no hardware photo. Generate the hero device (portrait mirror + base) once with the product-photoshoot skill, approve it, and use it as a fixed reference in Shots 1–6, 13 and 14.
-7. **Remotion preview.** Built in `../demo/` → `demo/out/demo_v1.mp4`. All timing is in `demo/src/timing.json` (24 fps, 120 BPM, one shot per bar); the picture, the music and the asset script all read it. Swap the placeholders for Higgsfield clips shot by shot.
+7. **Remotion preview.** Built in `../demo/` → `demo/out/demo_v2.mp4` (vertical; `demo_v1.mp4` is the earlier landscape cut). All timing is in `demo/src/timing.json` (24 fps, 120 BPM, one shot per bar); the picture, the music and the asset script all read it. Swap the placeholders for Higgsfield clips shot by shot.
 
 ---
 

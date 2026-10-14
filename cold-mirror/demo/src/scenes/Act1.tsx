@@ -1,32 +1,34 @@
 // 第一幕：理发店里的镜子（S1–S6，0:00–0:12）
 import React from 'react';
 import { AbsoluteFill } from 'remotion';
-import { C, K, LOOKS, SWEEP, GRID, FONT, at, seg, fade, pop, lerp, clamp, EASE, OUT, IN, lastIndex } from '../timing';
+import { C, K, LOOKS, SWEEP, GRID, FONT, W, H, at, seg, fade, pop, lerp, clamp, EASE, OUT, IN, lastIndex } from '../timing';
 import { Mirror, Photo, Sweep, Chip, Bokeh, ShopBg, LightLine, Note } from '../lib';
 import { Stick, STAND, pose, mix, poseAt, walk, walkFront, Hair } from '../stick';
 import { Img, staticFile } from 'remotion';
 
 type P = { g: number };
+// S3、S6 里镜子（玻璃宽 560）的位置：水平居中
+const MX = (W - 591) / 2, MY = 300;
 
 // S1 镜面边缘微距：一道光沿斜边划下，落到底座
 export const S1: React.FC<P> = ({ g }) => {
-  const slide = lerp(0, -140, seg(g, 0, 48, EASE));
-  const y = lerp(-320, 760, seg(g, K.edgeLight[0], K.edgeLight[1], EASE));
+  const slide = lerp(0, -100, seg(g, 0, 48, EASE));
+  const y = lerp(-320, 1400, seg(g, K.edgeLight[0], K.edgeLight[1], EASE));
   const baseHit = fade(g, 36, 40, 44, 48);
   return (
     <AbsoluteFill style={{ background: '#050505', opacity: fade(g, 0, 4) }}>
       <div style={{ position: 'absolute', inset: 0, transform: `translateX(${slide}px)` }}>
         {/* 玻璃：映出虚焦的理发店灯 */}
-        <div style={{ position: 'absolute', left: -200, top: 0, width: 1360, height: 960, background: 'linear-gradient(90deg,#0c0a09,#1b1612 70%,#262019)', overflow: 'hidden' }}>
-          <Bokeh g={g} n={9} seed={11} area={[200, 80, 1300, 860]} size={[90, 260]} opacity={0.45} />
+        <div style={{ position: 'absolute', left: -200, top: 0, width: 840, height: 1700, background: 'linear-gradient(90deg,#0c0a09,#1b1612 70%,#262019)', overflow: 'hidden' }}>
+          <Bokeh g={g} n={10} seed={11} area={[220, 120, 820, 1600]} size={[90, 260]} opacity={0.45} />
         </div>
         {/* 斜边 */}
-        <div style={{ position: 'absolute', left: 1160, top: 0, width: 150, height: 960, background: C.metal, boxShadow: 'inset 6px 0 10px rgba(0,0,0,.6)', filter: 'brightness(.7)' }}>
+        <div style={{ position: 'absolute', left: 640, top: 0, width: 150, height: 1700, background: C.metal, boxShadow: 'inset 6px 0 10px rgba(0,0,0,.6)', filter: 'brightness(.7)' }}>
         </div>
-        <div style={{ position: 'absolute', left: 1310, top: 0, width: 900, height: 960, background: 'linear-gradient(90deg,#0b0908,#050505)' }} />
-        <div style={{ position: 'absolute', left: 1195, width: 60, top: y, height: 340, borderRadius: 30, background: 'linear-gradient(180deg,transparent,#fff 50%,transparent)', boxShadow: '0 0 60px 24px rgba(255,255,255,.8), 0 0 160px 60px rgba(200,225,255,.35)' }} />
+        <div style={{ position: 'absolute', left: 790, top: 0, width: 500, height: 1700, background: 'linear-gradient(90deg,#0b0908,#050505)' }} />
+        <div style={{ position: 'absolute', left: 675, width: 60, top: y, height: 340, borderRadius: 30, background: 'linear-gradient(180deg,transparent,#fff 50%,transparent)', boxShadow: '0 0 60px 24px rgba(255,255,255,.8), 0 0 160px 60px rgba(200,225,255,.35)' }} />
         {/* 底座 */}
-        <div style={{ position: 'absolute', left: 700, top: 930, width: 1300, height: 220, borderRadius: '50%', background: 'radial-gradient(ellipse at 50% 20%,#d5dae0,#5b6066 55%,#1d1f22)' }}>
+        <div style={{ position: 'absolute', left: 60, top: 1660, width: 1300, height: 300, borderRadius: '50%', background: 'radial-gradient(ellipse at 50% 20%,#d5dae0,#5b6066 55%,#1d1f22)' }}>
           <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'radial-gradient(ellipse at 40% 15%,rgba(255,255,255,.95),transparent 45%)', opacity: baseHit }} />
         </div>
       </div>
@@ -38,7 +40,7 @@ export const S1: React.FC<P> = ({ g }) => {
 const BROWN: Hair = { color: '#5a3626', shape: 'long' };
 export const S2: React.FC<P> = ({ g }) => {
   const p = seg(g, K.walkIn[0], K.walkIn[1], OUT);
-  const x = lerp(-200, 700, p);
+  const x = lerp(-200, 330, p);
   // 侧身走进来（朝右），走到位前 6 帧收步，转成背对镜头站定；然后撩头发：右手抬到耳边，头微微偏
   const walking = mix(walk((g - K.walkIn[0]) * 0.55), STAND, seg(g, K.walkIn[1] - 6, K.walkIn[1]));
   const arrived = g >= K.walkIn[1] - 3;
@@ -48,14 +50,14 @@ export const S2: React.FC<P> = ({ g }) => {
   return (
     <AbsoluteFill>
       <ShopBg g={g} />
-      <div style={{ position: 'absolute', left: 1050 - 165, top: 170 }}>
+      <div style={{ position: 'absolute', left: 700 - 174, top: 760 }}>
         <Mirror w={330}>
           <AbsoluteFill style={{ background: 'linear-gradient(180deg,#3a2718,#1a110a)' }} />
           {/* 镜中：正面的她，跟着走进来、跟着撩头发 */}
           <Stick x={lerp(-60, 165, refl)} y={580} h={430} pose={body} view={arrived ? 'front' : 'side'} hair={BROWN} opacity={refl} />
         </Mirror>
       </div>
-      <Stick x={x} y={1040} h={600} pose={body} view={arrived ? 'back' : 'side'} hair={BROWN} />
+      <Stick x={x} y={1660} h={760} pose={body} view={arrived ? 'back' : 'side'} hair={BROWN} />
     </AbsoluteFill>
   );
 };
@@ -77,8 +79,8 @@ export const S3: React.FC<P> = ({ g }) => {
   const cw = 104;   // 卡片宽
   return (
     <AbsoluteFill style={{ background: '#140d08', transform: `scale(${push})` }}>
-      <ShopBg g={g} door={false} />
-      <div style={{ position: 'absolute', left: 640, top: 40 }}>
+      <ShopBg g={g} />
+      <div style={{ position: 'absolute', left: MX, top: MY }}>
         <Mirror w={gw} base={false} glow={ui}>
           <AbsoluteFill style={{ filter: `brightness(${lerp(1, 0.8, ui)})` }}><Photo img="her/原色.jpg" focus={[56, 30]} /></AbsoluteFill>
           {/* 发色库从玻璃后面亮起来：标题、分类、卡片网格（都是 App 里真有的） */}
@@ -94,19 +96,19 @@ export const S3: React.FC<P> = ({ g }) => {
         </Mirror>
       </div>
       {/* 指尖（前景虚焦）与触摸涟漪：「奶茶粉紫」是第一张卡 */}
-      <div style={{ position: 'absolute', left: lerp(1180, 1054, finger), top: lerp(700, 178, finger), width: 90, height: 120, borderRadius: '45% 45% 40% 40%',
+      <div style={{ position: 'absolute', left: lerp(900, MX + 414, finger), top: lerp(1300, MY + 138, finger), width: 90, height: 120, borderRadius: '45% 45% 40% 40%',
         background: 'radial-gradient(circle at 40% 30%,#f2c7ae,#c98e72)', filter: 'blur(5px)', opacity: finger * (1 - seg(g, K.tap + 8, K.tap + 16)) }} />
-      <div style={{ position: 'absolute', left: 1078 - 60 * ripple, top: 230 - 60 * ripple, width: 120 * ripple, height: 120 * ripple, borderRadius: '50%', border: '3px solid #fff', opacity: 1 - ripple }} />
+      <div style={{ position: 'absolute', left: MX + 438 - 60 * ripple, top: MY + 190 - 60 * ripple, width: 120 * ripple, height: 120 * ripple, borderRadius: '50%', border: '3px solid #fff', opacity: 1 - ripple }} />
       {/* 她的后脑勺：前景、虚焦 */}
-      <div style={{ position: 'absolute', left: 1240, top: 250, width: 820, height: 1000, borderRadius: '48% 48% 20% 20%', background: 'radial-gradient(ellipse at 45% 35%,#6b4330,#2a170e 70%)', filter: 'blur(26px)' }} />
+      <div style={{ position: 'absolute', left: 620, top: 1320, width: 820, height: 1000, borderRadius: '48% 48% 20% 20%', background: 'radial-gradient(ellipse at 45% 35%,#6b4330,#2a170e 70%)', filter: 'blur(26px)' }} />
     </AbsoluteFill>
   );
 };
 
-// 镜中特写的构图：脸占满画面（玻璃边刚好出画）
+// 镜中特写的构图：竖版里她的照片按高度铺满（1486×2208），脸在上三分之一
 const CU: React.FC<{ children: React.ReactNode; zoom?: number; rot?: number }> = ({ children, zoom = 1, rot = 0 }) => (
   <AbsoluteFill style={{ overflow: 'hidden', background: '#000' }}>
-    <div style={{ position: 'absolute', left: 0, top: -760, width: 1920, height: 2851, transform: `scale(${zoom}) rotate(${rot}deg)`, transformOrigin: '50% 34%' }}>{children}</div>
+    <div style={{ position: 'absolute', left: (W - 1486) / 2, top: -80, width: 1486, height: 2208, transform: `scale(${zoom}) rotate(${rot}deg)`, transformOrigin: '50% 34%' }}>{children}</div>
     {/* 玻璃质感：一层冷色反光 + 暗角 */}
     <AbsoluteFill style={{ background: 'linear-gradient(115deg,rgba(255,255,255,.07),transparent 40%)', pointerEvents: 'none' }} />
     <AbsoluteFill style={{ background: 'radial-gradient(ellipse at 50% 45%,transparent 55%,rgba(0,0,0,.55))', pointerEvents: 'none' }} />
@@ -183,9 +185,9 @@ export const S6: React.FC<P> = ({ g }) => {
       <svg width="0" height="0" style={{ position: 'absolute' }}>
         <filter id="ripple"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed={g} /><feDisplacementMap in="SourceGraphic" scale={rip * 90} /></filter>
       </svg>
-      <AbsoluteFill style={{ transform: `scale(${zoom})`, transformOrigin: `${640 + 16 + gw / 2}px ${40 + 16 + gw * 8 / 9}px`, filter: rip > 0.01 ? 'url(#ripple)' : undefined }}>
-        <ShopBg g={g} door={false} />
-        <div style={{ position: 'absolute', left: 640, top: 40 }}><Mirror w={gw} base={false}>{inside}</Mirror></div>
+      <AbsoluteFill style={{ transform: `scale(${zoom})`, transformOrigin: `${MX + 16 + gw / 2}px ${MY + 16 + gw * 8 / 9}px`, filter: rip > 0.01 ? 'url(#ripple)' : undefined }}>
+        <ShopBg g={g} />
+        <div style={{ position: 'absolute', left: MX, top: MY }}><Mirror w={gw} base={false}>{inside}</Mirror></div>
       </AbsoluteFill>
     </AbsoluteFill>
   );

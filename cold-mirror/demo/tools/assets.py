@@ -3,7 +3,6 @@
 #   her/初恋蓬松短发.jpg  App 截图里真实的换发型结果，按眼睛位置对齐到 model.JPG 的构图
 #   lib/<发型>.jpg   发型库原图（别的模特，预览里标 STAND-IN）
 #   swatch/<发色>.jpg 发色库色卡（镜面上的发色库卡片）
-#   home/<名>.png    首页截图里的字母 N C G H A E 和工具道具（片尾），白底转成透明
 #   icon.png         产品图标（白色荔枝）转成黑色 + 透明底
 # 这些都只是 animatic 占位，正片由 Higgsfield 生成。
 # 用法：python tools/assets.py（需要 numpy + Pillow）
@@ -85,36 +84,13 @@ def save_small(src_path, dst, width):
     im = Image.open(src_path).convert('RGB')
     im.resize((width, round(im.height * width / im.width)), Image.LANCZOS).save(dst, quality=88)
 
-for d in ('lib', 'swatch', 'home'):
+for d in ('lib', 'swatch'):
     os.makedirs(os.path.join(ROOT, 'public', d), exist_ok=True)
 for name in T['libStyles']:
     save_small(os.path.join(A, 'hairstyles_woman', f'{name}.png'), os.path.join(ROOT, 'public', 'lib', f'{name}.jpg'), 768)
 for name in T['grid']:
     f = glob.glob(os.path.join(A, 'hair_colors', f'*_{name}.png'))[0]
     save_small(f, os.path.join(ROOT, 'public', 'swatch', f'{name}.jpg'), 320)
-
-def white_to_alpha(im):
-    # 把「画在浅色底上」的图还原成带透明度的图：底色取裁切框四边的中位色，比底色暗多少就有多不透明
-    a = np.asarray(im).astype(np.float32) / 255
-    border = np.concatenate([a[0], a[-1], a[:, 0], a[:, -1]])
-    bg = np.median(border, axis=0)
-    alpha = np.clip(((bg - a) / np.maximum(bg, 1e-3)).max(axis=2), 0, 1)
-    alpha = np.clip((alpha - 0.03) / 0.97, 0, 1)
-    col = np.where(alpha[..., None] > 1e-3, (a - bg * (1 - alpha[..., None])) / np.maximum(alpha[..., None], 1e-3), 0)
-    out = np.dstack([np.clip(col, 0, 1), alpha])
-    return Image.fromarray((out * 255).astype('uint8'))
-
-# 首页截图（2160×3840）里的元素框，片尾用
-home = Image.open(os.path.join(A, 'screenshot', 'home 页.png')).convert('RGB')
-BOX = {
-    'N': (330, 520, 845, 1060), 'C': (860, 1075, 1210, 1445), 'G': (1650, 945, 2125, 1425),
-    'H': (1395, 1760, 1850, 2215), 'A': (390, 1950, 825, 2470), 'E': (1440, 2505, 1955, 3150),
-    'scissors': (1030, 345, 1745, 745), 'dryer': (220, 1220, 530, 1875),
-    'comb': (1330, 1330, 1660, 1660), 'clipper': (870, 2185, 1470, 2495),
-}
-for k, b in BOX.items():
-    white_to_alpha(home.crop(b)).save(os.path.join(ROOT, 'public', 'home', f'{k}.png'))
-print('home', ' '.join(BOX))
 
 # 图标：白色荔枝在黑底上 → 亮度当透明度，颜色填黑
 icon = np.asarray(Image.open(os.path.join(A, 'cold-mirror-icon.png')).convert('L')).astype(np.uint8)

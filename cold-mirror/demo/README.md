@@ -1,12 +1,12 @@
-# Cold Mirror · Remotion 预览（demo_v1）
+# Cold Mirror · Remotion 预览（demo_v2，竖版）
 
-按 `../result/script.md` 做的 32 s animatic（1920×1080，24 fps，120 BPM，16 镜每镜 1 小节）。正片由 Higgsfield 生成，这里只定节奏、镜头和转场。
+按 `../result/script.md` 做的 32 s animatic（竖版 1080×1920，24 fps，120 BPM，16 镜每镜 1 小节）。正片由 Higgsfield 生成，这里只定节奏、镜头和转场。
 
 ```sh
 npm install
 python tools/assets.py      # ../assets → public/（需要 numpy + Pillow）
 npm run music               # timing.json → public/soundtrack.wav（K-pop 舞曲 / EDM），归一到 −14 LUFS / ≤ −2 dBTP
-npm run render              # → out/demo_v1.mp4（会先跑 music）
+npm run render              # → out/demo_v2.mp4（会先跑 music）；out/demo_v1.mp4 是之前的横版
 node tools/stills.mjs 156 236 604   # 审片静图 → out/stills/
 npm run studio
 ```
@@ -17,4 +17,4 @@ npm run studio
 - **她的发色**：`public/her/*.jpg` 是从 `model.JPG` 抠头发、按发色库色卡重新上色得到的，脸逐像素不变，所以扫光前后严丝合缝。`初恋蓬松短发` 是 App 真实的换发型结果，按眼睛位置对齐。
 - **STAND-IN**：手机屏和自拍蒙太奇里换发型的照片（狼尾、双马尾……）用的是发型库原图，模特不是她，画面右上角有黄色虚线标注。
 - 黄色的镜号、时间码、动作说明只是预览标注。
-- 片尾的字母和工具是从首页截图里裁出来的（`tools/assets.py` 把白底转成透明）。
+- 片尾：暗色影棚，产品镜居中，三盏顶灯依次打亮、镜框灯泡一圈亮起，CHANGE 用矢量字落在镜子上方的空白处；最后是白色收尾卡（CHANGE + Logo + 标语）。

@@ -184,6 +184,9 @@ const whoosh = (f0, f1, g) => { let y = 0; const len = sec(f1 - f0); add(sec(f0)
 whoosh(K.bus[0] - 4, K.bus[1] + 4, 0.5); whoosh(K.whip[0], K.whip[1] + 2, 0.4);
 // 街道环境声：静音之后淡入
 { let y = 0; const a = sec(K.silence[0] + 4), len = sec(at(14) - K.silence[0] - 4); add(a, len, (t, u) => { y += 0.01 * (rnd() - y); return y * Math.min(1, u * 4) * Math.min(1, (1 - u) * 6); }, { gain: 0.6 }); }
+// 影棚顶灯：每盏灯「咔嗒」一声打开，带一点低频的电流嗡声
+K.lights.forEach((f, i) => { add(sec(f), 0.05, (t) => rnd() * Math.exp(-t / 0.006), { gain: 0.35, pan: [-0.5, 0.5, 0][i] });
+  add(sec(f), 0.5, (t) => Math.sin(2 * Math.PI * 100 * t) * Math.exp(-t / 0.15), { gain: 0.12 }); });
 // 剪刀合上
 add(sec(K.snip), 0.08, (t) => (Math.sin(2 * Math.PI * 4200 * t) + rnd() * 0.6) * Math.exp(-t / 0.012), { gain: 0.3 });
 add(sec(K.snip) + 0.05, 0.1, (t) => (Math.sin(2 * Math.PI * 3600 * t) + rnd() * 0.5) * Math.exp(-t / 0.02), { gain: 0.25 });
