@@ -1,0 +1,25 @@
+{
+  "name": "cold-mirror-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cold Mirror 宣传片预览（Remotion animatic，32 s，按 ../result/script.md）",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "music": "node tools/music.mjs",
+    "render": "node tools/music.mjs && remotion render ColdMirrorDemo out/demo_v1.mp4",
+    "still": "remotion still ColdMirrorDemo"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.529",
+    "@remotion/cli": "4.0.529",
+    "@remotion/renderer": "4.0.529",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.529"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.8",
+    "typescript": "5.8.3"
+  }
+}
