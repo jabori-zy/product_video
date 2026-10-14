@@ -1,5 +1,5 @@
 // 预览配乐：读 src/timing.json，按节拍和关键帧合成音乐 + 音效 → public/soundtrack.wav
-// 120 BPM；所有音效都落在画面用的同一批关键帧上。最后用 Remotion 自带的 ffmpeg 量响度，归一到 −14 LUFS、真峰值 ≤ −2 dBTP。
+// 风格：K-pop 舞曲 / EDM（supersaw、808、人声切片），120 BPM；所有音效都落在画面用的同一批关键帧上。最后用 Remotion 自带的 ffmpeg 量响度，归一到 −14 LUFS、真峰值 ≤ −2 dBTP。
 // 用法：node tools/music.mjs
 import fs from 'fs';
 import path from 'path';
@@ -36,57 +36,124 @@ const env = (t, a, d) => (t < a ? t / a : Math.exp(-(t - a) / d));
 music.fill(1);
 for (let j = Math.floor(sec(K.silence[0]) * SR); j < Math.floor(sec(K.silence[1]) * SR); j++) music[j] = 0;
 
-// 和弦：每 2 小节换一个（F maj7 → E m7 → D m9 → C maj7），收尾落回 F maj9
-const CH = [[53, 57, 60, 64], [52, 55, 59, 62], [50, 53, 57, 64], [48, 52, 55, 59]];
-const chordAt = (bar) => (bar >= 15 ? [41, 53, 57, 60, 64, 67] : CH[Math.floor(bar / 2) % 4]);
+// ── 音乐：K-pop 舞曲 / EDM，A 小调，每小节一个和弦 Am – F – C – G（vi–IV–I–V）──
+// 段落（小节，1 起）：1–2 前奏 · 3–5 主歌 · 6 Build（军鼓滚奏 + 噪声上升 + 滤波打开，最后半拍静音）
+//                   · 7–12 Drop（四踩、泵感 supersaw、808、高八度主旋律、人声切片）· 13 半速 · 14–15 收 · 16 尾和弦
+const PROG = [[57, 60, 64, 69], [53, 57, 60, 65], [55, 60, 64, 67], [55, 59, 62, 67]];
+const ROOT = [33, 29, 36, 31];                       // 808 根音（A1 F1 C2 G1）
+const chordAt = (bar) => PROG[bar % 4];
+const S16 = BEAT / 4;
+const DROP = [6, 12];                                // Drop 的小节下标范围 [6, 12)
+const inDrop = (bar) => bar >= DROP[0] && bar < DROP[1];
 
-// Pad：慢起音的柔和锯齿（一阶低通），全片
-for (let b = 0; b < 16; b++) {
-  const chord = chordAt(b), t0 = b * BAR, len = b === 15 ? BAR + 1.5 : BAR + 0.3;
-  const lvl = b < 2 ? 0.05 : b < 6 ? 0.07 : b < 12 ? 0.08 : 0.07;
-  for (const m of chord) {
-    const f = hz(m); let y = 0;
-    add(t0, len, (t, u) => {
-      const saw = ((t * f) % 1) * 2 - 1 + 0.5 * (((t * f * 1.004) % 1) * 2 - 1);
-      y += 0.06 * (saw - y);
-      const a = Math.min(1, t / 0.35) * Math.min(1, (len - t) / 0.3);
-      return y * a;
-    }, { gain: lvl, pan: (m % 5) / 5 - 0.4, bed: true });
+// Build 结尾、Drop 之前空半拍
+for (let j = Math.floor((6 * BAR - BEAT / 2) * SR); j < Math.floor(6 * BAR * SR); j++) music[j] = 0;
+
+// Supersaw：7 根失谐锯齿，两级一阶低通；Drop 里每拍被底鼓「压」一下（sidechain 泵感）
+const DET = [-0.11, -0.065, -0.03, 0, 0.03, 0.065, 0.11]; // 半音
+const cutoffAt = (bar, u) => bar < 2 ? 500 + 900 * (bar + u) / 2 : bar < 5 ? 1300 : bar === 5 ? 1300 + 5500 * u ** 2 : inDrop(bar) ? 5200 : bar === 12 ? 900 : 2200;
+const sawGain = (bar) => bar < 2 ? 0.035 : bar < 5 ? 0.022 : bar === 5 ? 0.03 : inDrop(bar) ? 0.045 : bar === 12 ? 0.03 : 0.026;
+for (let b = 0; b < 15; b++) {
+  const t0 = b * BAR, len = BAR + 0.05;
+  for (const m of chordAt(b)) {
+    DET.forEach((d, v) => {
+      const f = hz(m + d); let y1 = 0, y2 = 0, ph = (v * 0.137) % 1;
+      add(t0, len, (t, u) => {
+        ph += f / SR; ph -= Math.floor(ph);
+        const a = 1 - Math.exp(-2 * Math.PI * cutoffAt(b, u) / SR);
+        y1 += a * (ph * 2 - 1 - y1); y2 += a * (y1 - y2);
+        const tb = (t0 + t) % BEAT;
+        const duck = inDrop(b) ? 0.25 + 0.75 * Math.min(1, tb / 0.22) ** 0.7 : 1;
+        return y2 * duck * Math.min(1, t / 0.01) * Math.min(1, (len - t) / 0.03);
+      }, { gain: sawGain(b), pan: (v - 3) / 4.5, bed: true });
+    });
   }
 }
 
-// Pluck：第 3–6 小节，八分音符琶音
-for (let b = 2; b < 6; b++) {
-  const chord = chordAt(b);
-  for (let e = 0; e < 8; e++) {
-    const m = chord[[0, 2, 1, 3, 2, 1, 3, 2][e]] + 12, f = hz(m);
-    add(b * BAR + e * BEAT / 2, 0.45, (t) => (Math.sin(2 * Math.PI * f * t) + 0.3 * Math.sin(4 * Math.PI * f * t)) * Math.exp(-t / 0.12), { gain: 0.09, pan: e % 2 ? 0.3 : -0.3, bed: true });
-  }
+// 808：正弦，起音时音高下滑一个八度，软饱和
+const sub = (t0, m, len, g = 0.42, tape = false) => {
+  const f = hz(m); let ph = 0;
+  add(t0, len, (t) => {
+    const k = tape ? Math.max(0.15, 1 - t / len) ** 2 : 1;            // 尾音像磁带停转一样往下掉
+    ph += f * k * (1 + Math.exp(-t / 0.03)) / SR;
+    return Math.tanh(2.6 * Math.sin(2 * Math.PI * ph)) * Math.min(1, t / 0.003) * Math.exp(-t / (tape ? 0.9 : 0.45));
+  }, { gain: g, bed: true });
+};
+// 鼓
+const kick = (t0, g = 0.9) => { let ph = 0; add(t0, 0.35, (t) => { ph += (48 + 110 * Math.exp(-t / 0.03)) / SR; return Math.sin(2 * Math.PI * ph) * Math.exp(-t / 0.16) + (t < 0.004 ? rnd() * 0.5 : 0); }, { gain: g, bed: true }); };
+const snare = (t0, g = 0.3) => { let y = 0; add(t0, 0.22, (t) => { const n = rnd(); y += 0.35 * (n - y); return (n - y) * Math.exp(-t / 0.07) + 0.6 * Math.sin(2 * Math.PI * 190 * t) * Math.exp(-t / 0.04); }, { gain: g, bed: true }); };
+const clap = (t0, g = 0.22) => [0, 0.011, 0.022].forEach((d, i) => { let y = 0; add(t0 + d, i === 2 ? 0.2 : 0.02, (t) => { const n = rnd(); y += 0.6 * (n - y); return (n - y) * Math.exp(-t / (i === 2 ? 0.05 : 0.006)); }, { gain: g, pan: (i - 1) * 0.15, bed: true }); });
+const hat = (t0, g = 0.06, open = false) => { let p = 0; add(t0, open ? 0.2 : 0.05, (t) => { const n = rnd(); const h = n - p; p = n; return h * Math.exp(-t / (open ? 0.07 : 0.012)); }, { gain: g, pan: open ? -0.25 : 0.25, bed: true }); };
+
+// 主旋律钩子：A 小调五声，两小节一句（八分音符，null = 休止）
+const HOOK = [76, null, 74, 72, null, 69, 72, null, 74, null, 76, 79, null, 76, 74, 72];
+const pluck = (t0, m, g, bright) => {
+  const f = hz(m); let y = 0, ph = 0;
+  add(t0, 0.4, (t) => {
+    ph += f / SR; ph -= Math.floor(ph);
+    const sq = (ph < 0.5 ? 1 : -1) + (bright ? 0.6 * (ph * 2 - 1) : 0);
+    const a = 1 - Math.exp(-2 * Math.PI * (600 + 5000 * Math.exp(-t / 0.05)) / SR);
+    y += a * (sq - y);
+    return y * Math.exp(-t / 0.16);
+  }, { gain: g, pan: 0.1, bed: true });
+};
+const hookBar = (b, octave, g, bright) => { for (let e = 0; e < 8; e++) { const m = HOOK[(b % 2) * 8 + e]; if (m) pluck(b * BAR + e * BEAT / 2, m + octave, g, bright); } };
+
+// 人声切片：锯齿过两个共振带通（「啊」的共振峰 800 / 1150 Hz），短促
+const chop = (t0, m, g = 0.16, len = 0.13) => {
+  const f = hz(m); let ph = 0; const bp = [[800, 0, 0], [1150, 0, 0]];
+  add(t0, len, (t) => {
+    ph += f / SR; ph -= Math.floor(ph); const x = ph * 2 - 1; let out = 0;
+    for (const st of bp) { const k = 2 * Math.sin(Math.PI * st[0] / SR), q = 0.12; st[1] += k * st[2]; st[2] += k * (x - st[1] - q * st[2]); out += st[2]; }
+    return out * 0.5 * Math.min(1, t / 0.005) * Math.exp(-t / (len * 0.45));
+  }, { gain: g, pan: -0.15, bed: true });
+};
+
+// 前奏：反向镲片涌进第 3 小节
+{ let p = 0; add(BAR, BAR, (t, u) => { const n = rnd(); const h = n - p; p = n; return h * u ** 3; }, { gain: 0.25, bed: true }); }
+// 主歌（第 3–5 小节）：钩子、稀疏 808、kick 在 1、3 拍，拍手在第 4 拍，八分镲
+for (let b = 2; b < 5; b++) {
+  hookBar(b, 0, 0.12, false);
+  kick(b * BAR, 0.7); kick(b * BAR + 2 * BEAT, 0.6);
+  sub(b * BAR, ROOT[b % 4] + 12, BEAT * 1.5, 0.28);
+  clap(b * BAR + 3 * BEAT, 0.18);
+  for (let e = 0; e < 8; e++) hat(b * BAR + e * BEAT / 2, e % 2 ? 0.05 : 0.03);
 }
-
-// 鼓组
-const kick = (t0, g = 0.8) => add(t0, 0.4, (t) => Math.sin(2 * Math.PI * (45 * t + 90 * 0.04 * (1 - Math.exp(-t / 0.04)))) * Math.exp(-t / 0.14), { gain: g, bed: true });
-const clap = (t0, g = 0.25) => { let y = 0; add(t0, 0.25, (t) => { const n = rnd(); y += 0.5 * (n - y); return (n - y) * Math.exp(-t / 0.06); }, { gain: g, bed: true }); };
-const hat = (t0, g = 0.08, pan = 0.2) => { let p = 0; add(t0, 0.06, (t) => { const n = rnd(); const h = n - p; p = n; return h * Math.exp(-t / 0.015); }, { gain: g, pan, bed: true }); };
-const bass = (t0, m, len, g = 0.22) => { const f = hz(m); add(t0, len, (t) => Math.tanh(2 * Math.sin(2 * Math.PI * f * t)) * Math.min(1, t / 0.005) * Math.exp(-t / 0.25), { gain: g, bed: true }); };
-
-// 第 4–6 小节：轻踩点（每拍一个轻 kick），第 7–12 小节：完整节拍
-for (let b = 3; b < 6; b++) for (let q = 0; q < 4; q++) kick(b * BAR + q * BEAT, 0.35);
-for (let b = 6; b < 12; b++) {
+// Build（第 6 小节）：军鼓八分 → 十六分 → 三十二分，越来越响；噪声上升
+{
+  const b = 5, t0 = b * BAR, hits = [];
+  for (let i = 0; i < 4; i++) hits.push(t0 + i * BEAT / 2);
+  for (let i = 0; i < 4; i++) hits.push(t0 + 2 * BEAT + i * S16);
+  for (let i = 0; i < 4; i++) hits.push(t0 + 3 * BEAT + i * S16 / 2);
+  hits.forEach((t, i) => snare(t, 0.12 + 0.2 * i / hits.length));
+  hookBar(b, 0, 0.1, false);
+  kick(t0, 0.7); kick(t0 + BEAT, 0.6); kick(t0 + 2 * BEAT, 0.6);
+  let y = 0; add(t0, BAR - BEAT / 2, (t, u) => { const n = rnd(); const a = 0.02 + 0.6 * u * u; y += a * (n - y); return (n - y) * u ** 2; }, { gain: 0.35, bed: true });
+}
+// Drop（第 7–12 小节）
+const BASS16 = [0, 3, 6, 10, 12];                    // 808 的切分位置（十六分）
+const CHOP16 = [2, 7, 11, 14];
+for (let b = DROP[0]; b < DROP[1]; b++) {
+  const t0 = b * BAR;
   for (let q = 0; q < 4; q++) {
-    const t = b * BAR + q * BEAT;
-    kick(t);
-    if (q % 2) clap(t);
-    hat(t + BEAT / 2);
-    bass(t, chordAt(b)[0] - 12, BEAT * 0.9);
-    bass(t + BEAT / 2, chordAt(b)[0] - 12, BEAT * 0.45, 0.14);
+    kick(t0 + q * BEAT);
+    if (q % 2) { clap(t0 + q * BEAT); snare(t0 + q * BEAT, 0.18); }
+    hat(t0 + q * BEAT + BEAT / 2, 0.07, true);
   }
+  for (let i = 0; i < 16; i++) hat(t0 + i * S16, i % 4 === 2 ? 0.05 : 0.03);
+  BASS16.forEach((i, k) => sub(t0 + i * S16, ROOT[b % 4] + (k === 3 ? 12 : 0), S16 * 2.6));
+  hookBar(b, 12, 0.11, true);
+  CHOP16.forEach((i) => chop(t0 + i * S16, chordAt(b)[3]));
+  if (b === DROP[1] - 1) for (let i = 12; i < 16; i++) snare(t0 + i * S16, 0.12 + 0.03 * (i - 12));   // 结尾过门
 }
-// 第 13 小节：半速回来（静音之后）
-for (const q of [2]) { kick(12 * BAR + q * BEAT, 0.7); bass(12 * BAR + q * BEAT, chordAt(12)[0] - 12, BEAT * 1.8); }
-clap(12 * BAR + 3 * BEAT + BEAT / 2, 0.18);
-// 第 14–15 小节：每小节一个低 kick，空出来给字母音
-for (const b of [13, 14]) kick(b * BAR, 0.45);
+// 第 13 小节：半速，第 3 拍一个 kick，人声切片带回声
+{ const t0 = 12 * BAR; kick(t0 + 2 * BEAT, 0.8); sub(t0 + 2 * BEAT, ROOT[0], BEAT * 2); clap(t0 + 3 * BEAT + BEAT / 2, 0.15);
+  [0, 1, 2, 3].forEach((k) => chop(t0 + 2 * BEAT + k * 3 * S16, 69, 0.14 * 0.55 ** k, 0.16)); }
+// 第 14–15 小节：每小节下拍一个 kick，八分镲轻轻走，给字母音让位
+for (const b of [13, 14]) { kick(b * BAR, 0.55); sub(b * BAR, ROOT[b % 4], BEAT * 2, 0.25); for (let e = 1; e < 8; e += 2) hat(b * BAR + e * BEAT / 2, 0.03); }
+// 第 16 小节：尾和弦（supersaw 长音）+ 808 磁带停转
+for (const m of [57, 60, 64, 71]) DET.forEach((d, v) => { const f = hz(m + d); let y = 0, ph = v * 0.21; add(15 * BAR, BAR + 1.4, (t) => { ph += f / SR; ph -= Math.floor(ph); y += 0.08 * (ph * 2 - 1 - y); return y * Math.min(1, t / 0.02) * Math.exp(-t / 1.3); }, { gain: 0.03, pan: (v - 3) / 4.5, bed: true }); });
+kick(15 * BAR, 0.8); sub(15 * BAR, ROOT[0], BAR, 0.4, true);
 
 // ── 音效（都挂在画面的关键帧上，不受静音段影响） ──
 // 玻璃「叮」：S1 光线起
@@ -126,8 +193,6 @@ add(sec(K.snip) + 0.05, 0.1, (t) => (Math.sin(2 * Math.PI * 3600 * t) + rnd() * 
   add(t0, 0.03, (t) => rnd() * Math.exp(-t / 0.005), { gain: 0.2 });
   add(t0, 1.2, (t) => (Math.sin(2 * Math.PI * f * t) + 0.25 * Math.sin(6 * Math.PI * f * t)) * Math.exp(-t / 0.35), { gain: 0.12, pan: (i - 2.5) / 4 });
 });
-// 收尾和弦
-for (const m of [41, 53, 60, 64, 67, 72]) add(sec(K.logo), 3, (t) => Math.sin(2 * Math.PI * hz(m) * t) * Math.min(1, t / 0.02) * Math.exp(-t / 1.4), { gain: 0.06 });
 
 function at(n) { return (n - 1) * T.bar; }
 

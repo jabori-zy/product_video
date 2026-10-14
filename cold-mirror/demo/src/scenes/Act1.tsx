@@ -3,6 +3,7 @@ import React from 'react';
 import { AbsoluteFill } from 'remotion';
 import { C, K, LOOKS, SWEEP, GRID, FONT, at, seg, fade, pop, lerp, clamp, EASE, OUT, IN, lastIndex } from '../timing';
 import { Mirror, Photo, Sweep, Chip, Bokeh, ShopBg, LightLine, Note } from '../lib';
+import { Stick, STAND, pose, mix, poseAt, walk, walkFront, Hair } from '../stick';
 import { Img, staticFile } from 'remotion';
 
 type P = { g: number };
@@ -33,20 +34,16 @@ export const S1: React.FC<P> = ({ g }) => {
   );
 };
 
-// 她的背影剪影（棕色长卷发、白色吊带），全景里用
-const Back: React.FC<{ hair?: string; h: number }> = ({ hair = '#5a3626', h }) => (
-  <svg viewBox="0 0 200 520" style={{ width: h * 200 / 520, height: h, display: 'block' }}>
-    <path d="M30 520 L40 300 Q100 270 160 300 L170 520 Z" fill="#e9e4dc" />
-    <path d="M58 300 Q100 285 142 300 L146 330 Q100 320 54 330 Z" fill="#d9c6b8" />
-    <path d="M100 40 C40 40 30 110 40 170 C46 220 30 280 22 360 C60 380 140 380 178 360 C170 280 154 220 160 170 C170 110 160 40 100 40 Z" fill={hair} />
-    <path d="M70 70 C80 140 74 250 60 350 M130 70 C122 150 128 250 140 350 M100 50 C102 150 96 260 100 370" stroke="rgba(255,255,255,.12)" strokeWidth="5" fill="none" />
-  </svg>
-);
-
-// S2 理发店全景：她从左边走进来，停在镜子前
+// S2 理发店全景：她（背影火柴人）从左边走进来，停在镜子前，撩一下耳边的头发；镜子里是正面的她，动作同步
+const BROWN: Hair = { color: '#5a3626', shape: 'long' };
 export const S2: React.FC<P> = ({ g }) => {
   const p = seg(g, K.walkIn[0], K.walkIn[1], OUT);
-  const x = lerp(-420, 640, p), bob = Math.abs(Math.sin(g * 0.55)) * 10 * (1 - p);
+  const x = lerp(-200, 700, p);
+  // 侧身走进来（朝右），走到位前 6 帧收步，转成背对镜头站定；然后撩头发：右手抬到耳边，头微微偏
+  const walking = mix(walk((g - K.walkIn[0]) * 0.55), STAND, seg(g, K.walkIn[1] - 6, K.walkIn[1]));
+  const arrived = g >= K.walkIn[1] - 3;
+  const tuckPose = pose({ rSh: 155, rEl: 50, head: -8, lSh: -8 });
+  const body = g < K.tuck[0] ? walking : poseAt(g, [[K.tuck[0], STAND], [(K.tuck[0] + K.tuck[1]) / 2, tuckPose], [K.tuck[1] + 4, tuckPose]]);
   const refl = seg(g, K.walkIn[0] + 14, K.walkIn[1] + 2);
   return (
     <AbsoluteFill>
@@ -54,11 +51,11 @@ export const S2: React.FC<P> = ({ g }) => {
       <div style={{ position: 'absolute', left: 1050 - 165, top: 170 }}>
         <Mirror w={330}>
           <AbsoluteFill style={{ background: 'linear-gradient(180deg,#3a2718,#1a110a)' }} />
-          <AbsoluteFill style={{ opacity: refl, transform: `translateX(${lerp(-120, 0, refl)}px)` }}><Photo img="her/原色.jpg" /></AbsoluteFill>
+          {/* 镜中：正面的她，跟着走进来、跟着撩头发 */}
+          <Stick x={lerp(-60, 165, refl)} y={580} h={430} pose={body} view={arrived ? 'front' : 'side'} hair={BROWN} opacity={refl} />
         </Mirror>
       </div>
-      <div style={{ position: 'absolute', left: x, top: 420 - bob, filter: 'brightness(.75)' }}><Back h={660} /></div>
-      <Note text="她撩了一下耳边的头发，有点犹豫" opacity={fade(g, 82, 86)} />
+      <Stick x={x} y={1040} h={600} pose={body} view={arrived ? 'back' : 'side'} hair={BROWN} />
     </AbsoluteFill>
   );
 };
@@ -158,7 +155,8 @@ export const S6: React.FC<P> = ({ g }) => {
   const rip = fade(g, K.ripple[0], (K.ripple[0] + K.ripple[1]) / 2, (K.ripple[0] + K.ripple[1]) / 2, K.ripple[1]);
   const flipped = g >= K.flip;
   const open = seg(g, K.doorOpen[0], K.doorOpen[1], EASE);
-  const walk = seg(g, K.intoDoor[0], K.doorOpen[1]);
+  const walk6 = seg(g, K.turn[1], K.doorOpen[1]);
+  const turned = g >= (K.turn[0] + K.turn[1]) / 2;
   // 镜子里看到的：她的脸 → 她转身走向门口（门里的景象在推进到最后时充满画面）
   const inside = (
     <AbsoluteFill>
@@ -173,13 +171,9 @@ export const S6: React.FC<P> = ({ g }) => {
         </div>
         <div style={{ position: 'absolute', left: '50%', top: '13%', width: '64%', marginLeft: '-32%', height: '7%', background: '#140c07', color: '#e9d2a8', display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontFamily: 'Didot,Georgia,serif', fontSize: 24, letterSpacing: 5, transform: `scaleX(${flipped ? 1 : -1})` }}>BARBER</div>
-        {/* 她走向门口（背影越来越小） */}
-        <div style={{ position: 'absolute', left: '50%', bottom: lerp(-10, 14, walk) + '%', transform: `translateX(-50%) scale(${lerp(1.3, 0.55, walk)})`, transformOrigin: '50% 100%' }}>
-          <svg viewBox="0 0 200 300" style={{ width: 150, height: 225, display: 'block' }}>
-            <path d="M30 300 L40 200 Q100 180 160 200 L170 300 Z" fill="#e9e4dc" />
-            <path d="M100 20 C45 20 35 90 45 140 C50 180 40 210 35 240 C70 252 130 252 165 240 C160 210 150 180 155 140 C165 90 155 20 100 20 Z" fill="#d8c6a6" />
-          </svg>
-        </div>
+        {/* 她转身（正面 → 背面），走向门口，越走越小 */}
+        <Stick x={280 + 6 * Math.sin(walk6 * 9)} y={lerp(990, 900, walk6)} h={lerp(520, 250, walk6)} pose={turned ? walkFront((g - K.turn[1]) * 0.6) : STAND}
+          view={turned ? 'back' : 'front'} hair={{ color: '#d8c6a6', shape: 'short' }} opacity={seg(door, 0.6, 1)} />
       </AbsoluteFill>
     </AbsoluteFill>
   );
@@ -193,7 +187,6 @@ export const S6: React.FC<P> = ({ g }) => {
         <ShopBg g={g} door={false} />
         <div style={{ position: 'absolute', left: 640, top: 40 }}><Mirror w={gw} base={false}>{inside}</Mirror></div>
       </AbsoluteFill>
-      <Note text="镜中的她转身走向门口；穿过玻璃，招牌由反字翻正，门开" opacity={fade(g, at(6) + 4, at(6) + 8, K.ripple[0], K.ripple[0] + 2)} />
     </AbsoluteFill>
   );
 };

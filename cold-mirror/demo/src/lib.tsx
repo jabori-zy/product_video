@@ -100,28 +100,18 @@ export const ShopBg: React.FC<{ g: number; door?: boolean }> = ({ g, door = true
   </AbsoluteFill>
 );
 
-// 街道：黄金时刻。用她照片里的路面做大虚化底，再盖暖光
-export const StreetBg: React.FC<{ g: number; img?: string; tint?: [string, string] }> = ({ g, img = 'her/原色.jpg', tint = ['#ffcf8a', '#ff8f5a'] }) => (
-  <AbsoluteFill style={{ overflow: 'hidden' }}>
-    <AbsoluteFill style={{ transform: 'scale(1.4)', filter: 'blur(40px) saturate(1.2)' }}><Photo img={img} focus={[50, 20]} /></AbsoluteFill>
-    <AbsoluteFill style={{ background: `linear-gradient(160deg,${tint[0]}cc 0%,${tint[1]}66 55%,#20120a99 100%)`, mixBlendMode: 'soft-light' }} />
-    <AbsoluteFill style={{ background: `linear-gradient(180deg,${tint[0]}55 0%,transparent 45%)` }} />
+// 街道：黄金时刻。画出来的天、虚化的树和路面（不用照片，人物由火柴人表现）
+export const StreetBg: React.FC<{ g: number; tint?: [string, string] }> = ({ g, tint = ['#ffcf8a', '#ff8f5a'] }) => (
+  <AbsoluteFill style={{ overflow: 'hidden', background: `linear-gradient(180deg,${tint[0]} 0%,${tint[1]} 48%,#8a7a70 62%,#5d5652 63%,#3e3a38 100%)` }}>
+    {/* 虚化的行道树 */}
+    {[[-60, 120, 520], [380, 60, 420], [1260, 90, 480], [1700, 40, 560]].map(([x, y, s], i) => (
+      <div key={i} style={{ position: 'absolute', left: x, top: y, width: s, height: s * 0.9, borderRadius: '50%', background: 'radial-gradient(circle at 45% 40%,#6f7a3a,#3a4220 70%)', filter: 'blur(38px)', opacity: 0.75 }} />
+    ))}
+    {/* 人行道边线 */}
+    <div style={{ position: 'absolute', left: 0, right: 0, top: 672, height: 10, background: '#cfc7bd', opacity: 0.7, filter: 'blur(2px)' }} />
     <Bokeh g={g} n={12} color={C.gold} seed={7} area={[0, 0, 1920, 520]} size={[50, 160]} opacity={0.6} drift={1} />
   </AbsoluteFill>
 );
-
-// 人物中景：竖图放中间，四周羽化融进背景
-export const Figure: React.FC<{ img: string; h?: number; x?: number; y?: number; scale?: number; rot?: number; blur?: number; opacity?: number; focus?: [number, number] }> =
-  ({ img, h = 1080, x = 960, y = 540, scale = 1, rot = 0, blur = 0, opacity = 1, focus }) => {
-    const w = h * 0.7;
-    return (
-      <div style={{ position: 'absolute', left: x - w / 2, top: y - h / 2, width: w, height: h, transform: `scale(${scale}) rotate(${rot}deg)`, opacity,
-        filter: blur ? `blur(${blur}px)` : undefined,
-        WebkitMaskImage: 'radial-gradient(ellipse 50% 56% at 50% 48%, #000 62%, transparent 100%)', maskImage: 'radial-gradient(ellipse 50% 56% at 50% 48%, #000 62%, transparent 100%)' }}>
-        <Photo img={img} focus={focus} />
-      </div>
-    );
-  };
 
 // 手机自拍预览（普通相机，不是产品 UI）
 export const Phone: React.FC<{ img: string; w: number; flash?: number; children?: React.ReactNode }> = ({ img, w, flash = 0, children }) => {

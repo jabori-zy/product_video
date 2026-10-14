@@ -86,6 +86,8 @@ Columns: **TC** = timecode · **Bar** = music bar · **Shot / camera** · **Acti
 
 ## 4. Sound
 
+**Style:** Korean dance-pop / EDM at 120 BPM in A minor (Am–F–C–G). Bars 1–5 build up from a filtered intro; bar 6 is the build (snare roll, noise riser, the last half-beat silent); the drop lands on bar 7 as she steps through the mirror (four-on-the-floor kick, pumping supersaw, 808, vocal chops).
+
 - **Bars 1–2:** room tone, a glass "ting" when the light runs down the edge, and a soft synth pad.
 - **Bars 3–6:** a minimal pluck groove. Each mirror sweep gets a glassy *shhk* riser of about 6 frames, and each tap is a soft click. Bridge 1 gets a reverse-reverb swell into the door opening, and the sunlight hits on the downbeat with the full beat dropping in.
 - **Bars 7–12:** the full track. The phone shutter is a percussion element: on the beat in bars 8–11 and on half-beats in bar 12. Add the whoosh of the passing bus.
