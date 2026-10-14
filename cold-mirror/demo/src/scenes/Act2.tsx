@@ -188,16 +188,38 @@ export const S11: React.FC<P> = ({ g }) => {
   );
 };
 
-// S12 同一构图，每半拍一换，像翻页动画；最后停在「优雅公主切」
-const BG12: [string, string][] = [['#0b2a8f', '#3d6bff'], ['#ff5470', '#ffb199'], ['#3d5a2a', '#a9c46c'], ['#6b4a3a', '#e0b48c'], ['#1f1f24', '#6a6f7a'], ['#d98e5f', '#ffe1b8'], ['#2b1e3f', '#c58ad8'], ['#e9e5df', '#bfb6aa']];
+// S12 从自拍切到街头：她（火柴人）在街上一路走（镜头侧面跟拍，动作连贯不停），每半拍一道光线扫过，发型和发色换一次；最后停在「优雅公主切」
 export const S12: React.FC<P> = ({ g }) => {
-  const L = LOOKS.s12, i = Math.max(0, lastIndex(g, K.flicker)), t = K.flicker[i];
-  const look = L[i];
+  const s = at(12), L = LOOKS.s12, T = K.flicker;
+  const i = Math.max(0, lastIndex(g, T));
+  const cur = L[i].hair as Hair, prev = L[Math.max(0, i - 1)].hair as Hair;
+  const body = walk((g - s) * 0.42, 30);
+  // 光线 4 帧扫过人物（左 → 右），线左边是新造型
+  const p = i === 0 ? 1 : seg(g, T[i], T[i] + 4, EASE), lx = lerp(300, 780, p);
+  const enter = seg(g, s, s + 5, OUT);                     // 从自拍切过来：开头几帧带一点横向运动模糊
+  const fig = (hair: Hair) => <Stick x={540} y={1660} h={1000} pose={body} view="side" flip hair={hair} swing={-Math.sin((g - s) * 0.42) * 12} />;
+  const scroll = (g - s) * 28;                             // 她朝左走，镜头跟拍，街景往右流
   return (
-    <AbsoluteFill>
-      <Selfie img={look.img} bg={BG12[i]} bump={1 - pop(g, t, 18)} flash={fade(g, t - 1, t, t, t + 2) * 0.6} />
-      <Chip text={look.name} style={{ left: (W - SW) / 2 + 24, top: ST + 24 }} />
-      {isLib(look.img) && <StandIn text={`库图「${libName(look.img)}」`} />}
+    <AbsoluteFill style={{ overflow: 'hidden' }}>
+      <HBlur id="enter12" amount={(1 - enter) * 50} />
+      <AbsoluteFill style={{ transform: `translateX(${(1 - enter) * -500}px)`, filter: enter < 0.99 ? 'url(#enter12)' : undefined }}>
+        <StreetBg g={g} tint={['#ffd59a', '#ff9e6e']} />
+        {/* 路灯杆和人行道砖缝：跟拍时往右流过 */}
+        {Array.from({ length: 3 }, (_, k) => {
+          const x = ((k * 760 + scroll * 1.6) % 2280) - 600;
+          return <div key={k} style={{ position: 'absolute', left: x, top: 260, width: 34, height: 1400, background: 'linear-gradient(90deg,#2a2622,#5a524a 60%,#2a2622)', filter: 'blur(3px)' }} />;
+        })}
+        {Array.from({ length: 8 }, (_, k) => {
+          const x = ((k * 300 + scroll) % 2400) - 600;
+          return <div key={k} style={{ position: 'absolute', left: x, top: 1120, width: 6, height: 800, background: 'rgba(255,255,255,.12)', transform: 'skewX(-35deg)', transformOrigin: '0 0' }} />;
+        })}
+        {p < 1 ? (<>
+          <AbsoluteFill style={{ clipPath: `inset(0 0 0 ${lx}px)` }}>{fig(prev)}</AbsoluteFill>
+          <AbsoluteFill style={{ clipPath: `inset(0 ${W - lx}px 0 0)` }}>{fig(cur)}</AbsoluteFill>
+          <LightLine x={lx} />
+        </>) : fig(cur)}
+      </AbsoluteFill>
+      <Chip text={L[i].name} />
     </AbsoluteFill>
   );
 };

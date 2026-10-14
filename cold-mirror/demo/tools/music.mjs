@@ -178,7 +178,7 @@ add(sec(288), 2.2, (t) => rnd() * Math.exp(-t / 0.5) * 0.6 + Math.sin(2 * Math.P
 // 快门：咔嚓（两个短促的瞬态）
 const shutter = (f, g = 0.35) => { add(sec(f), 0.03, (t) => rnd() * Math.exp(-t / 0.004), { gain: g }); add(sec(f) + 0.045, 0.04, (t) => rnd() * Math.exp(-t / 0.006), { gain: g * 0.8 }); };
 [K.shutter8, K.shutter9, ...K.montage].forEach((f) => shutter(f));
-K.flicker.forEach((f) => shutter(f, 0.28));
+K.flicker.forEach((f) => sweep(f, 4, 0.2));   // S12 街头行走：每次换造型一道短促的扫光声
 // 公交车 / 甩镜头：左到右的呼啸
 const whoosh = (f0, f1, g) => { let y = 0; const len = sec(f1 - f0); add(sec(f0), len, (t, u) => { y += (0.02 + 0.2 * Math.sin(Math.PI * u)) * (rnd() - y); return y * Math.sin(Math.PI * u); }, { gain: g, pan: 0 }); };
 whoosh(K.bus[0] - 4, K.bus[1] + 4, 0.5); whoosh(K.whip[0], K.whip[1] + 2, 0.4);
@@ -190,12 +190,14 @@ K.lights.forEach((f, i) => { add(sec(f), 0.05, (t) => rnd() * Math.exp(-t / 0.00
 // 剪刀合上
 add(sec(K.snip), 0.08, (t) => (Math.sin(2 * Math.PI * 4200 * t) + rnd() * 0.6) * Math.exp(-t / 0.012), { gain: 0.3 });
 add(sec(K.snip) + 0.05, 0.1, (t) => (Math.sin(2 * Math.PI * 3600 * t) + rnd() * 0.5) * Math.exp(-t / 0.02), { gain: 0.25 });
-// 字母归位：每个一声咔哒 + 上行五声音阶（C D E G A C）
-[72, 74, 76, 79, 81, 84].forEach((m, i) => {
-  const f = hz(m), t0 = sec(K.letters[i]);
+// 标语：两个词落下、换位落定时各一声铃音（上行 E G C）
+[76, 79, 84].forEach((m, i) => {
+  const f = hz(m), t0 = sec(K.chimes[i]);
   add(t0, 0.03, (t) => rnd() * Math.exp(-t / 0.005), { gain: 0.2 });
-  add(t0, 1.2, (t) => (Math.sin(2 * Math.PI * f * t) + 0.25 * Math.sin(6 * Math.PI * f * t)) * Math.exp(-t / 0.35), { gain: 0.12, pan: (i - 2.5) / 4 });
+  add(t0, 1.2, (t) => (Math.sin(2 * Math.PI * f * t) + 0.25 * Math.sin(6 * Math.PI * f * t)) * Math.exp(-t / 0.35), { gain: 0.13, pan: (i - 1) / 3 });
 });
+// 换位：两个词交叉时一阵轻的「嗖」
+{ let y = 0; const len = sec(K.swap[1] - K.swap[0]); add(sec(K.swap[0]), len, (t, u) => { y += 0.1 * (rnd() - y); return y * Math.sin(Math.PI * u); }, { gain: 0.3 }); }
 
 function at(n) { return (n - 1) * T.bar; }
 

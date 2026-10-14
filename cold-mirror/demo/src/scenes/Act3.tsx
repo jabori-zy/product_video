@@ -1,6 +1,6 @@
 // 第三幕：片尾（S14–S16，0:26–0:32），竖版
-// S14–S15：暗色影棚，产品镜居中，顶灯一盏盏打亮、镜框四周的灯泡依次亮起，CHANGE 在镜子上方空白处归位（不压在任何画面上）
-// S16：白色收尾卡（CHANGE + Logo + Cold Mirror + 标语 + AI 提示），内容不变
+// S14–S15：暗色影棚，产品镜居中，顶灯一盏盏打亮、镜框四周的灯泡依次亮起；29 秒，镜子上方的空白处落下标语「先改变，再看见」
+// S16：白色收尾卡，30 秒标语里的两个词换位 →「先看见，再改变」，再加 CHANGE + Logo + Cold Mirror + AI 提示
 import React from 'react';
 import { AbsoluteFill, Img, staticFile } from 'remotion';
 import { K, FONT, W, H, seg, fade, pop, lerp, EASE } from '../timing';
@@ -33,7 +33,7 @@ const Beam: React.FC<{ x: number; tx: number; on: number; w0?: number; w1?: numb
 // 灯打开：先闪两下再稳住
 const lampOn = (g: number, t: number) => (g < t ? 0 : g < t + 1 ? 1 : g < t + 2 ? 0.25 : g < t + 3 ? 0.9 : 1);
 
-const Studio: React.FC<{ g: number; letters: boolean }> = ({ g, letters }) => {
+const Studio: React.FC<{ g: number; slogan: boolean }> = ({ g, slogan }) => {
   const [l1, l2, l3] = K.lights.map((t) => lampOn(g, t));
   const lit = Math.max(l1, l2, l3) * 0.4 + (l1 + l2 + l3) * 0.2;
   const o = seg(g, K.orbit[0], K.orbit[1]);
@@ -83,24 +83,36 @@ const Studio: React.FC<{ g: number; letters: boolean }> = ({ g, letters }) => {
         </div>
         <Bokeh g={g} n={14} color="#ffffff" seed={41} size={[6, 16]} drift={2} area={[60, 200, W - 60, FLOOR]} opacity={0.5 * lit} />
       </AbsoluteFill>
-      {/* CHANGE：每半拍落下一个字母，排在镜子上方的空白处 */}
-      {letters && WORD.split('').map((ch, i) => {
-        const p = pop(g, K.letters[i], 13);
-        return <Letter key={i} ch={ch} x={ROW(i)} y={lerp(-160, 300, p)} size={150} rot={lerp(i % 2 ? 18 : -18, 0, p)} o={g >= K.letters[i] ? 1 : 0} />;
+      {/* 标语：「先改变，」「再看见」各一拍落下，排在镜子上方的空白处 */}
+      {slogan && ['先改变，', '再看见'].map((t, i) => {
+        const p = pop(g, K.slogan1[i], 13);
+        return <div key={i} style={{ position: 'absolute', left: 0, right: 0, top: 230 + i * 130, textAlign: 'center', opacity: g >= K.slogan1[i] ? 1 : 0,
+          transform: `translateY(${lerp(-120, 0, p)}px) scale(${lerp(1.3, 1, p)})`, fontFamily: FONT, fontWeight: 600, fontSize: 104, letterSpacing: 16, color: '#f4f6f8',
+          textShadow: '0 0 24px rgba(200,225,255,.55), 0 10px 26px rgba(0,0,0,.6)' }}>{t}</div>;
       })}
     </AbsoluteFill>
   );
 };
 
 // S14 灯光亮起：三盏顶灯在拍点上依次打亮，镜框灯泡一圈亮起；镜面先映着她，然后回到普通镜面
-export const S14: React.FC<P> = ({ g }) => <Studio g={g} letters={false} />;
+export const S14: React.FC<P> = ({ g }) => <Studio g={g} slogan={false} />;
 
-// S15 产品展示：灯全亮，镜子缓慢环绕、扫光；CHANGE 字母依次落位
-export const S15: React.FC<P> = ({ g }) => <Studio g={g} letters />;
+// S15 产品展示：灯全亮，镜子缓慢环绕、扫光；29 秒标语「先改变，再看见」两个半句依次落下
+export const S15: React.FC<P> = ({ g }) => <Studio g={g} slogan />;
 
-// S16 收尾：白卡上的 CHANGE + Logo + 产品名 + 标语，底部是 App 自己的 AI 提示
+// S16 收尾：白卡。先是上一镜的「先改变，再看见」，「改变」和「看见」交叉换位（一个从上面绕、一个从下面绕）→「先看见，再改变」
+// 然后英文副标、底部 App 自己的 AI 提示。CHANGE + Logo + Cold Mirror 不变
+const CH = 62;                                         // 标语每个字的宽度（字号 52 + 字距）
+const LINE_X = W / 2 - (CH * 7) / 2;                   // 先 · 词(2) · ， · 再 · 词(2) 共 7 格
+const slot = (k: number) => LINE_X + k * CH;            // 第 k 格的左边
+const Chars: React.FC<{ text: string; x: number; y: number }> = ({ text, x, y }) => (
+  <div style={{ position: 'absolute', left: x, top: y, display: 'flex' }}>
+    {text.split('').map((c, i) => <div key={i} style={{ width: CH, textAlign: 'center', fontFamily: FONT, fontSize: 52, color: '#111' }}>{c}</div>)}
+  </div>
+);
 export const S16: React.FC<P> = ({ g }) => {
-  const logo = fade(g, K.logo, K.logo + 10), slogan = fade(g, K.slogan, K.slogan + 10), disc = fade(g, K.disclaimer, K.disclaimer + 8);
+  const logo = fade(g, K.logo, K.logo + 10), sub = fade(g, K.slogan, K.slogan + 10), disc = fade(g, K.disclaimer, K.disclaimer + 8);
+  const sw = seg(g, K.swap[0], K.swap[1], EASE), arc = Math.sin(sw * Math.PI) * 70, y = 1040;
   return (
     <AbsoluteFill style={{ background: PAPER }}>
       {WORD.split('').map((ch, i) => <Letter key={i} ch={ch} x={ROW(i)} y={720} size={150} dark />)}
@@ -108,10 +120,14 @@ export const S16: React.FC<P> = ({ g }) => {
         <Img src={staticFile('icon.png')} style={{ width: 84, height: 84 }} />
         <div style={{ fontFamily: '"Helvetica Neue",Helvetica,sans-serif', fontSize: 64, fontWeight: 600, letterSpacing: 2, color: '#111' }}>Cold Mirror</div>
       </div>
-      <div style={{ position: 'absolute', left: 0, right: 0, top: 1040, textAlign: 'center', opacity: slogan, transform: `translateY(${lerp(14, 0, slogan)}px)` }}>
-        <div style={{ fontFamily: FONT, fontSize: 52, color: '#111', letterSpacing: 10 }}>先看见，再改变</div>
-        <div style={{ fontFamily: '"Helvetica Neue",Helvetica,sans-serif', fontSize: 26, color: '#666', letterSpacing: 3, marginTop: 10 }}>See it first. Then change.</div>
-      </div>
+      {/* 标语：固定的「先」「，」「再」，两个词换位 */}
+      <Chars text="先" x={slot(0)} y={y} />
+      <Chars text="，" x={slot(3)} y={y} />
+      <Chars text="再" x={slot(4)} y={y} />
+      <Chars text="改变" x={lerp(slot(1), slot(5), sw)} y={y - arc} />
+      <Chars text="看见" x={lerp(slot(5), slot(1), sw)} y={y + arc} />
+      <div style={{ position: 'absolute', left: 0, right: 0, top: y + 84, textAlign: 'center', opacity: sub, transform: `translateY(${lerp(14, 0, sub)}px)`,
+        fontFamily: '"Helvetica Neue",Helvetica,sans-serif', fontSize: 26, color: '#666', letterSpacing: 3 }}>See it first. Then change.</div>
       <div style={{ position: 'absolute', left: 0, right: 0, bottom: 120, textAlign: 'center', fontFamily: FONT, fontSize: 20, color: '#8a8a8a', opacity: disc }}>
         <span style={{ color: '#C8102E' }}>*</span> 呈现为AI效果，实际请与发型师沟通
       </div>
