@@ -1,0 +1,75 @@
+[
+  {
+    "created_at": "2026-10-14T10:11:46.87459Z",
+    "display_name": "Seedance 2.5",
+    "id": "ea0e36e6-def6-4cd6-b1db-908ec6efc231",
+    "job_type": "seedance_2_5",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "9:16",
+      "bitrate_mode": "standard",
+      "draft": true,
+      "draft_job_id": null,
+      "duration": 10,
+      "extension_mode": null,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 854,
+      "medias": [
+        {
+          "data": {
+            "id": "bab0d8d6-029c-49fc-a12e-8e172f7092cf",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/bab0d8d6-029c-49fc-a12e-8e172f7092cf.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "ca3648bd-4981-48b8-b1b0-895e345a7c23",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/ca3648bd-4981-48b8-b1b0-895e345a7c23.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "3d290d35-168a-4c4d-b632-5fa51e879e63",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/3d290d35-168a-4c4d-b632-5fa51e879e63.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "62a7023a-ba9d-4b4c-a220-f0a8b2f2c0b0",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/62a7023a-ba9d-4b4c-a220-f0a8b2f2c0b0.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "116dd300-daa2-4187-9d8e-b0436d2434e5",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/116dd300-daa2-4187-9d8e-b0436d2434e5.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "default",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "Vertical 9:16 cinematic commercial, golden-hour city street, handheld, fast-cut multi-shot, the same young woman throughout (face from image 1, white lace camisole, gold chain choker). Shot 1 (0–2s): she walks toward camera along a tree-lined street with the ash-blonde cut of image 1, raises her phone for a selfie. Shot 2 (2–4s): phone-screen POV; shutter flash; in the photo her hair is now the black-and-red wolf cut of image 2; pull back to reveal the real her on the street also has the wolf cut; a red bus passes in the foreground and wipes the frame. Shot 3 (4–6s): side tracking shot at a zebra crossing, she now has the high sunset-orange ponytail of image 3, hops off the kerb mid-stride taking a selfie, ponytail swinging; whip pan. Shot 4 (6–8s): through a café window, she sits with a latte, hair in soft honey-brown curls like image 4, lifts the cup then takes a selfie; a glass door edge slides across the frame. Shot 5 (8–10s): locked selfie framing, her face centred and smiling, the background and hairstyle change on each beat: twin tails like image 5 at a graffiti wall, then a rooftop at dusk, then a riverside rail. Photoreal, consistent identity, only the hair and location change. ",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "480p",
+      "speedramp": "auto",
+      "width": 480
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_101146_ea0e36e6-def6-4cd6-b1db-908ec6efc231.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_101146_ea0e36e6-def6-4cd6-b1db-908ec6efc231_thumbnail.webp"
+  }
+]

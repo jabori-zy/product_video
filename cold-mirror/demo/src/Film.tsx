@@ -23,7 +23,8 @@ const tc = (g: number) => {
   return `00:${String(s).padStart(2, '0')}:${String(f).padStart(2, '0')}`;
 };
 
-export const Film: React.FC = () => {
+// hud = false：不画预览标注（给 Higgsfield 成片单独渲染片尾卡时用）
+export const Film: React.FC<{ hud?: boolean }> = ({ hud = true }) => {
   const g = useCurrentFrame();
   const n = shotAt(g), bar = Math.floor(g / BAR) + 1;
   const layers = SCENES.map((Scene, i) => ({ Scene, k: i + 1 })).filter(({ k }) => k === n || (k === n + 1 && g >= at(k) - (PRE[k] ?? 0)));
@@ -32,10 +33,12 @@ export const Film: React.FC = () => {
       {layers.reverse().map(({ Scene, k }) => <AbsoluteFill key={k}><Scene g={g} /></AbsoluteFill>)}
       <AbsoluteFill style={{ background: '#fff', opacity: flash(g), pointerEvents: 'none' }} />
       {/* 预览标注：镜号、时间码、小节.拍 */}
-      <div style={{ position: 'absolute', left: 24, top: 18, padding: '4px 12px', background: 'rgba(0,0,0,.6)', color: '#FFE14D', fontFamily: '"PingFang SC",monospace', fontSize: 22, borderRadius: 4 }}>{SHOTS[n - 1]}</div>
-      <div style={{ position: 'absolute', right: 24, bottom: 16, padding: '4px 12px', background: 'rgba(0,0,0,.6)', color: '#FFE14D', fontFamily: 'Menlo,monospace', fontSize: 22, borderRadius: 4 }}>
-        {tc(g)}　bar {bar}.{Math.floor((g % BAR) / BEAT) + 1}
-      </div>
+      {hud && (<>
+        <div style={{ position: 'absolute', left: 24, top: 18, padding: '4px 12px', background: 'rgba(0,0,0,.6)', color: '#FFE14D', fontFamily: '"PingFang SC",monospace', fontSize: 22, borderRadius: 4 }}>{SHOTS[n - 1]}</div>
+        <div style={{ position: 'absolute', right: 24, bottom: 16, padding: '4px 12px', background: 'rgba(0,0,0,.6)', color: '#FFE14D', fontFamily: 'Menlo,monospace', fontSize: 22, borderRadius: 4 }}>
+          {tc(g)}　bar {bar}.{Math.floor((g % BAR) / BEAT) + 1}
+        </div>
+      </>)}
       <Audio src={staticFile('soundtrack.wav')} />
     </AbsoluteFill>
   );

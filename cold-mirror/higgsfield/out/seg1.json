@@ -1,0 +1,59 @@
+[
+  {
+    "created_at": "2026-10-14T10:11:39.334576Z",
+    "display_name": "Seedance 2.5",
+    "id": "d3be3f14-58dd-4a84-9c12-27e4a9fdca9b",
+    "job_type": "seedance_2_5",
+    "min_result_url": null,
+    "params": {
+      "aspect_ratio": "9:16",
+      "bitrate_mode": "standard",
+      "draft": true,
+      "draft_job_id": null,
+      "duration": 12,
+      "extension_mode": null,
+      "generate_audio": false,
+      "genre": "auto",
+      "height": 854,
+      "medias": [
+        {
+          "data": {
+            "id": "be6c4dbd-8244-4ea9-baa2-00e112cfb499",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/be6c4dbd-8244-4ea9-baa2-00e112cfb499.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "f27c2252-f53c-4413-8fc5-93e435acbdea",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/f27c2252-f53c-4413-8fc5-93e435acbdea.jpg"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "9405ddf4-0965-4f49-b450-365db699c417",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/9405ddf4-0965-4f49-b450-365db699c417.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "default",
+      "multi_prompt": [],
+      "multi_shot_mode": "custom",
+      "multi_shots": false,
+      "prompt": "Vertical 9:16 cinematic commercial, warm tungsten barbershop at night, shallow depth of field, multi-shot. Shot 1 (0–2s): extreme macro slide along the bevelled metal edge of a tall portrait smart mirror on a round metal base; a thin line of white light runs down the edge; blurred warm bulbs in the glass. Shot 2 (2–4s): low wide shot, the young woman from image 1 (long layered chestnut-brown waves, white lace camisole, thin gold chain choker) walks in and stops in front of the mirror, tucks a strand of hair behind her ear. Shot 3 (4–6s): over-the-shoulder onto the mirror; the glass softly lights up with a grid of hair-colour swatch cards glowing behind her reflection; her fingertip taps one card. Shot 4 (6–10s): frontal close-up of her reflection only; a vertical line of light sweeps left to right across the reflection and her hair in the mirror becomes the milky lilac-purple of image 2, while she glances down at her real brown hair and smiles; then another sweep and the reflection shows the airy ash-blonde shoulder-length cut of image 3. Shot 5 (10–12s): the camera pushes into the mirror and passes through the glass with a soft ripple; the shop door behind her opens and golden sunlight floods the frame. Same face and outfit in every shot; only the hair changes. Photoreal, 24fps film look. ",
+      "prompt_language": "en",
+      "reference_elements": [],
+      "resolution": "480p",
+      "speedramp": "auto",
+      "width": 480
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_101139_d3be3f14-58dd-4a84-9c12-27e4a9fdca9b.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261014_101139_d3be3f14-58dd-4a84-9c12-27e4a9fdca9b_thumbnail.webp"
+  }
+]
