@@ -8,7 +8,7 @@ import { Ee } from '../scenes/E';
 import { LOCALES } from '../data/content';
 import { ZhihuPage } from '../content/zhihu';
 import { BiliSearch, XSearch, XhsSearch } from '../content/search';
-import { SearchDialog, AppFrame, ChatComposerBar, ChatHeader, ChatScroll, Composer, GroupLabel, HomeBody, HomeCards, HomeHeader, Main, Markdown, Row, Sidebar, SystemGroup, ThoughtFor, UserMsg, AnswerActions, ROW_PITCH, TREE_TOP } from './app';
+import { ChatPanelHeader, ResourceHeader, ResourceView, SplitView, SearchDialog, AppFrame, ChatComposerBar, ChatHeader, ChatScroll, Composer, GroupLabel, HomeBody, HomeCards, HomeHeader, Main, Markdown, Row, Sidebar, SystemGroup, ThoughtFor, UserMsg, AnswerActions, ROW_PITCH, TREE_TOP } from './app';
 
 // 校对用：同一个浏览器里并排渲染 omnibox-art 导出的原始 HTML（public/omni-ref）和 app.tsx 的组件，逐像素比
 // npx remotion still OmniProbe --props='{"state":"home","reference":true}'
@@ -93,6 +93,30 @@ export const Probe: React.FC<{ state: string; reference?: boolean; debug?: strin
         <Main header={<HomeHeader />}>
           <HomeBody tip="帮我创建一个名为“阅读”的文件夹并整理文档" composer={<Composer />} cards={<HomeCards recent={[['📄', '欢迎使用小黑', '大约 4 小时前更新'], ['📄', '如何整理知识库', '大约 4 小时前创建'], ['📄', '👏 Hi，欢迎来到小黑 OmniBox', '1 天前创建']]} />} />
         </Main>
+      </AppFrame>
+    );
+  }
+  // 点引用之后：资源页 + 右侧对话面板（public/omni-ref/resource-split.html 是 2026-10-15 实拍，正文是图片 + 转圈，只比顶栏、标题、属性行、面板外框）
+  if (state === 'resource-split') {
+    return (
+      <AppFrame
+        side={<Side />}
+        over={
+          <SplitView
+            split={1}
+            header={<ResourceHeader crumbs={['ppt', '从医生角度解析高血压案例-终版.ppt']} updated="9 个月前更新" />}
+            resource={<ResourceView title="从医生角度解析高血压案例-终版.ppt" tags={['健康', '心血管疾病', '高血压']} file="从医生角度解析高血压案例-终版.ppt" created="2025-11-28 17:33:48" blocks={[{ kind: 'p', text: '从医生角度解析高血压案例' }]} hl={0} />}
+            panel={
+              <>
+                <ChatPanelHeader title="高血压案例要点及出处" />
+                <ChatScroll><div className="space-y-4"><UserMsg text="我收藏的高血压案例里讲了哪些要点？请注明出处" /></div></ChatScroll>
+                <ChatComposerBar><Composer ring /></ChatComposerBar>
+              </>
+            }
+          />
+        }
+      >
+        <Main header={<HomeHeader />} />
       </AppFrame>
     );
   }

@@ -1,20 +1,20 @@
 import React from 'react';
-import { Band, C, Camera, Caption, Cursor, Fill, MBlur, W, Words, inOut, kf, lin, morph, sp, typed } from '../lib';
+import { Band, Camera, Caption, Cursor, Fill, Words, inOut, kf, lin, morph, sp, typed } from '../lib';
 import {
-  Accordion, AnswerActions, AppFrame, ApprovalCard, ChatComposerBar, ChatHeader, ChatRow, ChatScroll, Cite, CiteCard, Composer, DateLabel, GroupLabel,
-  HomeBody, HomeCards, HomeHeader, Main, Markdown, OMNI_BG, Row, Sidebar, SystemGroup, ThoughtFor, ToolCall, UserMsg, Z, rowRect, rowTop, useRecent,
+  Accordion, AnswerActions, AppFrame, ApprovalCard, ChatComposerBar, ChatHeader, ChatPanelHeader, ChatRow, ChatScroll, Cite, CiteCard, Composer, DateLabel, GroupLabel,
+  HomeBody, HomeCards, HomeHeader, Main, Markdown, OMNI_BG, ResourceHeader, ResourceView, Row, Sidebar, SplitView, SystemGroup, ThoughtFor, ToolCall, UserMsg, Z, rowRect, rowTop, useRecent,
 } from '../ui';
 import { LOCALES } from '../data/content';
 import { useLang, useRes, useTr } from '../i18n';
 import { TYPED, stepOf, txt, type ResKey } from '../copy';
-import { ZhihuPage } from '../content/zhihu';
-import { BrowserChrome, CHROME_H } from '../content/browser';
 import { E_CLICKS, E_Q1_AT } from './E.times';
 
 export { SHARE } from '../ui';
 
 // E 应用 · 记忆变成万物（18.0–30.0 s），局部时间 t = 全局 − 18
 // 真实网页（浅色，omni/）：首页调思考强度 → 提问 → 带引用的回答 → 写周报并保存进资源树 → Agent 归档（待确认卡片 → 同意）
+// 引用（high_fidelity_v5，照 assets/ominibiox-internal-reference.mp4 实录）：悬停角标 → 卡片朝下展开（先「正在加载详情…」）
+// → 点击后在 OmniBox 里打开被引用的资源：左边资源页、被引段落蓝底，对话收进右侧面板 → 回到对话
 
 const HISTORY: [string[], string[][]][] = [ // [[中文, English], 条目]；日期分组写法照产品（「过去7天」「2026 年 9 月」）
   [['今天', 'Today'], [['你好，小黑！', 'Hello, Xiaohei!'], ['周会待办整理', 'Weekly meeting to-dos']]],
@@ -39,6 +39,10 @@ const CAM = [
   { t: 3.0, x: 1200, y: 500, s: 1.9 },
   { t: 3.2, x: 1125, y: 420, s: 1.25 },
   { t: 4.5, ...FULL },
+  // 点引用后推近资源页里被引的段落（蓝底中心约画布 867, 461）
+  { t: 5.0, ...FULL },
+  { t: 5.15, x: 900, y: 500, s: 1.2 },
+  { t: 5.3, x: 900, y: 500, s: 1.2 },
   // final：写周报和 Agent 两段不再全程全景——输入时推近输入框，周报生成时跟着内容，保存时拉回看资源树
   { t: 5.5, ...FULL },
   { t: 5.75, x: 1125, y: 880, s: 1.5 },
@@ -62,10 +66,14 @@ const AT = {
   slideHigh: P(1115, 372.5), // 弹层滑条「高」档（滑条 951–1157.5，拇指 24）
   homeSend: P(1198, 421),
   chatSend: P(1198, 749),
-  cite2: P(610.5, 447), // 第 2 条回答的引用角标
+  cite1: P(675.4, 320.7), // 第 1 条回答的引用角标（出处是收藏的知乎文章）
+  read: P(1020, 372), // 资源页被引段落（蓝底，312–988 × 313–380）右侧的空白，点开之后光标停在这里
   save: P(532, 584), // 周报末尾「保存」（滚动 400 之后）
   approve: P(560, 709), // 待确认卡片「同意」
 };
+
+/** 被引用资源（收藏的知乎文章）的 id，悬浮卡底部显示 */
+const RES_ID = 'k7Rz2QpLmN4xV8cT';
 
 // 对话页里三问三答各自一层：回答完成后上一层往上滑走，像列表滚到最新的提问
 const Block: React.FC<{ o: number; dy?: number; children: React.ReactNode }> = ({ o, dy = 0, children }) => (
@@ -176,6 +184,7 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
     </>
   ) : <ThoughtFor sec={12} />;
   const citeCard = t > 4.65 && t < 4.95;
+  const citeLoading = t < 4.7; // 实拍：刚悬停时先是「正在加载详情…」，片段随后出来
   const q1Block = (
     <Block o={chatO * (1 - q1Fade)} dy={-q1Fade * 150}>
       <UserMsg text={txt(TYPED.q1, lang)} />
@@ -192,10 +201,10 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
                   {reveal(body, lin(t, a + 0.08, a + 0.25, 0, 1))}
                   {t > a + 0.2 && (
                     <span style={{ position: 'relative', display: 'inline-block', marginLeft: 4 }}>
-                      <Cite n={j + 1} s={sp(t, a + 0.2)} hover={j === 1 && t > 4.6 && t < 5.0} />
-                      {j === 1 && citeCard && (
-                        <span style={{ position: 'absolute', left: '50%', bottom: 'calc(100% + 4px)', transform: 'translateX(-50%)', zIndex: 50 }}>
-                          <CiteCard title={Zc.zhihu.title} text={Zc.zhihu.paras[0]} id="k7Rz2QpLmN4xV8cT" o={lin(t, 4.65, 4.72, 0, 1)} s={sp(t, 4.65)} />
+                      <Cite n={j + 1} s={sp(t, a + 0.2)} hover={j === 0 && t > 4.6 && t < 5.0} />
+                      {j === 0 && citeCard && (
+                        <span style={{ position: 'absolute', left: '50%', top: 'calc(100% + 4px)', transform: 'translateX(-50%)', zIndex: 50 }}>
+                          <CiteCard title={Zc.zhihu.title} text={Zc.zhihu.paras[0]} id={RES_ID} loading={citeLoading} o={lin(t, 4.65, 4.7, 0, 1)} s={sp(t, 4.65)} />
                         </span>
                       )}
                     </span>
@@ -210,11 +219,38 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
     </Block>
   );
 
-  // 引用 → 知乎原文 → 甩回（内部甩镜）
-  const w1 = lin(t, 4.95, 5.1, 0, 1, inOut);
-  const w2 = lin(t, 5.3, 5.45, 0, 1, inOut);
-  const chatOff = t < 5.3 ? -W * w1 : -W * (1 - w2);
-  const wb = Math.sin(Math.PI * w1) * 30 + Math.sin(Math.PI * w2) * 30;
+  // 点引用 → 在 OmniBox 里打开被引用的资源（产品：路由立即换成资源页，对话面板 200ms 从右侧滑入，正文取回后被引段落蓝底）
+  // → 停一下看清出处 → 淡回整页对话（产品里没有一键回去的按钮，这里按剪辑处理，不画假的点击）
+  const splitOn = t >= 4.95 && t < 5.45;
+  const split = lin(t, 4.95, 5.05, 0, 1);
+  const splitO = 1 - lin(t, 5.32, 5.45, 0, 1);
+  const resLoading = t < 5.0;
+  const Z0 = Zc.zhihu;
+  const splitView = splitOn && (
+    <SplitView
+      split={split}
+      o={splitO}
+      header={<ResourceHeader crumbs={[Z0.title]} updated="2 天前创建" />}
+      resource={
+        <ResourceView
+          title={Z0.title}
+          created="2026-10-13 21:14:05"
+          blocks={[{ kind: 'quote', text: Z0.quote }, ...Z0.paras.map((x) => ({ kind: 'p' as const, text: x }))]}
+          hl={1}
+          loading={resLoading}
+        />
+      }
+      panel={
+        <>
+          <ChatPanelHeader title={tr('收藏资料里的 AI Agent 趋势', 'AI agent trends in my saves')} />
+          <ChatScroll>
+            <div style={{ position: 'relative', height: 700 }}>{q1Block}</div>
+          </ChatScroll>
+          <ChatComposerBar><Composer level={levelName} ring /></ChatComposerBar>
+        </>
+      }
+    />
+  );
 
   // Q2 周报：回答就是周报正文；点「保存」→ 存成资源（整块缩成一行飞进资源树）
   const q2 = typed(t, 5.7, txt(TYPED.q2, lang), stepOf(TYPED.q2, lang));
@@ -297,7 +333,7 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
   const path = [
     { t: 1.3, x: 1300, y: 820 }, { t: 1.55, ...AT.agent }, { t: 1.75, ...AT.agent }, { t: 1.88, ...AT.slideHigh }, { t: 2.1, ...AT.slideHigh },
     { t: 2.45, x: AT.homeSend.x - 60, y: AT.homeSend.y + 40 }, { t: 2.85, ...AT.homeSend },
-    { t: 4.45, x: 1300, y: 600 }, { t: 4.6, ...AT.cite2 }, { t: 5.45, ...AT.cite2 },
+    { t: 4.45, x: 1300, y: 600 }, { t: 4.6, ...AT.cite1 }, { t: 5.0, ...AT.cite1 }, { t: 5.25, ...AT.read }, { t: 5.45, ...AT.read },
     { t: 5.75, x: 1250, y: 930 }, { t: 6.2, x: 1350, y: 960 }, { t: 6.38, ...AT.chatSend }, { t: 7.5, x: 900, y: 820 }, { t: 7.75, ...AT.save },
     { t: 8.6, x: 1350, y: 960 }, { t: 9.1, ...AT.chatSend }, { t: 9.4, ...AT.approve }, { t: 10.2, x: 900, y: 600 },
   ];
@@ -308,49 +344,34 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
 
   return (
     <Fill bg={OMNI_BG}>
-      <MBlur id="e-whip" bx={wb}>
-        <div style={{ position: 'absolute', inset: 0, transform: `translateX(${chatOff}px)` }}>
-          <Camera c={c}>
-            <AppFrame side={<Sidebar tab={tab} space={res('space')} home={t < 3.0}>{tree}{history}</Sidebar>} overlay={docCard}>
-              <Main header={t < 3.0 ? <HomeHeader /> : <ChatHeader title={tr('收藏资料里的 AI Agent 趋势', 'AI agent trends in my saves')} titleO={lin(t, 3.3, 3.45, 0, 1)} shareGlow={lin(t, 11.7, 11.8, 0, 1)} />}>
-                <div className="relative flex min-h-0 flex-1 flex-col">
-                  {/* 首页 */}
-                  {homeO > 0 && (
-                    <div className="absolute inset-0 flex flex-col" style={{ opacity: homeO }}>
-                      <HomeBody tip={tr('列出包含“会议”标签的所有资源', 'List all resources tagged "meeting"')} chip={sp(t, 0.5)} composer={homeComposer} cards={<HomeCards recent={recent} />} />
-                    </div>
-                  )}
-                  {/* 对话页 */}
-                  {chatO > 0 && (
-                    <div className="absolute inset-0 flex flex-col" style={{ opacity: chatO }}>
-                      <ChatScroll>
-                        <div style={{ position: 'relative', height: 700 }}>
-                          {q1Block}
-                          {q2Block}
-                          {q3Block}
-                        </div>
-                      </ChatScroll>
-                      <ChatComposerBar>{chatComposer}</ChatComposerBar>
-                    </div>
-                  )}
+      <Camera c={c}>
+        <AppFrame side={<Sidebar tab={tab} space={res('space')} home={t < 3.0}>{tree}{history}</Sidebar>} overlay={docCard} over={splitView}>
+          <Main header={t < 3.0 ? <HomeHeader /> : <ChatHeader title={tr('收藏资料里的 AI Agent 趋势', 'AI agent trends in my saves')} titleO={lin(t, 3.3, 3.45, 0, 1)} shareGlow={lin(t, 11.7, 11.8, 0, 1)} />}>
+            <div className="relative flex min-h-0 flex-1 flex-col">
+              {/* 首页 */}
+              {homeO > 0 && (
+                <div className="absolute inset-0 flex flex-col" style={{ opacity: homeO }}>
+                  <HomeBody tip={tr('列出包含“会议”标签的所有资源', 'List all resources tagged "meeting"')} chip={sp(t, 0.5)} composer={homeComposer} cards={<HomeCards recent={recent} />} />
                 </div>
-              </Main>
-            </AppFrame>
-            <Cursor t={t} path={path} clicks={E_CLICKS} show={[1.3, 10.4]} size={34 / Math.max(1, c.s * 0.7)} />
-          </Camera>
-        </div>
-        {/* 知乎原文（引用跳转） */}
-        {t > 4.9 && t < 5.5 && (
-          <div style={{ position: 'absolute', inset: 0, transform: `translateX(${chatOff + W}px)`, background: C.desk }}>
-            {/* 浏览器窗口里的知乎原文 */}
-            <div style={{ position: 'absolute', left: 260, top: 110, width: 1400, height: 860, borderRadius: 14, background: '#fff', overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,.25)' }}>
-              <BrowserChrome w={1400} title={`${Zc.zhihu.title} - ${Zc.zhihu.site}`} url="zhuanlan.zhihu.com/p/7281…" />
-              {/* 原文页面，引文被定位并黄色高亮 */}
-              <div style={{ position: 'absolute', left: 0, top: CHROME_H }}><ZhihuPage c={Zc} w={1400} h={860 - CHROME_H} sel={lin(t, 5.1, 5.25, 0, 1)} selColor="#FDE68A" /></div>
+              )}
+              {/* 对话页 */}
+              {chatO > 0 && (
+                <div className="absolute inset-0 flex flex-col" style={{ opacity: chatO }}>
+                  <ChatScroll>
+                    <div style={{ position: 'relative', height: 700 }}>
+                      {q1Block}
+                      {q2Block}
+                      {q3Block}
+                    </div>
+                  </ChatScroll>
+                  <ChatComposerBar>{chatComposer}</ChatComposerBar>
+                </div>
+              )}
             </div>
-          </div>
-        )}
-      </MBlur>
+          </Main>
+        </AppFrame>
+        <Cursor t={t} path={path} clicks={E_CLICKS} show={[1.3, 10.4]} size={34 / Math.max(1, c.s * 0.7)} />
+      </Camera>
 
       <Caption t={t} a={3.8} b={5.3} text={tr('有问必答，句句有出处', 'Answers with sources. Every time.')} y={720} size={60} plate />
       <Caption t={t} a={7.0} b={8.15} text={tr('资料变成周报', 'Turn your sources into a weekly report.')} y={720} size={60} plate />

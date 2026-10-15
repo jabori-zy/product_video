@@ -93,7 +93,7 @@ export const buildCues = (lang: Lang): Cue[] => {
   for (const k of E_CLICKS) c(o(18 + k), 'click');
   typing(18 + E_Q1_AT, TYPED.q1);
   c(o(20.95), 'swish', { dur: 0.3 }); c(o(21.7), 'stream', { dur: o(22.55) - o(21.7) });
-  c(o(22.65), 'pop', { v: 0.6 }); c(o(22.9), 'whoosh', { dur: 0.35, v: 0.6 }); c(o(23.45), 'whoosh', { dur: 0.35, v: 0.6 });
+  c(o(22.65), 'pop', { v: 0.6 }); c(o(22.95), 'swish', { dur: 0.25, v: 0.5 }); c(o(23.32), 'swish', { dur: 0.25, v: 0.35 }); // 引用：资源页打开、对话面板滑入；淡回对话
   typing(23.7, TYPED.q2); c(o(24.45), 'swish', { dur: 0.3 });
   c(o(24.5), 'stream', { dur: o(25.8) - o(24.5) }); c(o(25.95), 'swish', { dur: 0.35 }); c(o(26.3), 'pop');
 

@@ -88,8 +88,9 @@ if (typeof document !== 'undefined' && !(window as any).__omniCss) {
   const h = delayRender('omni css');
   sheet = new CSSStyleSheet();
   (window as any).__omniSheet = sheet;
-  Promise.all(['omni/product.css', 'omni/demo.css'].map((f) => fetch(staticFile(f)).then((r) => r.text())))
-    .then(([p, d]) => { sheet!.replaceSync(adaptCss(p) + '\n' + d); continueRender(h); })
+  // product-20261015-resource.css：2026-10-15 实拍资源页（引用跳转）时，整份样式表里比 product.css 多出的规则（ProseMirror 基础样式等）
+  Promise.all(['omni/product.css', 'omni/product-20261015-resource.css', 'omni/demo.css'].map((f) => fetch(staticFile(f)).then((r) => r.text())))
+    .then(([p, r, d]) => { sheet!.replaceSync(adaptCss(p + '\n' + r) + '\n' + d); continueRender(h); })
     .catch((e) => { console.error(e); continueRender(h); });
 } else if (typeof window !== 'undefined') sheet = (window as any).__omniSheet;
 

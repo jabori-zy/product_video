@@ -6,7 +6,7 @@ import { SitePage } from './site';
 
 // 知乎专栏文章页（high_fidelity_v4）：zhuanlan.zhihu.com 文章页的真实快照（public/sites/zhihu/，tools/sites/ 导出，
 // 登录态顶栏），标题、作者、正文、右栏、热搜换成片子自己的内容。页面按 1200 宽的 CSS 视口排版，放大 ZOOM 倍显示（浏览器缩放 125%）
-// B 段收藏、E 段引用跳转、Content Screenshots 01 都用同一个 ZhihuPage
+// B 段收藏、Content Screenshots 01 用 ZhihuPage（E 段的引用 v5 起在 OmniBox 里打开资源，见 omni/app.tsx 的 ResourceView）
 
 export const ZOOM = 1.25;
 

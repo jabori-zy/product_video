@@ -1,5 +1,9 @@
 # 小黑 OmniBox 产品介绍片
 
+- **High-fidelity v5 成片**：`npm run render:final -- high_fidelity_v5` → `out/zh/ominibox_product_video_high_fidelity_v5.mp4`。在 v4 基础上，E 段「引用 → 原文」（成片约 1:07–1:11，比 v4 放慢到约 3.8 秒，片长因此多一小节，129.9 秒）照内部引用的实录（`../assets/ominibiox-internal-reference.mp4`）重做：
+  - 悬停的是第 1 条回答的角标（出处正是收藏的知乎文章），悬浮卡朝下展开，先显示「正在加载详情…」
+  - 点击后不再甩出到浏览器里的知乎网页，而是在 OmniBox 里打开这条资源：左边资源页（面包屑、标签、创建时间、正文），被引段落用产品自己的蓝底高亮，对话收进右侧 376 宽的面板；随后淡回整页对话
+  - 资源页与对话面板的 DOM 是 2026-10-15 在 test.omnibox.pro 实拍的（`public/omni-ref/resource-split.html`），见 `src/omni/README.md`
 - **High-fidelity v4 成片**：`npm run render:final -- high_fidelity_v4` → `out/zh/ominibox_product_video_high_fidelity_v4.mp4`。在 v3 基础上，第三方网页改用真实页面快照（ego-browser 登录态导出的 DOM 与样式，`public/sites/`，流程见 `tools/sites/README.md`）：
   - 知乎专栏文章页（B 收藏、E 引用跳转）、C 段走廊的 B 站 / 小红书 / X 搜索结果页；小红书改为真实的桌面版布局（视口 1000×800）
   - 页面里的标题、作者、数字、封面、头像都换成片子自己的内容（`src/content/site.tsx` 用 React portal 填进快照的 `data-slot`），不带别人的图片和账号信息

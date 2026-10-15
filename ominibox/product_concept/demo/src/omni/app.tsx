@@ -69,8 +69,8 @@ export const ResIc: React.FC<{ icon: string; name?: string }> = ({ icon, name = 
 
 // ---------- 外壳 ----------
 /** 整个网页：侧栏 + 主区。open = 侧栏展开比例（0 收起，1 展开），收起时主区顶栏出现展开按钮 */
-export const AppFrame: React.FC<{ side: React.ReactNode; open?: number; children: React.ReactNode; overlay?: React.ReactNode; style?: React.CSSProperties }> = ({
-  side, open = 1, children, overlay, style,
+export const AppFrame: React.FC<{ side: React.ReactNode; open?: number; children: React.ReactNode; overlay?: React.ReactNode; over?: React.ReactNode; style?: React.CSSProperties }> = ({
+  side, open = 1, children, overlay, over, style,
 }) => (
   <Omni style={style}>
     <div className="flex h-full min-h-0 w-full flex-col overflow-hidden">
@@ -83,6 +83,7 @@ export const AppFrame: React.FC<{ side: React.ReactNode; open?: number; children
         </div>
         <div className="relative flex min-h-0 min-w-0 flex-1 overflow-hidden">
           <div className="flex h-full min-h-0 min-w-0 overflow-hidden flex-1">{children}</div>
+          {over}
         </div>
       </div>
     </div>
@@ -587,13 +588,185 @@ export const Cite: React.FC<{ n: number; hover?: boolean; s?: number }> = ({ n, 
   </button>
 );
 
-/** 引用悬浮卡：资源标题、正文摘要、资源 id */
-export const CiteCard: React.FC<{ title: string; text: string; id: string; o?: number; s?: number }> = ({ title, text, id, o = 1, s = 1 }) => (
-  <div data-side="top" data-align="center" data-state="open" className="z-50 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none w-80" style={{ opacity: o, transform: `scale(${0.95 + 0.05 * s})`, transformOrigin: '50% 100%' }}>
+/** 引用悬浮卡：资源标题、被引片段（原文 markdown）、资源 id。实拍朝下展开（data-side=bottom，离角标 4px）；
+ * loading = 刚悬停时「正在加载详情…」，片段还是空的 */
+export const CiteCard: React.FC<{ title: string; text: string; id: string; loading?: boolean; o?: number; s?: number }> = ({ title, text, id, loading, o = 1, s = 1 }) => (
+  <div data-side="bottom" data-align="center" data-state="open" className="z-50 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none w-80" style={{ opacity: o, transform: `scale(${0.95 + 0.05 * s}) translateY(${-8 * (1 - s)}px)`, transformOrigin: '50% 0' }}>
     <div>
+      {loading && <p role="status">正在加载详情…</p>}
       <p className="font-semibold line-clamp-2">{title}</p>
-      <div className="text-sm line-clamp-4">{text}</div>
+      <div className="text-sm line-clamp-4">{loading ? '' : text}</div>
       <div className="text-muted-foreground text-xs mt-1">@{id}</div>
+    </div>
+  </div>
+);
+
+// ---------- 资源页 + 右侧对话面板（点回答里的引用之后；2026-10-15 test.omnibox.pro 实拍） ----------
+const HEAD_BTN =
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 rounded-md px-3 text-xs';
+const ICON_BTN = `${GHOST} h-7 w-7 shrink-0`;
+const PANEL_BTN =
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs size-[28px]';
+/** 对话面板宽度（产品像素，实拍 376） */
+export const CHAT_PANEL_W = 376;
+
+/** 资源页顶栏：面包屑（父文件夹 › 资源；个人根目录下只有资源名）、更新时间、分享 / 编辑 / 更多 / 评论 / 编辑历史 */
+export const ResourceHeader: React.FC<{ crumbs: string[]; updated: string }> = ({ crumbs, updated }) => {
+  const parents = crumbs.slice(0, -1);
+  const name = crumbs[crumbs.length - 1];
+  return (
+    <header className="flex min-h-[48px] min-w-0 shrink-0 items-center gap-2 overflow-hidden rounded-[16px] bg-white dark:bg-background">
+      <div className="flex min-w-0 flex-1 items-center gap-1 px-3 sm:gap-2">
+        <nav aria-label="breadcrumb" className="max-w-full min-w-0 ml-2">
+          <ol className="flex items-center break-words text-sm text-muted-foreground min-w-0 flex-nowrap gap-0 overflow-hidden sm:gap-0">
+            {parents.map((c) => (
+              <React.Fragment key={c}>
+                <li className="inline-flex items-center gap-1.5 min-w-0 shrink">
+                  <button className="inline-flex items-center gap-2 whitespace-nowrap rounded-md text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent transition-colors hover:text-foreground h-6 max-w-[7rem] justify-start overflow-hidden px-2 py-0 font-normal text-foreground sm:max-w-[240px]">
+                    <span className="min-w-0 truncate text-left">{c}</span>
+                  </button>
+                </li>
+                <li role="presentation" aria-hidden="true" className="[&>svg]:w-3.5 [&>svg]:h-3.5 shrink-0"><Ic n="chevron-right" /></li>
+              </React.Fragment>
+            ))}
+            <li className="inline-flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden">
+              <span role="link" aria-disabled="true" aria-current="page" className="block min-w-0 truncate pl-2 font-normal text-foreground">{name}</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+      <div className="ml-auto flex shrink-0 items-center gap-1 pr-3">
+        <div className="flex items-center gap-2 text-sm">
+          <div className="hidden font-medium text-muted-foreground md:inline-block">{updated}</div>
+          <button className={HEAD_BTN} type="button" data-state="closed"><Ic n="share" />分享</button>
+          <button className={HEAD_BTN}><Ic n="pencil" />编辑</button>
+          <button className={`${GHOST} size-7 data-[state=open]:bg-accent`} type="button" data-state="closed"><Ic n="ellipsis" className="size-4" /></button>
+        </div>
+        <button className={ICON_BTN} type="button" aria-label="评论" data-state="closed"><Ic n="message-square-text" className="size-4" /></button>
+        <button className={ICON_BTN} aria-label="打开编辑历史" type="button" data-state="closed"><Ic n="file-clock" /></button>
+      </div>
+    </header>
+  );
+};
+
+export type ResBlock = { kind: 'p' | 'quote'; text: string };
+const MetaRow: React.FC<{ icon: string; label: string; children: React.ReactNode; top?: boolean }> = ({ icon, label, children, top }) => (
+  <div className={`flex flex-wrap sm:flex-nowrap ${top ? 'items-start' : 'items-center'} gap-4`}>
+    <div className={`${top ? 'min-h-5 ' : ''}flex items-center gap-1.5`}>
+      <Ic n={icon} className={`${icon === 'tags' ? 'flex-shrink-0 ' : ''}size-4 text-neutral-400`} />
+      <span className="text-neutral-400 min-w-[80px] min-h-6 flex items-center">{label}</span>
+    </div>
+    {children}
+  </div>
+);
+
+/**
+ * 资源只读页（resource-readonly-page-header + tiptap 只读编辑器）。
+ * hl = 被引用的块：产品 CSS 给含 .omnibox-scroll-line-highlight 的顶层块加圆角蓝底（rgba(0,144,255,.2)）。
+ * loading = 刚打开、正文还没取回来（实拍里先空一下再出来）
+ */
+export const ResourceView: React.FC<{ title: string; tags?: string[]; file?: string; created: string; blocks: ResBlock[]; hl?: number; loading?: boolean; hlO?: number }> = ({ title, tags, file, created, blocks, hl, loading, hlO = 1 }) => (
+  <div className="no-scrollbar flex min-w-0 flex-1 justify-center overflow-x-hidden overflow-y-auto p-4" data-resource-scroll="true">
+    <div className="flex w-full min-w-0 max-w-full flex-col" style={{ maxWidth: '100%' }}>
+      <div data-resource-export-content="true">
+        <div className="resource-readonly-page-header">
+          <h1 className="resource-search-title mb-4 min-w-0 max-w-full break-all text-[34px] font-bold">{title}</h1>
+          <div className="space-y-2 mb-6 text-sm">
+            <MetaRow icon="tags" label="标签" top>
+              <span className="flex flex-wrap items-center text-foreground min-h-6">
+                {tags && tags.length ? (
+                  <div className="flex gap-2 flex-wrap min-h-6 gap-y-4 cursor-pointer">
+                    {tags.map((g) => <div key={g} className="inline-flex items-center border transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-sm border-neutral-300 text-neutral-500 font-normal rounded-[8px] px-[8px] py-[1px] dark:border-neutral-500 dark:text-neutral-400">{g}</div>)}
+                  </div>
+                ) : (
+                  <div className="flex gap-2 flex-wrap min-h-6 cursor-pointer gap-y-4">
+                    <div className="inline-flex items-center border text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-neutral-300 text-neutral-500 font-normal rounded-[8px] px-[8px] py-[2px] dark:border-neutral-500 dark:text-neutral-400">点击添加标签</div>
+                  </div>
+                )}
+              </span>
+            </MetaRow>
+            {file && (
+              <MetaRow icon="file" label="文件">
+                <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground hover:bg-sidebar-accent font-normal ml-[-8px] h-auto py-0 px-2 text-neutral-500 dark:text-neutral-400">{file}</button>
+              </MetaRow>
+            )}
+            <MetaRow icon="clock" label="创建时间">
+              <span className="text-neutral-500 dark:text-neutral-400">{created}</span>
+            </MetaRow>
+          </div>
+        </div>
+        <div className="resource-readonly-editor pb-[30vh]" tabIndex={-1} style={{ overflow: 'inherit' }}>
+          <div data-variant="embedded" data-theme="light" className="omnibox-editor-root omnibox-editor-wrapper omnibox-editor-wrapper--embedded" style={{ '--omnibox-editor-content-width': '680px' } as React.CSSProperties}>
+            <div className="omnibox-editor-layout omnibox-editor-layout--embedded">
+              <div role="presentation" className="omnibox-editor-content" style={{ cursor: 'auto' }}>
+                <div className="omnibox-drag-handle-wrapper" style={{ '--drag-handle-main-axis-offset': '16px' } as React.CSSProperties} />
+                <div contentEditable={false} translate="no" className="tiptap ProseMirror omnibox-editor" style={{ opacity: loading ? 0 : 1 }}>
+                  {blocks.map((b, i) => {
+                    const inner = i === hl ? (
+                      <>
+                        <span data-scroll-line-target="true" aria-hidden="true" className="ProseMirror-widget" style={{ display: 'inline-block', width: 0, height: '1em', pointerEvents: 'none', verticalAlign: 'top' }} />
+                        <span data-scroll-line-highlight="true" className={hlO > 0 ? 'omnibox-scroll-line-highlight' : undefined}>{b.text}</span>
+                      </>
+                    ) : b.text;
+                    return b.kind === 'quote' ? <blockquote key={i}><p>{inner}</p></blockquote> : <p key={i}>{inner}</p>;
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+/** 右侧对话面板顶栏：收起面板、对话标题、新对话、历史 */
+export const ChatPanelHeader: React.FC<{ title: string }> = ({ title }) => (
+  <header className="rounded-2xl sticky z-[30] top-0 bg-white flex flex-wrap min-h-12 shrink-0 items-center gap-2 dark:bg-background">
+    <div className="flex min-w-0 flex-1 items-center gap-1 px-3 sm:gap-2">
+      <button className={ICON_BTN} aria-label="收起右侧边栏" type="button" data-state="closed"><Ic n="panel-right" /></button>
+      <nav aria-label="breadcrumb" className="min-w-0">
+        <ol className="flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5">
+          <li className="inline-flex items-center gap-1.5 min-w-0">
+            <span role="link" aria-disabled="true" aria-current="page" className="font-normal text-foreground line-clamp-1">
+              <div className="flex items-center gap-0 group">
+                <span className="max-w-[400px] line-clamp-1">{title}</span>
+              </div>
+            </span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div className="ml-auto shrink-0 pr-3">
+      <div className="flex items-center gap-1 text-sm">
+        <button className={PANEL_BTN} data-state="closed"><Ic n="message-circle-plus" /></button>
+        <button className={`${PANEL_BTN} text-[#585D65] dark:text-white`} data-state="closed"><Ic n="history" /></button>
+      </div>
+    </div>
+  </header>
+);
+
+/**
+ * 点引用之后的主区：左边资源页，右边对话面板（产品里面板是 fixed、宽 376、离边 8，左边留同宽占位）。
+ * split 0→1：占位宽度展开、面板从右侧滑入（产品 200ms ease-linear 的 width / transform 过渡）。叠在 AppFrame 的主区上（over）
+ */
+export const SplitView: React.FC<{ split: number; header: React.ReactNode; resource: React.ReactNode; panel: React.ReactNode; o?: number }> = ({ split, header, resource, panel, o = 1 }) => (
+  // zIndex：盖过下面对话页 sticky 的顶栏（z-[30]）
+  <div data-resource-comments-root="true" className="absolute inset-0 flex h-full min-h-0 min-w-0 flex-1 overflow-hidden bg-sidebar" style={{ opacity: o, zIndex: 40 }}>
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+      <div className="relative flex min-h-0 min-w-0 flex-1 overflow-hidden gap-2 p-2">
+        <main className="relative flex flex-1 flex-col peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow h-full min-h-0 min-w-0 overflow-hidden rounded-[16px] bg-white dark:bg-background m-0 md:h-full">
+          {header}
+          <div data-orientation="horizontal" role="none" className="shrink-0 h-[1px] w-full bg-[#F2F2F2] dark:bg-[#303132]" />
+          {resource}
+        </main>
+        <div aria-hidden="true" className="pointer-events-none shrink-0" style={{ width: CHAT_PANEL_W * split, marginLeft: -8 * (1 - split) }} />
+        <div aria-hidden="false" className="absolute bottom-2 right-2 top-2 z-20 flex min-h-0 flex-col" style={{ width: CHAT_PANEL_W, transform: `translateX(${(CHAT_PANEL_W + 8) * (1 - split)}px)` }}>
+          <main className="relative flex flex-1 flex-col peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow min-h-0 !min-h-0 max-h-full min-w-0 h-full overflow-hidden bg-white dark:bg-background md:rounded-2xl m-0 rounded-none md:h-full">
+            {panel}
+          </main>
+        </div>
+      </div>
     </div>
   </div>
 );
