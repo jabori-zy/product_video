@@ -1,5 +1,13 @@
 # 小黑 OmniBox 产品介绍片
 
+- **High-fidelity v4 成片**：`npm run render:final -- high_fidelity_v4` → `out/zh/ominibox_product_video_high_fidelity_v4.mp4`。在 v3 基础上，第三方网页改用真实页面快照（ego-browser 登录态导出的 DOM 与样式，`public/sites/`，流程见 `tools/sites/README.md`）：
+  - 知乎专栏文章页（B 收藏、E 引用跳转）、C 段走廊的 B 站 / 小红书 / X 搜索结果页；小红书改为真实的桌面版布局（视口 1000×800）
+  - 页面里的标题、作者、数字、封面、头像都换成片子自己的内容（`src/content/site.tsx` 用 React portal 填进快照的 `data-slot`），不带别人的图片和账号信息
+- **High-fidelity v3 成片**：`npm run render:final -- high_fidelity_v3` → `out/zh/ominibox_product_video_high_fidelity_v3.mp4`。OmniBox 网页端改用产品的真实 DOM 与整份样式表（浅色，`src/omni/`，来源与校对见 `src/omni/README.md`），不再手画：
+  - A 首页（侧栏收起）→ 对话页、D 资源树与 ⌘J 搜索弹窗、E 首页 / 对话 / 周报 / Agent、M1/M2 笔记本里的网页
+  - 只画产品里有的控件：去掉「深度思考」开关和「问答 / 写作」切换；E 改为点「Agent 2.1 轻」打开思考强度弹层、拉到「高」再提问（点击与打字时刻在 `src/scenes/E.times.ts`，声音事件表共用）
+  - 回答用真实的「深度思考 / 工具调用」折叠块、「N 秒」、引用角标与悬浮卡；周报就是回答正文，「保存」后存进资源树；Agent 归档时创建文件夹弹出待确认卡片（同意 / 拒绝）
+  - 手机端界面、第三方网页、F 之后各段不变
 - **High-fidelity v1 成片**（成片按语言分目录）：`npm run render:final -- high_fidelity_v1` → `out/zh/ominibox_product_video_high_fidelity_v1.mp4`；英文 `npm run render:final -- high_fidelity_v1 en` → `out/en/ominibox_product_video_en_high_fidelity_v1.mp4`。时间线与 final_v4 相同，只提高网页还原度：
   - C 走廊的 B 站、小红书、X 换成真实搜索结果页（`src/content/search.tsx`，对照 `../assets/screenshot/*.png`）
   - B / E 的浏览器换成深色 Chrome（标签栏、地址栏、插件栏，`src/content/browser.tsx`，对照插件录屏）
@@ -29,5 +37,5 @@
 | `src/scenes/M1.tsx` · `M2.tsx` | 两段手机插段；`src/mobile/` 是按 omnibox-react-native 还原的手机端界面与舞台（笔记本、手机、镜头） |
 | `src/Main.tsx` | 八段排布与段间转场（甩镜、光点、光带擦除、分享按钮圆形展开） |
 | `src/lib.tsx` | 时间工具（kf 关键帧、morph 共享元素变形、hop 弹跳）、摄像机、运动模糊、小黑、logo、光标、大字 |
-| `src/ui.tsx` | OmniBox 网页端部件：侧栏、资源行、输入框、首页卡片 |
+| `src/ui.tsx` · `src/omni/` | OmniBox 网页端：真实 DOM 组件（`omni/app.tsx`，浅色）、场景用的画布坐标与整页组合（`ui.tsx`） |
 | `src/scenes/A–H.tsx` | 各段，局部时间 t = 全局时间 − 段起点 |

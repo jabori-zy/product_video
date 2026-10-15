@@ -1,0 +1,6 @@
+/* 快照冻结：没有脚本、动画、过渡、光标和滚动条，逐帧画面确定（由 tools/sites/build.py 挂到每个快照页） */
+*, *::before, *::after { animation: none !important; transition: none !important; caret-color: transparent !important; }
+html, body { scrollbar-width: none !important; }
+::-webkit-scrollbar { display: none !important; }
+/* 片子自己画的封面 / 配图里用的字体（与主文档同一份 Noto Sans SC） */
+@font-face { font-family: SC; src: url("../fonts/NotoSansSC.ttf"); font-weight: 100 900; }

@@ -6,7 +6,7 @@ export type TypedCopy = { zh: string; en: string; step: number };
 export const TYPED = {
   reply: { zh: '你好！我是小黑（OmniBox），很高兴见到你 👋 想记住什么，交给我就好。', en: "Hello! I'm Xiaohei (OmniBox), nice to meet you 👋 Whatever you want to remember, leave it to me.", step: 0.4 / 36 },
   search: { zh: '上周会议的待办', en: "Last week's meeting to-dos", step: 0.065 },
-  q1: { zh: '我收藏的资料里，AI Agent 有哪三个趋势？', en: 'What are three AI agent trends in my saved sources?', step: 0.042 },
+  q1: { zh: '我收藏的资料里，AI Agent 有哪三个趋势？', en: 'What are three AI agent trends in my saved sources?', step: 0.03 }, // v3：先调思考强度再打字，打字从 E 2.0 s 起
   q2: { zh: '把这些整理成一份周报', en: 'Turn these into a weekly report', step: 0.06 },
   q3: { zh: '帮我把 AI 相关资料归档，并打上标签', en: 'Organize my AI sources and add tags', step: 0.034 },
   docTitle: { zh: 'AI 动态周报 · 第 40 周', en: 'AI Weekly Brief · Week 40', step: 0.02 },

@@ -1,0 +1,4 @@
+/* Timeline-controlled demo: no autonomous transitions, motion, input, or network. */
+*, *::before, *::after { animation: none !important; transition: none !important; caret-color: transparent !important; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+body { pointer-events: none; }

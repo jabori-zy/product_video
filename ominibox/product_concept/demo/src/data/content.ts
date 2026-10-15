@@ -8,7 +8,7 @@ export type Content = {
     // 顶栏（与知乎网页版一致：导航、搜索、直答、消息、私信）
     site: string; nav: string[]; works: string; story: string; search: string; zhida: string; msg: string; dm: string;
     // 专栏文章
-    title: string; author: string; bio: string; voters: string; date: string;
+    title: string; author: string; bio: string; voters: string; date: string; collect: string; // collect：标题下「收录于 · 专栏」
     paras: string[]; quote: string; upvote: string; comments: string; like: string; share: string; save: string;
     // 右栏：关于作者 + 大家都在搜
     about: string; stats: [string, string][]; follow: string; message: string; hot: string; refresh: string; hotTag: string; hotItems: [string, string][];

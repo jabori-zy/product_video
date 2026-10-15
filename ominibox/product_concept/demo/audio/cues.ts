@@ -2,6 +2,7 @@
 // 所以声音与画面同源：改了画面节奏，重跑 npm run audio 即可重新对齐
 import { INSERTS, TOTAL_APP, insertScale, insertStart, toOutApp } from '../src/appTimeline';
 import { ARC_DE } from '../src/pace';
+import { E_CLICKS, E_Q1_AT } from '../src/scenes/E.times';
 import { TYPED, openKeys, stepOf, txt, type Lang, type TypedCopy } from '../src/copy';
 
 export type Kind =
@@ -89,8 +90,8 @@ export const buildCues = (lang: Lang): Cue[] => {
   for (let i = 0; i < 3; i++) c(o(17.55 + i * 0.15), 'word', { i });
 
   // ---------- E 应用 ----------
-  for (const k of [1.6, 2.65, 2.9, 4.9, 5.6, 6.4, 7.9, 9.15, 9.5]) c(o(18 + k), 'click');
-  typing(19.7, TYPED.q1);
+  for (const k of E_CLICKS) c(o(18 + k), 'click');
+  typing(18 + E_Q1_AT, TYPED.q1);
   c(o(20.95), 'swish', { dur: 0.3 }); c(o(21.7), 'stream', { dur: o(22.55) - o(21.7) });
   c(o(22.65), 'pop', { v: 0.6 }); c(o(22.9), 'whoosh', { dur: 0.35, v: 0.6 }); c(o(23.45), 'whoosh', { dur: 0.35, v: 0.6 });
   typing(23.7, TYPED.q2); c(o(24.45), 'swish', { dur: 0.3 });

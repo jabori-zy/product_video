@@ -36,11 +36,11 @@ export const PdfPage: React.FC<{ c: Content }> = ({ c: { pdf: p } }) => (
 );
 
 /** 从 PDF 提取出的文字：9 行（D 面板 ① 的文字条线框），reveal 0→1 逐行出现 */
-export const PdfLines: React.FC<{ c: Content; reveal?: number; gap?: number; size?: number; w?: number }> = ({ c: { pdf: p }, reveal = 1, gap = 34, size = 16, w = 440 }) => (
+export const PdfLines: React.FC<{ c: Content; reveal?: number; gap?: number; size?: number; w?: number; ink?: [string, string] }> = ({ c: { pdf: p }, reveal = 1, gap = 34, size = 16, w = 440, ink = ['#fff', '#d6d6d6'] }) => (
   <div style={{ position: 'relative', width: w, height: gap * p.extract.length, fontFamily: FONT }}>
     {p.extract.map((s, i) => {
       const o = Math.max(0, Math.min(1, reveal * p.extract.length - i));
-      return <div key={i} style={{ position: 'absolute', left: 0, top: i * gap, width: w, fontSize: size, color: i === 0 ? '#fff' : '#d6d6d6', fontWeight: i === 0 ? 700 : 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', opacity: o, transform: `translateX(${(1 - o) * -12}px)` }}>{s}</div>;
+      return <div key={i} style={{ position: 'absolute', left: 0, top: i * gap, width: w, fontSize: size, color: ink[i === 0 ? 0 : 1], fontWeight: i === 0 ? 700 : 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', opacity: o, transform: `translateX(${(1 - o) * -12}px)` }}>{s}</div>;
     })}
   </div>
 );

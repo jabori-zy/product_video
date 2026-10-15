@@ -6,7 +6,7 @@ import { useLang, useRes, useTr } from '../i18n';
 import type { ResKey } from '../copy';
 import { Board } from '../content/understand';
 import { CAM_FULL, CAM_WIDE, Laptop, PHONE, Phone, Stage, pageToWorld, phoneToWorld } from '../mobile/stage';
-import { WebHome } from '../ui';
+import { OMNI_BG, WebHome, Z, rowY } from '../ui';
 import { BottomBar, ContentTabs, Dialog, HomeComposer, HomeHeader, Ic, M, MoreSheetBody, PH, PW, RecordSheetBody, ResRow, ResToolbar, Sheet, Tap, Toast, spr } from '../mobile/ui';
 
 // C+ 手机随手记（插在 D 开场 12.05 s）：电脑画面拉远成笔记本 → 手机录下周会、拍下白板 → 两条资源化作光点飞进电脑侧栏 → 推回电脑，接 D
@@ -113,7 +113,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
     const p = lin(t, a, a + DOT_FLIGHT, 0, 1, (x) => x * x * (3 - 2 * x));
     if (t < a || p >= 1) return null;
     const from = phoneToWorld(60, ROW0 + i * ROW_STEP + 22, { ...PHONE, x: px });
-    const to = pageToWorld(60, 376 + (3 + i) * 40 + 17); // 浏览器网页里侧栏资源行下方
+    const to = pageToWorld(44 * Z, rowY(3 + i) + 17 * Z); // 浏览器网页里侧栏新资源行的图标（与原片 D 的落点一致）
     const x = from.x + (to.x - from.x) * p, y = from.y + (to.y - from.y) * p - 260 * 4 * p * (1 - p);
     return (
       <React.Fragment key={n.text}>
@@ -140,7 +140,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
       <Stage cam={cam}>
         {/* 笔记本显示整个浏览器（见上面 pull / browser / homeO） */}
         <Laptop at={M1_AT} glow={glow} blur={5 * lin(cam.x, 960, CAM_PHONE.x, 0, 1) * lin(cam.s, 1, CAM_PHONE.s, 0, 1)} browser={browser}
-          page={<div style={{ position: 'absolute', inset: 0, background: C.main }}><Camera c={webCam}><WebHome rows={OLD.map(([ic, k]) => [ic, res(k)])} blink={blinkAt(t, [3.0, 9.0])} homeO={homeO} /></Camera></div>} />
+          page={<div style={{ position: 'absolute', inset: 0, background: OMNI_BG }}><Camera c={webCam}><WebHome rows={OLD.map(([ic, k]) => [ic, res(k)])} homeO={homeO} /></Camera></div>} />
         <Phone x={px} y={PHONE.y} k={PHONE.k}>{screen}</Phone>
         {dots}
       </Stage>

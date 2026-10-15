@@ -8,6 +8,7 @@ import { MainApp } from './MainApp';
 import { TOTAL_APP } from './appTimeline';
 import { Hh2 } from './scenes/H2';
 import { LangProvider } from './i18n';
+import { Probe } from './omni/Probe';
 
 const MainAppSlogan: React.FC = () => <MainApp ending={Hh2} />;
 // 成片 v1：线框已换成真实内容，结尾 H2，无时间码；声音由 tools/render-final.mjs 合入（方案二）
@@ -25,6 +26,8 @@ export const Root: React.FC = () => (
     {/* 结尾改版（方案 A「回文翻转」）：同 DemoApp，只把 H 换成 H2 */}
     <Composition id="DemoSlogan" component={MainAppSlogan} durationInFrames={Math.round(TOTAL_APP * FPS)} fps={FPS} width={W} height={H} />
     <Composition id="Final" component={Final} durationInFrames={Math.round(TOTAL_APP * FPS)} fps={FPS} width={W} height={H} />
+    {/* 校对：真实网页 HTML 与 omni/app.tsx 组件对比（omni/Probe.tsx） */}
+    <Composition id="OmniProbe" component={Probe as any} defaultProps={{ state: 'home', reference: false }} durationInFrames={1} fps={FPS} width={W} height={H} />
     <Composition id="FinalEn" component={FinalEn} durationInFrames={Math.round(TOTAL_APP * FPS)} fps={FPS} width={W} height={H} />
   </>
 );

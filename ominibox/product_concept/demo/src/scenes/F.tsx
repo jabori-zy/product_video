@@ -1,13 +1,13 @@
 import React from 'react';
 import { C, Caption, Cursor, Fill, Logo, Tx, lin, morph, sp } from '../lib';
 import { useTr } from '../i18n';
-import { OI } from '../ui';
+import { Ic } from '../omni/root';
 import { SHARE } from './E';
 
 // F 分享协作（30.0–35.0 s），局部时间 t = 全局 − 30。米白画布，一个组件连续变形（参考 3）
 
 const ST = [
-  { t: -0.2, cx: SHARE.x, cy: SHARE.y, w: 40, h: 40, r: 10, bg: '#3A3A3A' }, // E 对话页顶栏的「分享」图标
+  { t: -0.2, cx: SHARE.x, cy: SHARE.y, w: 37, h: 37, r: 8, bg: '#F4F4F5' }, // E 对话页顶栏的「分享」按钮（浅色网页里的悬停底色 --accent，28×28 产品像素）
   { t: -0.15, cx: 960, cy: 540, w: 220, h: 72, r: 36, bg: '#171717' }, // 胶囊按钮
   { t: 0.5, cx: 960, cy: 540, w: 640, h: 440, r: 28, bg: '#FFFFFF' }, // 分享设置卡片
   { t: 2.0, cx: 960, cy: 540, w: 460, h: 64, r: 32, bg: '#171717' }, // 链接胶囊
@@ -56,7 +56,7 @@ export const Ff: React.FC<{ t: number }> = ({ t }) => {
 
         {/* 变形中的组件 */}
         <div style={{ position: 'absolute', left: m.cx - m.w / 2, top: m.cy - m.h / 2, width: m.w, height: m.h, borderRadius: m.r, background: m.bg, boxShadow: '0 20px 60px rgba(0,0,0,.12)', overflow: 'hidden', transform: `scale(${press})` }}>
-          {stage <= 1 && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 28, fontWeight: 700, whiteSpace: 'nowrap' }}><OI.forward size={30} color="#fff" sw={2.2} /><span style={{ marginLeft: 10, opacity: lin(m.w, 60, 200, 0, 1) }}>{tr('分享', 'Share')}</span></div>}
+          {stage <= 1 && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 28, fontWeight: 700, whiteSpace: 'nowrap' }}><Ic n="share16" style={{ width: 30, height: 30, color: '#fff' }} /><span style={{ marginLeft: 10, opacity: lin(m.w, 60, 200, 0, 1) }}>{tr('分享', 'Share')}</span></div>}
           {stage === 2 && (
             <div style={{ position: 'absolute', left: 0, top: 0, width: 640, height: 440, opacity: cin(2) }}>
               <Tx x={36} y={28} s={28} c="#111" b>{tr('分享', 'Share')}</Tx>

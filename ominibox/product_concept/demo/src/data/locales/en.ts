@@ -6,7 +6,7 @@ export const en: Content = {
     site: 'Zhihu', nav: ['Following', 'For you', 'Trending', 'Columns', 'Circles'], works: 'AI Works', story: 'Stories', search: 'Search topics you care about…',
     zhida: 'Ask', msg: 'Alerts', dm: 'Messages',
     title: 'The Year of AI Agents: How Can Anyone Build a Second Brain?',
-    author: 'Cat in the Woods', bio: 'Product manager · AI & personal productivity', voters: '32k people upvoted this article', date: 'Published 2026-09-21 11:20 · Shanghai',
+    collect: 'In collection · AI & personal productivity', author: 'Cat in the Woods', bio: 'Product manager · AI & personal productivity', voters: '32k people upvoted this article', date: 'Published 2026-09-21 11:20 · Shanghai',
     paras: [
       'Over the past year, large models went from talking to doing. Agents read your files, call tools and carry out whole sequences of steps for you. But they share one weakness: they forget you. Every chat starts from zero, while the articles you saved, the meetings you held and the whiteboards you photographed sit scattered across apps.',
       'A second brain gathers those fragments in one place, so AI can understand and organize them and bring them back when you need them. What matters is not how much you store, but whether you can ask for it in plain language and trace every answer back to its source.',
@@ -16,7 +16,7 @@ export const en: Content = {
     upvote: 'Upvote 32k', comments: '1,284 comments', like: 'Like', share: 'Share', save: 'Save',
     about: 'About the author', stats: [['Answers', '128'], ['Articles', '56'], ['Followers', '23k']], follow: 'Follow', message: 'Message',
     hot: 'Trending searches', refresh: 'Refresh', hotTag: 'Hot',
-    hotItems: [['AI agent long-term memory', '4.1M'], ['Second brain tools', '3.9M'], ['RAG explained', '3.0M'], ['Notion alternatives', '2.5M'], ['LLM price cuts', '2.3M'], ['Personal knowledge base', '2.0M']],
+    hotItems: [['AI agent long-term memory', '4.1M'], ['Second brain tools', '3.9M'], ['RAG explained', '3.0M'], ['Notion alternatives', '2.5M'], ['LLM price cuts', '2.3M'], ['Personal knowledge base', '2.0M'], ['Agent tool-call safety', '1.8M'], ['Running LLMs locally', '1.7M'], ['Auto meeting notes', '1.5M'], ['Open-source note apps', '1.4M']],
   },
   news: {
     site: 'Tech Frontier Daily', nav: ['Top', 'AI', 'Chips', 'Startups', 'Opinion'], tag: 'Top story',
