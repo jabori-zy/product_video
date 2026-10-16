@@ -2,3 +2,10 @@
 .DS_Store
 node_modules
 __pycache__
+
+# Cold Mirror product images: intermediate attempt images (each one's source URL is kept in its .url file);
+# prompts, reports and checks in these folders stay tracked
+cold-mirror/product_picture/work*/**/*.png
+cold-mirror/product_picture/work*/**/*.jpg
+cold-mirror/product_picture/poster/work/**/*.png
+cold-mirror/product_picture/poster/work/**/*.jpg
