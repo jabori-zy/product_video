@@ -1,0 +1,49 @@
+{
+ "shot": "01b",
+ "state": "off",
+ "accepted": "01b_off_try2.png",
+ "check": {
+  "shot": "01b",
+  "file": "work_v2/01b_off_try2.png",
+  "glass_guide": [
+   [
+    738.5,
+    416.2
+   ],
+   [
+    1648.2,
+    382.1
+   ],
+   [
+    1648.2,
+    2747.3
+   ],
+   [
+    738.5,
+    2675.1
+   ]
+  ],
+  "glass": [
+   [
+    738.0,
+    397.8
+   ],
+   [
+    1655.0,
+    356.1
+   ],
+   [
+    1655.2,
+    2736.6
+   ],
+   [
+    739.7,
+    2671.8
+   ]
+  ],
+  "max_corner_dev_px": 25.9,
+  "dev": 0.0081,
+  "ok": true
+ },
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261016_033715_523bd5ee-70c2-4176-a4b2-dfc880a6f8b3.png"
+}

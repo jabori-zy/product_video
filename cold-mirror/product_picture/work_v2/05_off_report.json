@@ -1,0 +1,25 @@
+{
+ "shot": "05",
+ "state": "off",
+ "accepted": "05_off_try2.png",
+ "check": {
+  "shot": "05",
+  "file": "work_v2/05_off_try2.png",
+  "bbox_guide": [
+   929.0,
+   295.0,
+   1475.0,
+   2893.0
+  ],
+  "bbox": [
+   924.0,
+   294.0,
+   1476.0,
+   2892.0
+  ],
+  "aspect_error": 0.011,
+  "max_shift_px": 5.0,
+  "ok": true
+ },
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261016_033718_7be0230b-fe4b-406b-950c-dca70b7112d2.png"
+}

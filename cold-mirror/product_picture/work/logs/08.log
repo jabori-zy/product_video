@@ -1,0 +1,4 @@
+{"tag": "try1", "error": "align failed", "detail": ", pad), (0, 0)), mode=\"edge\" if fill_edge else \"constant\",\n  File \"/private/tmp/claude-501/-Users-apple-mjb-product-video/a9c37bac-e9f8-46c8-a3d6-08c08b2bed29/scratchpad/venv/lib/python3.9/site-packages/numpy/lib/_arraypad_impl.py\", line 802, in pad\n    raise ValueError(\"unsupported keyword arguments for mode '{}': {}\"\nValueError: unsupported keyword arguments for mode 'edge': {'constant_values'}\n"}
+{"tag": "try2", "error": "align failed", "detail": "ls/align.py\", line 174, in main\n    pr = front_points(Lr, approx(gj, side, sx, sy), side, mode == \"front\")\n  File \"/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/align.py\", line 66, in front_points\n    Lw = fit_line(*zip(*lx)); Rw = fit_line(*zip(*rx)); Tw = fit_line(*zip(*ty)); Bw = fit_line(*zip(*by))\nTypeError: fit_line() missing 2 required positional arguments: 'us' and 'vs'\n"}
+{"shot": "08", "accepted": null}
+exit 1

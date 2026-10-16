@@ -1,0 +1,38 @@
+{
+ "shot": "01b",
+ "mode": "window",
+ "render": "work/01b_try2.png",
+ "render_size": [
+  2560,
+  3200
+ ],
+ "guide_size": [
+  2560,
+  3200
+ ],
+ "pre_error": 0.0021,
+ "post_error_px": 0.23,
+ "post_error": 0.0001,
+ "points_guide": {
+  "win_BL": [
+   810.6,
+   2031.4
+  ],
+  "win_BR": [
+   1569.4,
+   2066.4
+  ],
+  "win_TL": [
+   810.6,
+   496.1
+  ],
+  "win_TR": [
+   1569.4,
+   471.1
+  ]
+ },
+ "dark_iou": 0.1432,
+ "pass": true,
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261015_161410_36b4cd5d-50c8-4ef8-a32a-c3b32ecb4f6e.png",
+ "tag": "try2"
+}

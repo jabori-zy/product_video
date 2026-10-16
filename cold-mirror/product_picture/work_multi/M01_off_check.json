@@ -1,0 +1,38 @@
+{
+ "id": "M01",
+ "file": "work_multi/M01_off_try2.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "front",
+   "state": "off",
+   "glass": [
+    [
+     727.8,
+     346.7
+    ],
+    [
+     1457.9,
+     347.4
+    ],
+    [
+     1457.9,
+     1942.4
+    ],
+    [
+     727.8,
+     1943.6
+    ]
+   ],
+   "dev": 0.0026,
+   "detected": true
+  },
+  {
+   "k": 2,
+   "face": "back",
+   "state": null
+  }
+ ],
+ "max_dev": 0.0026,
+ "ok": true
+}

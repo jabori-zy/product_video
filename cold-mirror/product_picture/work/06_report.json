@@ -1,0 +1,20 @@
+{
+ "shot": "06",
+ "mode": "bbox",
+ "render": "work/06_try1.png",
+ "render_size": [
+  2560,
+  3200
+ ],
+ "guide_size": [
+  2560,
+  3200
+ ],
+ "pre_error": 0.003,
+ "post_error_px": 0.0,
+ "post_error": 0.0,
+ "dark_iou": 0.9853,
+ "pass": true,
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261015_162719_cbc87f04-ce0c-4a3e-81b2-c8fbc3b4bd64.png",
+ "tag": "try1"
+}

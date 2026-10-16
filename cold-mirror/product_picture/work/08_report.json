@@ -1,0 +1,67 @@
+{
+ "shot": "08",
+ "mode": "front",
+ "render": "work/08_try2.png",
+ "render_size": [
+  2560,
+  3200
+ ],
+ "guide_size": [
+  2560,
+  3200
+ ],
+ "pre_error": 0.0048,
+ "post_error_px": 2.84,
+ "post_error": 0.0015,
+ "points_guide": {
+  "outer_bot": [
+   819.0,
+   2498.1
+  ],
+  "outer_top": [
+   819.0,
+   610.5
+  ],
+  "win_BL": [
+   889.5,
+   1958.6
+  ],
+  "win_BR": [
+   1548.5,
+   2003.6
+  ],
+  "win_TL": [
+   889.5,
+   685.4
+  ],
+  "win_TR": [
+   1548.5,
+   676.2
+  ]
+ },
+ "scene_mask_shift_px": 11.3,
+ "scene_post_error_px": 3.29,
+ "scene_post_error": 0.0017,
+ "window_quad_final": [
+  [
+   890.95,
+   648.47
+  ],
+  [
+   1554.6,
+   637.44
+  ],
+  [
+   1557.98,
+   1972.42
+  ],
+  [
+   894.19,
+   1928.77
+  ]
+ ],
+ "dark_iou": 0.8649,
+ "pass": true,
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261015_161423_2b78dc34-f149-4b89-b160-61171151655f.png",
+ "tag": "try2"
+}

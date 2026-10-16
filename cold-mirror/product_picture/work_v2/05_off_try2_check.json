@@ -1,0 +1,19 @@
+{
+ "shot": "05",
+ "file": "work_v2/05_off_try2.png",
+ "bbox_guide": [
+  929.0,
+  295.0,
+  1475.0,
+  2893.0
+ ],
+ "bbox": [
+  924.0,
+  294.0,
+  1476.0,
+  2892.0
+ ],
+ "aspect_error": 0.011,
+ "max_shift_px": 5.0,
+ "ok": true
+}

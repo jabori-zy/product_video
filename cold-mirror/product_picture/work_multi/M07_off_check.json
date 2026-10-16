@@ -1,0 +1,18 @@
+{
+ "id": "M07",
+ "file": "work_multi/M07_off_try1.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "right side",
+   "state": null
+  },
+  {
+   "k": 2,
+   "face": "rear 3/4",
+   "state": null
+  }
+ ],
+ "max_dev": null,
+ "ok": true
+}

@@ -1,0 +1,29 @@
+{
+ "shot": "07",
+ "mode": "lens",
+ "render": "work/07_try2.png",
+ "render_size": [
+  2880,
+  2880
+ ],
+ "guide_size": [
+  3000,
+  3000
+ ],
+ "lens_in_border": [
+  0.5241,
+  0.5139
+ ],
+ "pre_error": 0.0102,
+ "lens_roundness": [
+  1.0,
+  1.0
+ ],
+ "lens_roundness_final": 0.986,
+ "post_error_px": 3.0,
+ "post_error": 0.0069,
+ "dark_iou": 0.9782,
+ "pass": true,
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261015_163845_046f15e6-fc1b-461d-b3f0-b703a319b6c5.png",
+ "tag": "try2"
+}

@@ -1,0 +1,3 @@
+{"shot": "01", "model": "gpt_image_2_5", "variant": "sunburst", "base": "work_v2/01_try2.png (guide-locked, refs: guide_01, assets/01_hero.jpg, product_shadow_reference, drawing)",
+ "accepted": "work_v2/01_try3.png (shadow-only edit of try2, ref: product_shadow_reference)",
+ "bbox_vs_guide_px": "within 7", "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261016_024559_de87768e-7095-42b1-b6ae-2e08b6779df3.png"}

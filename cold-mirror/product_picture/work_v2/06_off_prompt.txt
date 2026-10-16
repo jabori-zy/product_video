@@ -1,0 +1,22 @@
+Image 1 is an exact CAD geometry render of the product from the exact camera of this shot. Reproduce its geometry EXACTLY, aligned to it pixel for pixel: the same framing, camera angle, perspective, silhouette, proportions and the position of every part. Do not move, resize, widen, thicken or reshape anything. Only replace the flat CAD shading with photoreal materials, lighting and shadow.
+
+Image 2 is the approved photoreal render of this same product: match its materials, its full-front mirror, the thin black frame lip, the black finish, edge highlights and overall render quality exactly.
+
+Image 3 is the reference for the SHADOW and background only (ignore the phones in it): a light neutral grey seamless studio, and soft, diffuse, natural shadows on the floor behind and to the side of the objects, darkest right at the contact line and fading out gradually, with no hard edges.
+
+PRODUCT. A free-standing 55-inch portrait smart mirror, all black hardware.
+- Panel: a flat slab 831 mm wide x 1801 mm tall x only 46 mm deep, sharp rectangular edges, perfectly flat and vertical.
+- Front: the ENTIRE front face is one piece of mirror glass edge to edge (a one-way mirror with the display hidden behind it). There is NO wide black border and NO black area below the screen: only a very thin satin-black frame lip, about 8 mm, around the outside of the glass.
+- Camera: one small round camera lens behind the glass near the LEFT edge, about 40 mm in from the panel edge, 920 mm above the floor: a small glossy black dot with a thin dark grey ring. Nothing else on the front.
+- Button: one small flush button on the RIGHT side edge, 1500 mm above the floor. The left side edge is completely plain.
+- Feet and base: the panel stands on two short black feet with a 30 mm gap above a low black plinth 600 x 400 x 50 mm with rounded corners. The base is NARROWER than the panel, so the panel overhangs it on both sides; the panel sits near the front of the base and most of the base extends behind it.
+- Back: a flat matte black panel back with a tall ladder frame of 40 mm square black tube (two rails, a top bar, two crossbars), a small rectangular service box in the lowest bay, and two straight diagonal braces from the rails down to the rear of the base.
+- Colour: frame, edges, back, feet and base are black: matte black powder-coat on base, feet, back frame and braces, satin anodised black on the panel edge. No chrome, no silver, no white, no wood, no logo, no text.
+
+HIGH-PRECISION REQUIREMENT. Official Apple-website-quality product image: a flawless, engineering-accurate, photoreal CG render. Every edge perfectly straight and parallel, crisp corners. Immaculate surfaces: no dust, smudges, scratches, warping, noise, grain or AI artefacts. Tack-sharp edges with clean anti-aliasing.
+
+STUDIO AND SHADOW. Apple.com product render style on a seamless light neutral grey background like image 3, no horizon line, no banding. Soft large key light from the front left and above. The product casts a soft, realistic, diffuse shadow on the floor as in image 3: a dark, tight contact shadow right under the base, plus a soft cast shadow spreading away from the light that fades smoothly into the grey. Thin clean highlight lines along the black edges so the 46 mm depth reads. Long lens, near-orthographic, verticals perfectly vertical, everything in focus. No people, no text, no props.
+
+SHOT. Camera behind the product and 35 degrees to its left, at chest height. It shows the flat matte black back of the panel, the tall ladder frame of square black tube (two rails, top bar, two crossbars), the small rectangular service box in the lowest bay, the two diagonal braces down to the rounded black base. Clean and engineered, all black, no cables. Edge highlights separate the frame tubes from the panel back. The panel side edge visible on the right of the image is the LEFT side edge and is completely plain. Soft diffuse floor shadow as in image 3.
+
+The last image is the original technical drawing (sizes in mm) for extra detail. Note: in the final product the WHOLE front is mirror, not the smaller window shown in the drawing.

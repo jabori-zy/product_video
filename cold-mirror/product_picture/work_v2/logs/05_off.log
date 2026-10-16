@@ -1,0 +1,9 @@
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/guide.py:181: RuntimeWarning: divide by zero encountered in matmul
+  den = dirs @ n
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/guide.py:181: RuntimeWarning: overflow encountered in matmul
+  den = dirs @ n
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/guide.py:181: RuntimeWarning: invalid value encountered in matmul
+  den = dirs @ n
+/Users/apple/mjb/product_video/cold-mirror/product_picture/work_v2/guide_05.png
+{"file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_v2/05_off_try1.png", "max_corner_dev_px": null, "dev": null, "aspect_error": 0.0103, "max_shift_px": 102.0, "ok": false, "error": null}
+{"file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_v2/05_off_try2.png", "max_corner_dev_px": null, "dev": null, "aspect_error": 0.0108, "max_shift_px": 100.0, "ok": false, "error": null}

@@ -1,0 +1,24 @@
+{
+ "id": "M07",
+ "state": "off",
+ "accepted": "M07_off_try1.png",
+ "check": {
+  "id": "M07",
+  "file": "work_multi/M07_off_try1.png",
+  "units": [
+   {
+    "k": 1,
+    "face": "right side",
+    "state": null
+   },
+   {
+    "k": 2,
+    "face": "rear 3/4",
+    "state": null
+   }
+  ],
+  "max_dev": null,
+  "ok": true
+ },
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261016_042228_630a9e12-8e10-40be-b775-20bb7eb5802e.png"
+}

@@ -1,0 +1,19 @@
+{
+ "shot": "06",
+ "file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_v2/06_off_try1.png",
+ "bbox_guide": [
+  839.0,
+  387.0,
+  1830.0,
+  2861.0
+ ],
+ "bbox": [
+  828.0,
+  369.0,
+  1806.0,
+  2861.0
+ ],
+ "aspect_error": 0.0202,
+ "max_shift_px": 24.0,
+ "ok": true
+}

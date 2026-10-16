@@ -1,0 +1,39 @@
+{
+ "id": "M02",
+ "file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_multi/M02_off_try2.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "front 3/4",
+   "state": "home",
+   "glass": [
+    [
+     778.8,
+     390.4
+    ],
+    [
+     1371.5,
+     367.4
+    ],
+    [
+     1371.5,
+     1963.2
+    ],
+    [
+     778.8,
+     1914.5
+    ]
+   ],
+   "dev": null,
+   "detected": false,
+   "note": "outline not detected (occluded or off): guide quad used, check visually"
+  },
+  {
+   "k": 2,
+   "face": "rear 3/4",
+   "state": null
+  }
+ ],
+ "max_dev": null,
+ "ok": true
+}

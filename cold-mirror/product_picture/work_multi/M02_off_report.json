@@ -1,0 +1,44 @@
+{
+ "id": "M02",
+ "state": "off",
+ "accepted": "M02_off_try1.png",
+ "check": {
+  "id": "M02",
+  "file": "work_multi/M02_off_try1.png",
+  "units": [
+   {
+    "k": 1,
+    "face": "front 3/4",
+    "state": "home",
+    "glass": [
+     [
+      759.3,
+      380.2
+     ],
+     [
+      1359.8,
+      348.2
+     ],
+     [
+      1357.9,
+      1955.2
+     ],
+     [
+      761.0,
+      1907.0
+     ]
+    ],
+    "dev": 0.0081,
+    "detected": true
+   },
+   {
+    "k": 2,
+    "face": "rear 3/4",
+    "state": null
+   }
+  ],
+  "max_dev": 0.0081,
+  "ok": true
+ },
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261016_042148_86821897-bae7-4432-9bcf-97a7d13d191f.png"
+}

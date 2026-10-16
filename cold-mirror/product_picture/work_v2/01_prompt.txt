@@ -1,0 +1,21 @@
+Image 1 is an exact CAD geometry render of the product from the exact camera of this shot. Reproduce its geometry EXACTLY, aligned to it pixel for pixel: the same framing, camera angle, perspective, silhouette, proportions and the position of every part. Do not move, resize, widen, thicken or reshape anything. Only replace the flat CAD shading with photoreal materials, lighting and shadow.
+
+Image 2 shows the intended look of the front: the WHOLE front face is one continuous mirror. Match that mirror look.
+
+Image 3 is the reference for the SHADOW and background only (ignore the phones in it): a light neutral grey seamless studio, and soft, diffuse, natural shadows that fall on the floor behind and to the right of the objects, darkest right at the contact line and fading out gradually, with no hard edges.
+
+PRODUCT. A free-standing 55-inch portrait smart mirror, all black hardware.
+- Panel: a flat slab 831 mm wide x 1801 mm tall x only 46 mm deep, sharp rectangular edges, perfectly flat and vertical.
+- Front: the ENTIRE front face is one piece of mirror glass edge to edge (one-way mirror with the display hidden behind it). There is NO wide black border and NO black area below: only a very thin satin-black frame lip, about 8 mm, around the outside of the glass, as in image 1. The screen is off and completely invisible, so the whole front reads as one clean, uniform true mirror.
+- Camera: one small round camera lens behind the glass near the LEFT edge, 920 mm above the floor (exactly where image 1 shows it): a small glossy black dot with a thin dark grey ring. Nothing else on the front.
+- Button: one small flush button on the right side edge, 1500 mm above the floor.
+- Feet and base: the panel stands on two short black feet 30 mm above a low black plinth 600 x 400 x 50 mm with rounded corners. The base is NARROWER than the panel, so the panel overhangs it on both sides; the panel sits near the front of the base and most of the base extends behind it. One simple flat rounded rectangle, no steps.
+- Colour: frame, edges, feet and base are black: matte black powder-coat on the base and feet, satin anodised black on the panel edge. No chrome, no silver, no white, no wood, no logo, no text.
+
+MIRROR. Real first-surface mirror glass reflecting the bright, soft, empty studio: a smooth vertical gradient from near white on the left to soft cool mid grey on the right, with one gentle soft lighter band, so it reads as real reflective glass and not as a flat white or grey panel. No reflected objects, no people, no camera, no photographer.
+
+HIGH-PRECISION REQUIREMENT. Official Apple-website-quality product image: a flawless, engineering-accurate, photoreal CG render. Every edge perfectly straight and parallel, crisp corners. Immaculate surfaces: no dust, smudges, scratches, warping, noise, grain or AI artefacts. Tack-sharp edges with clean anti-aliasing.
+
+STUDIO AND SHADOW. Apple.com render style on a seamless light neutral grey background like image 3, no horizon line, no banding. Soft large key light from the front left and above. The product casts a soft, realistic, diffuse shadow on the floor as in image 3: a dark, tight contact shadow right under the base, plus a soft cast shadow that spreads back and to the right behind the product and fades smoothly into the grey. Thin clean highlight lines along the black panel edges so the 46 mm depth reads. Long lens, near-orthographic, verticals perfectly vertical, everything in focus. No people, no text, no props.
+
+The last image is the original technical drawing (sizes in mm) for extra detail. Note: in the final product the whole front is mirror, not the small window shown in the drawing.

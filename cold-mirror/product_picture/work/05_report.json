@@ -1,0 +1,20 @@
+{
+ "shot": "05",
+ "mode": "bbox",
+ "render": "work/05_try1.png",
+ "render_size": [
+  2480,
+  3312
+ ],
+ "guide_size": [
+  2400,
+  3200
+ ],
+ "pre_error": 0.0085,
+ "post_error_px": 0.0,
+ "post_error": 0.0,
+ "dark_iou": 0.9487,
+ "pass": true,
+ "url": null,
+ "tag": "try1"
+}

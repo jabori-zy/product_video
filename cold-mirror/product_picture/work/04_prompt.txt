@@ -1,0 +1,21 @@
+Image 1 is an exact CAD geometry render of the product from the exact camera of this shot. Reproduce its geometry EXACTLY, aligned to it pixel for pixel: the same framing, camera angle, perspective, silhouette, proportions and the position of every part. Do not move, resize, widen, thicken or reshape anything. Only replace the flat CAD shading with photoreal materials and lighting.
+
+Image 2 is the approved photoreal render of this same product: match its materials, black finish, edge highlights and overall render quality exactly.
+
+PRODUCT. A free-standing 55-inch portrait smart mirror, all black.
+- Panel: a flat slab 831 mm wide x 1801 mm tall x only 46 mm deep, sharp rectangular edges. The front is a WIDE satin-black border around one portrait 9:16 mirror window (680 x 1209 mm): about 73 mm of black at the left, right and top, and a tall solid black area of about 515 mm below the window. Keep this wide black border exactly; never turn the whole front into a mirror and never make the border thin.
+- Camera: one small round camera lens set in the LEFT black border, beside the window, 920 mm above the floor: a glossy dark lens with a thin subtle grey ring. It is the only camera; nothing at the top.
+- Button: one small flush button on the right side edge, 1500 mm above the floor.
+- Feet and base: the panel stands on two short black feet 30 mm above a low black plinth 600 x 400 x 50 mm with rounded corners. The base is NARROWER than the panel (600 vs 831 mm), so the panel overhangs it on both sides; the panel sits near the front of the base and most of the base extends behind it. The base is one simple flat rounded rectangle with no steps or notches.
+- Back: a tall rectangular ladder frame of 40 mm square black tube (two rails, a top bar, two crossbars) with a small rectangular service box in the lowest bay, and two straight diagonal braces from the rails down to the rear of the base.
+- Colour: the whole product is black. Base, feet, back frame and braces matte black powder-coat; panel border and edges satin anodised black. No chrome, no silver, no white, no wood, no logo, no text on the hardware.
+
+HIGH-PRECISION REQUIREMENT. Official Apple-website-quality product image: a flawless, engineering-accurate, photoreal CG render. Every edge perfectly straight and parallel, crisp corners, the panel perfectly flat and perfectly vertical. Immaculate surfaces: no dust, smudges, scratches, warping, noise, grain or AI artefacts. Tack-sharp edges with clean anti-aliasing.
+
+STUDIO LOOK. Apple.com render style. Flat seamless Apple light grey #F5F5F7 background, no horizon line, no banding. Large soft overhead area light plus tall strip softboxes left and right drawing thin clean highlight lines along the black edges, so the silhouette and the 46 mm depth read clearly. Only a very soft short contact shadow under the base. Long lens, near-orthographic, verticals perfectly vertical, everything in focus. No people, no text, no props.
+
+Screen ON: the mirror window glows with the app screen shown in image 1 (a hair-colour result: a young woman split by a thin vertical white line, brown hair on the left and lilac-purple hair on the right, on a light grey app page), filling the window edge to edge, bright, sharp, evenly lit and correctly oriented (not mirrored), with a very faint reflection on the glass. The black border stays black.
+
+SHOT. Camera 30 degrees to the LEFT of the front at chest height, so the left edge and the camera lens are nearest. The left side edge of the panel is visible as a THIN sliver: the panel is only 46 mm deep, so this edge is exactly as narrow as in image 1, never a thick slab. It is completely plain (no button, no port); the button is on the right side edge, which is hidden from this angle.
+
+The last image is the original technical drawing (sizes in mm) for extra detail.

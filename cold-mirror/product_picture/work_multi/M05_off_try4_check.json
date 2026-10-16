@@ -1,0 +1,73 @@
+{
+ "id": "M05",
+ "file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_multi/M05_off_try4.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "front",
+   "state": "off",
+   "glass": [
+    [
+     416.7,
+     323.9
+    ],
+    [
+     844.9,
+     322.8
+    ],
+    [
+     845.1,
+     1259.1
+    ],
+    [
+     416.7,
+     1259.2
+    ]
+   ],
+   "dev": 0.0194,
+   "detected": true
+  },
+  {
+   "k": 2,
+   "face": "front 3/4",
+   "state": "off",
+   "glass": [
+    [
+     1132.1,
+     340.2
+    ],
+    [
+     1417.8,
+     307.6
+    ],
+    [
+     1417.8,
+     1275.4
+    ],
+    [
+     1130.4,
+     1249.1
+    ]
+   ],
+   "dev": 0.0166,
+   "detected": true
+  },
+  {
+   "k": 3,
+   "face": "right side",
+   "state": null
+  },
+  {
+   "k": 4,
+   "face": "rear 3/4",
+   "state": null
+  },
+  {
+   "k": 5,
+   "face": "back",
+   "state": null
+  }
+ ],
+ "max_dev": 0.0194,
+ "ok": false
+}

@@ -1,0 +1,4 @@
+{"tag": "try1", "error": "align failed", "detail": "ls/align.py\", line 174, in main\n    pr = front_points(Lr, approx(gj, side, sx, sy), side, mode == \"front\")\n  File \"/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/align.py\", line 66, in front_points\n    Lw = fit_line(*zip(*lx)); Rw = fit_line(*zip(*rx)); Tw = fit_line(*zip(*ty)); Bw = fit_line(*zip(*by))\nTypeError: fit_line() missing 2 required positional arguments: 'us' and 'vs'\n"}
+{"tag": "try2", "error": "align failed", "detail": "ls/align.py\", line 174, in main\n    pr = front_points(Lr, approx(gj, side, sx, sy), side, mode == \"front\")\n  File \"/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/align.py\", line 66, in front_points\n    Lw = fit_line(*zip(*lx)); Rw = fit_line(*zip(*rx)); Tw = fit_line(*zip(*ty)); Bw = fit_line(*zip(*by))\nTypeError: fit_line() missing 2 required positional arguments: 'us' and 'vs'\n"}
+{"shot": "01b", "accepted": null}
+exit 1

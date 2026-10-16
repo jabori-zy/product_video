@@ -1,0 +1,43 @@
+{
+ "shot": "01b",
+ "file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_v2/01b_off_try1.png",
+ "glass_guide": [
+  [
+   738.5,
+   416.2
+  ],
+  [
+   1648.2,
+   382.1
+  ],
+  [
+   1648.2,
+   2747.3
+  ],
+  [
+   738.5,
+   2675.1
+  ]
+ ],
+ "glass": [
+  [
+   737.5,
+   397.1
+  ],
+  [
+   1656.2,
+   354.4
+  ],
+  [
+   1656.2,
+   2739.5
+  ],
+  [
+   737.5,
+   2668.6
+  ]
+ ],
+ "max_corner_dev_px": 27.6,
+ "dev": 0.0086,
+ "ok": true
+}

@@ -1,0 +1,83 @@
+{
+ "id": "M04",
+ "file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_multi/M04_off_try1.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "front",
+   "state": "home",
+   "glass": [
+    [
+     1576.0,
+     289.7
+    ],
+    [
+     2264.0,
+     288.3
+    ],
+    [
+     2264.0,
+     1784.3
+    ],
+    [
+     1576.0,
+     1784.0
+    ]
+   ],
+   "dev": 0.0069,
+   "detected": true
+  },
+  {
+   "k": 2,
+   "face": "front 3/4",
+   "state": "off",
+   "glass": [
+    [
+     885.5,
+     323.0
+    ],
+    [
+     1470.0,
+     350.6
+    ],
+    [
+     1468.3,
+     1677.7
+    ],
+    [
+     882.2,
+     1716.1
+    ]
+   ],
+   "dev": 0.0106,
+   "detected": true
+  },
+  {
+   "k": 3,
+   "face": "front 3/4",
+   "state": "library",
+   "glass": [
+    [
+     2370.1,
+     350.9
+    ],
+    [
+     2952.8,
+     323.7
+    ],
+    [
+     2957.1,
+     1716.6
+    ],
+    [
+     2371.0,
+     1675.7
+    ]
+   ],
+   "dev": 0.0116,
+   "detected": true
+  }
+ ],
+ "max_dev": 0.0116,
+ "ok": false
+}

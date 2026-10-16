@@ -1,0 +1,83 @@
+{
+ "id": "M08",
+ "file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_multi/M08_off_try2.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "front 3/4",
+   "state": "off",
+   "glass": [
+    [
+     119.9,
+     1016.7
+    ],
+    [
+     876.4,
+     934.5
+    ],
+    [
+     918.0,
+     2442.6
+    ],
+    [
+     217.7,
+     2585.6
+    ]
+   ],
+   "dev": 0.0028,
+   "detected": true
+  },
+  {
+   "k": 2,
+   "face": "front 3/4",
+   "state": "color",
+   "glass": [
+    [
+     1145.5,
+     781.7
+    ],
+    [
+     1762.1,
+     720.6
+    ],
+    [
+     1744.0,
+     2059.4
+    ],
+    [
+     1164.6,
+     2169.0
+    ]
+   ],
+   "dev": 0.0028,
+   "detected": true
+  },
+  {
+   "k": 3,
+   "face": "front 3/4",
+   "state": "off",
+   "glass": [
+    [
+     1930.6,
+     601.1
+    ],
+    [
+     2451.4,
+     552.9
+    ],
+    [
+     2401.4,
+     1763.5
+    ],
+    [
+     1909.1,
+     1850.4
+    ]
+   ],
+   "dev": 0.0028,
+   "detected": true
+  }
+ ],
+ "max_dev": 0.0028,
+ "ok": true
+}

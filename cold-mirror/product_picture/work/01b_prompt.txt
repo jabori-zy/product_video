@@ -1,0 +1,15 @@
+Image 1 is the approved render of this product. Keep the product EXACTLY as in image 1, pixel for pixel: same position, size, perspective, proportions, window, camera lens, feet and base. Change only the background and lighting.
+
+PRODUCT. A free-standing 55-inch portrait smart mirror, all black.
+- Panel: a flat slab 831 mm wide x 1801 mm tall x only 46 mm deep, sharp rectangular edges. The front is a WIDE satin-black border around one portrait 9:16 mirror window (680 x 1209 mm): about 73 mm of black at the left, right and top, and a tall solid black area of about 515 mm below the window. Keep this wide black border exactly; never turn the whole front into a mirror and never make the border thin.
+- Camera: one small round camera lens set in the LEFT black border, beside the window, 920 mm above the floor: a glossy dark lens with a thin subtle grey ring. It is the only camera; nothing at the top.
+- Button: one small flush button on the right side edge, 1500 mm above the floor.
+- Feet and base: the panel stands on two short black feet 30 mm above a low black plinth 600 x 400 x 50 mm with rounded corners. The base is NARROWER than the panel (600 vs 831 mm), so the panel overhangs it on both sides; the panel sits near the front of the base and most of the base extends behind it. The base is one simple flat rounded rectangle with no steps or notches.
+- Back: a tall rectangular ladder frame of 40 mm square black tube (two rails, a top bar, two crossbars) with a small rectangular service box in the lowest bay, and two straight diagonal braces from the rails down to the rear of the base.
+- Colour: the whole product is black. Base, feet, back frame and braces matte black powder-coat; panel border and edges satin anodised black. No chrome, no silver, no white, no wood, no logo, no text on the hardware.
+
+HIGH-PRECISION REQUIREMENT. Official Apple-website-quality product image: a flawless, engineering-accurate, photoreal CG render. Every edge perfectly straight and parallel, crisp corners, the panel perfectly flat and perfectly vertical. Immaculate surfaces: no dust, smudges, scratches, warping, noise, grain or AI artefacts. Tack-sharp edges with clean anti-aliasing.
+
+BLACK STUDIO. Pure black #000000 seamless background, no floor line, no haze. The black product is defined only by thin, clean strip-light highlights running along its outer panel edges, top edge, side edge and the base edge, Apple black-product style. The mirror window reflects one long soft vertical gradient from mid grey to dark grey, clearly lighter than the black border so the window outline reads crisply. Screen OFF. Low-key, dramatic, precise.
+
+The last image is the original technical drawing (sizes in mm) for extra detail.

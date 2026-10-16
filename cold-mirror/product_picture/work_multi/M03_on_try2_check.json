@@ -1,0 +1,58 @@
+{
+ "id": "M03",
+ "file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_multi/M03_on_try2.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "front 3/4",
+   "state": "color",
+   "glass": [
+    [
+     184.4,
+     382.3
+    ],
+    [
+     1154.0,
+     354.2
+    ],
+    [
+     1154.0,
+     2728.2
+    ],
+    [
+     185.7,
+     2677.2
+    ]
+   ],
+   "dev": 0.0027,
+   "detected": true
+  },
+  {
+   "k": 2,
+   "face": "front 3/4",
+   "state": "off",
+   "glass": [
+    [
+     1461.9,
+     436.1
+    ],
+    [
+     2265.6,
+     387.7
+    ],
+    [
+     2266.6,
+     2651.0
+    ],
+    [
+     1463.8,
+     2573.6
+    ]
+   ],
+   "dev": 0.0032,
+   "detected": true
+  }
+ ],
+ "max_dev": 0.0032,
+ "ok": true
+}

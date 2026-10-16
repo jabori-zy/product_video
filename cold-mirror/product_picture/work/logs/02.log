@@ -1,0 +1,4 @@
+{"tag": "try1", "pre_error": 0.003, "post_error": 0.0018, "post_error_px": 4.27, "dark_iou": 0.9631, "pass": false}
+{"tag": "try2", "pre_error": 0.0039, "post_error": 0.0019, "post_error_px": 4.61, "dark_iou": 0.9536, "pass": false}
+{"shot": "02", "accepted": null}
+exit 1

@@ -1,0 +1,9 @@
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/guide.py:181: RuntimeWarning: divide by zero encountered in matmul
+  den = dirs @ n
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/guide.py:181: RuntimeWarning: overflow encountered in matmul
+  den = dirs @ n
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/guide.py:181: RuntimeWarning: invalid value encountered in matmul
+  den = dirs @ n
+/Users/apple/mjb/product_video/cold-mirror/product_picture/work_v2/guide_08.png
+{"file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_v2/08_off_try1.png", "max_corner_dev_px": null, "dev": null, "aspect_error": null, "max_shift_px": null, "ok": false, "error": "glass outline not found"}
+{"file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_v2/08_off_try2.png", "max_corner_dev_px": null, "dev": null, "aspect_error": null, "max_shift_px": null, "ok": false, "error": "glass outline not found"}

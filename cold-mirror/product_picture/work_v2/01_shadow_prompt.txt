@@ -1,0 +1,8 @@
+Image 1 is the approved product render. Keep the product EXACTLY as in image 1, pixel for pixel: the same position, size, perspective, proportions, mirror front, thin black frame, camera lens, button, feet and base. Do not change the product or the mirror reflections. Change ONLY the shadow on the floor and background.
+
+Add a realistic product shadow exactly in the style of image 2 (ignore the phones, copy only their shadow and background):
+- The same light neutral grey seamless studio as image 1, with no horizon line.
+- A dark, tight, soft-edged contact shadow along the whole bottom of the black base where it meets the floor, clearly grounding the product.
+- A soft, diffuse cast shadow on the floor that spreads from the base backward and to the RIGHT (the key light comes from the front left), noticeably visible like the shadows of the phones in image 2: darkest near the base, fading smoothly and gradually into the grey with very soft, blurred edges, never a hard outline.
+- A faint soft shadow of the tall panel falling on the floor behind and to the right of the base, very diffuse.
+Photoreal Apple.com product render quality, clean, no banding, no noise. No people, no text, no props.

@@ -1,0 +1,5 @@
+/Users/apple/mjb/product_video/cold-mirror/product_picture/final/png/06_rear-3q.png (2560, 3200) 4:5
+{"tag": "try1", "pre_error": 0.003, "post_error": 0.0, "post_error_px": 0.0, "dark_iou": 0.9752, "pass": true}
+{"tag": "try2", "pre_error": 0.0886, "post_error": 0.0, "post_error_px": 0.0, "dark_iou": 0.9648, "pass": false}
+{"shot": "06", "accepted": "try1", "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261015_162719_cbc87f04-ce0c-4a3e-81b2-c8fbc3b4bd64.png"}
+exit 0

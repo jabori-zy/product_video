@@ -1,0 +1,20 @@
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/multi.py:90: RuntimeWarning: divide by zero encountered in matmul
+  z = d @ self.f
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/multi.py:90: RuntimeWarning: overflow encountered in matmul
+  z = d @ self.f
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/multi.py:90: RuntimeWarning: invalid value encountered in matmul
+  z = d @ self.f
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/multi.py:91: RuntimeWarning: divide by zero encountered in matmul
+  x, y = (d @ self.r) / z, (d @ self.u) / z
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/multi.py:91: RuntimeWarning: overflow encountered in matmul
+  x, y = (d @ self.r) / z, (d @ self.u) / z
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/multi.py:91: RuntimeWarning: invalid value encountered in matmul
+  x, y = (d @ self.r) / z, (d @ self.u) / z
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/multi.py:135: RuntimeWarning: divide by zero encountered in matmul
+  den = dirs @ n
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/multi.py:135: RuntimeWarning: overflow encountered in matmul
+  den = dirs @ n
+/Users/apple/mjb/product_video/cold-mirror/product_picture/tools/multi.py:135: RuntimeWarning: invalid value encountered in matmul
+  den = dirs @ n
+{"file": "M01_off_try1.png", "max_dev": 0.0059, "ok": true, "undetected": []}
+{"file": "M01_off_try2.png", "max_dev": 0.0026, "ok": true, "undetected": []}

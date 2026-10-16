@@ -1,0 +1,38 @@
+{
+ "id": "M02",
+ "file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_multi/M02_on_try2.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "front 3/4",
+   "state": "home",
+   "glass": [
+    [
+     760.5,
+     381.9
+    ],
+    [
+     1358.5,
+     350.8
+    ],
+    [
+     1358.5,
+     1952.8
+    ],
+    [
+     762.2,
+     1904.8
+    ]
+   ],
+   "dev": 0.0076,
+   "detected": true
+  },
+  {
+   "k": 2,
+   "face": "rear 3/4",
+   "state": null
+  }
+ ],
+ "max_dev": 0.0076,
+ "ok": true
+}

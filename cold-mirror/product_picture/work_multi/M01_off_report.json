@@ -1,0 +1,44 @@
+{
+ "id": "M01",
+ "state": "off",
+ "accepted": "M01_off_try2.png",
+ "check": {
+  "id": "M01",
+  "file": "work_multi/M01_off_try2.png",
+  "units": [
+   {
+    "k": 1,
+    "face": "front",
+    "state": "off",
+    "glass": [
+     [
+      727.8,
+      346.7
+     ],
+     [
+      1457.9,
+      347.4
+     ],
+     [
+      1457.9,
+      1942.4
+     ],
+     [
+      727.8,
+      1943.6
+     ]
+    ],
+    "dev": 0.0026,
+    "detected": true
+   },
+   {
+    "k": 2,
+    "face": "back",
+    "state": null
+   }
+  ],
+  "max_dev": 0.0026,
+  "ok": true
+ },
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261016_042145_8d1e957a-a29f-4dfa-9ef0-f26a7a2546ef.png"
+}

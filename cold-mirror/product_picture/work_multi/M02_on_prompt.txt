@@ -1,0 +1,10 @@
+Image 1 is the approved image of 2 identical units with some screens turned ON. Keep EVERYTHING EXACTLY as in image 1, pixel for pixel: every unit's position, size, rotation, perspective, proportions, thin black frame, camera lens, feet, base, the floor shadows and the background, and the same app screen content in the same places. Do not move, redraw, resize or restyle anything, and do not change any text or UI.
+
+Screens ON:
+- the left unit shows the white app home screen with glossy black 3D letters N C G H A E, salon tools and a round START button
+
+Make ONLY the screen-on lighting photoreal. The product is a one-way-mirror smart mirror: the display sits directly behind the mirror glass.
+- Each lit display area glows: emissive, bright, clean and evenly lit, seen through the glass in correct perspective, with a very faint smooth glass reflection over it.
+- The edge of each display area is clean and straight, with no seam, frame line or bezel.
+- Everywhere outside the display areas the fronts STAY true mirrors exactly as in image 1. Only a very subtle soft light spill at the immediate border of each lit screen.
+Photoreal, tack sharp, no noise, no banding, no AI artefacts. No text added.

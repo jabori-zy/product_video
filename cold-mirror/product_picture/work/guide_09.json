@@ -1,0 +1,68 @@
+{
+ "shot": "09",
+ "camera": {
+  "aspect": "16:9",
+  "yaw": 35,
+  "eye": 1550,
+  "dist": 7000,
+  "target": [
+   0,
+   1000,
+   750
+  ],
+  "span": 2500,
+  "align": "front",
+  "screen": "color",
+  "scene": true
+ },
+ "points": {
+  "panel_front_TL": [
+   1989.2,
+   349.9
+  ],
+  "panel_front_TR": [
+   2551.8,
+   333.4
+  ],
+  "panel_front_BL": [
+   1989.2,
+   1737.0
+  ],
+  "panel_front_BR": [
+   2551.8,
+   1810.1
+  ],
+  "camera": [
+   2014.4,
+   1091.4
+  ],
+  "window_TL": [
+   2037.5,
+   405.0
+  ],
+  "window_TR": [
+   2497.7,
+   394.5
+  ],
+  "window_BL": [
+   2037.5,
+   1341.3
+  ],
+  "window_BR": [
+   2497.7,
+   1380.0
+  ],
+  "base_front_L": [
+   2042.5,
+   1775.8
+  ],
+  "base_front_R": [
+   2449.7,
+   1830.3
+  ],
+  "base_floor_front_L": [
+   2042.5,
+   1814.9
+  ]
+ }
+}

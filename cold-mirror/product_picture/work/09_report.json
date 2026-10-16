@@ -1,0 +1,84 @@
+{
+ "shot": "09",
+ "mode": "front",
+ "render": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work/09_try2.png",
+ "render_size": [
+  3840,
+  2160
+ ],
+ "guide_size": [
+  3840,
+  2160
+ ],
+ "pre_error": 0.0024,
+ "post_error_px": 2.7,
+ "post_error": 0.0019,
+ "points_guide": {
+  "outer_bot": [
+   1989.0,
+   1736.3
+  ],
+  "outer_top": [
+   1989.0,
+   350.3
+  ],
+  "win_BL": [
+   2037.3,
+   1341.1
+  ],
+  "win_BR": [
+   2497.7,
+   1379.7
+  ],
+  "win_TL": [
+   2037.3,
+   405.2
+  ],
+  "win_TR": [
+   2497.7,
+   394.3
+  ]
+ },
+ "guide_to_final": [
+  [
+   0.99669312,
+   0.00086799,
+   6.10208737
+  ],
+  [
+   -0.00086799,
+   0.99669312,
+   5.26067958
+  ],
+  [
+   0.0,
+   -0.0,
+   1.0
+  ]
+ ],
+ "scene_mask_shift_px": 2.3,
+ "scene_post_error_px": 3.1,
+ "scene_post_error": 0.0022,
+ "window_quad_final": [
+  [
+   2037.22,
+   407.15
+  ],
+  [
+   2495.88,
+   396.29
+  ],
+  [
+   2496.74,
+   1378.53
+  ],
+  [
+   2038.03,
+   1340.36
+  ]
+ ],
+ "dark_iou": 0.2168,
+ "pass": true,
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261015_172105_1e16781c-0b04-4f82-9520-f19f55f6e29e.png",
+ "tag": "try2"
+}

@@ -1,0 +1,31 @@
+Design an official Apple-style product poster, 3:4 portrait, exactly following the layout, spacing and typography of
+image 1 (an Apple AirPods Max poster), but for a different product. Clean, minimal, premium, lots of white space.
+
+BACKGROUND. One flat, seamless near-white background #F8F8F8, no gradient, no texture, no horizon line.
+
+TOP, centred, in this order (same positions and sizes as the logo, product name and tagline in image 1):
+- The logo from image 3: a solid black lychee silhouette (a round, scalloped fruit with a short curved stem at the
+  top right), exactly that shape, in place of the Apple logo. Do NOT draw an Apple logo.
+- The product name "Cold Mirror" in a clean geometric sans serif like SF Pro Display Semibold, near-black #1D1D1F.
+- Below it the tagline in Chinese, exactly: 「先改变，再看见。」 in a clean Chinese sans serif like PingFang SC Regular,
+  near-black, smaller.
+
+PRODUCT, centred in the middle of the poster: the product from image 2, kept EXACTLY as it is (same front view,
+proportions, thin black frame, full-front mirror, small camera lens on the left edge, black base): a tall free-standing
+smart mirror, 831 x 1801 mm, whose whole front is mirror glass. Do not redraw, restyle, crop, stretch or rotate it. Place
+it on the near-white background with a soft, diffuse floor shadow under and slightly behind the base, like the soft
+shadow under the headphones in image 1. The mirror reflects only a soft, bright, empty studio gradient. It spans from
+about 26% to 80% of the poster height.
+
+BOTTOM, a row of three features in three equal columns separated by two thin light grey vertical hairlines, like the
+three features at the bottom of image 1. Each column: a simple black line icon on top, a short bold title, and a smaller
+grey subline. Exact text:
+- Column 1: icon = a camera lens (two concentric circles). Title 「4K 高清摄像头」. Subline 「发丝毕现，清晰呈现」.
+- Column 2: icon = a tall rounded-rectangle mirror with two small diagonal shine lines. Title 「高级镜面」. Subline
+  「质感高级，通透清晰」.
+- Column 3: icon = a microchip (rounded square with short pins on all sides). Title 「自研模型」. Subline line 1
+  「真人还原，无 AI 感」, line 2 「40 秒真实换发」.
+
+TYPOGRAPHY. Every character must be spelled exactly as given, crisp, correctly formed, perfectly horizontal and centred
+in its column. No other text, no prices, no watermark, no Apple logo, no extra icons. Flat graphic design, crisp vector
+type and icons, photoreal product, Apple.com marketing quality.

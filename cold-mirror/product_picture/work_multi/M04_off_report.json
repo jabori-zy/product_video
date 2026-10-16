@@ -1,0 +1,89 @@
+{
+ "id": "M04",
+ "state": "off",
+ "accepted": "M04_off_try2.png",
+ "check": {
+  "id": "M04",
+  "file": "work_multi/M04_off_try2.png",
+  "units": [
+   {
+    "k": 1,
+    "face": "front",
+    "state": "home",
+    "glass": [
+     [
+      1575.0,
+      286.6
+     ],
+     [
+      2264.0,
+      286.6
+     ],
+     [
+      2264.0,
+      1781.0
+     ],
+     [
+      1575.0,
+      1779.4
+     ]
+    ],
+    "dev": 0.009,
+    "detected": true
+   },
+   {
+    "k": 2,
+    "face": "front 3/4",
+    "state": "off",
+    "glass": [
+     [
+      883.9,
+      322.5
+     ],
+     [
+      1479.9,
+      347.7
+     ],
+     [
+      1478.9,
+      1685.2
+     ],
+     [
+      879.8,
+      1719.8
+     ]
+    ],
+    "dev": 0.0072,
+    "detected": true
+   },
+   {
+    "k": 3,
+    "face": "front 3/4",
+    "state": "library",
+    "glass": [
+     [
+      2359.0,
+      346.7
+     ],
+     [
+      2952.6,
+      321.9
+     ],
+     [
+      2958.0,
+      1720.4
+     ],
+     [
+      2361.4,
+      1684.5
+     ]
+    ],
+    "dev": 0.0075,
+    "detected": true
+   }
+  ],
+  "max_dev": 0.009,
+  "ok": true
+ },
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261016_042252_4b446d5e-63c2-4f52-8da1-6f3fdf14c578.png"
+}

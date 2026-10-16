@@ -1,0 +1,28 @@
+Image 1 is an exact CAD geometry render of 2 identical units of the same product, standing on one floor, from the exact camera of this shot. Reproduce its geometry EXACTLY, aligned to it pixel for pixel: the same framing, camera angle, perspective, the position, size, rotation and proportions of EVERY unit, and which unit is in front of which. Do not add, remove, move, resize, rotate, widen or thicken any unit. Only replace the flat CAD shading with photoreal materials, lighting and shadow.
+
+Image 2 is the approved photoreal render of this product from the front (full-front mirror, thin black frame lip, black base). Image 3 is the approved photoreal render of its back (ladder frame, braces, service box). Match their materials, finish and render quality exactly for every unit.
+
+Image 4 is the reference for the SHADOW and background only (ignore the phones in it): light neutral grey seamless studio, soft diffuse floor shadows darkest at the contact line and fading out gradually.
+
+PRODUCT. A free-standing 55-inch portrait smart mirror, all black hardware.
+- Panel: a flat slab 831 mm wide x 1801 mm tall x only 46 mm deep, sharp rectangular edges, perfectly flat and vertical.
+- Front: the ENTIRE front face is one piece of mirror glass edge to edge (a one-way mirror with the display hidden behind it). There is NO wide black border and NO black area below the screen: only a very thin satin-black frame lip, about 8 mm, around the outside of the glass.
+- Camera: one small round camera lens behind the glass near the LEFT edge, about 40 mm in from the panel edge, 920 mm above the floor: a small glossy black dot with a thin dark grey ring. Nothing else on the front.
+- Button: one small flush button on the RIGHT side edge, 1500 mm above the floor. The left side edge is completely plain.
+- Feet and base: the panel stands on two short black feet with a 30 mm gap above a low black plinth 600 x 400 x 50 mm with rounded corners. The base is NARROWER than the panel, so the panel overhangs it on both sides; the panel sits near the front of the base and most of the base extends behind it.
+- Back: a flat matte black panel back with a tall ladder frame of 40 mm square black tube (two rails, a top bar, two crossbars), a small rectangular service box in the lowest bay, and two straight diagonal braces from the rails down to the rear of the base.
+- Colour: frame, edges, back, feet and base are black: matte black powder-coat on base, feet, back frame and braces, satin anodised black on the panel edge. No chrome, no silver, no white, no wood, no logo, no text.
+
+HIGH-PRECISION REQUIREMENT. Official Apple-website-quality product image: a flawless, engineering-accurate, photoreal CG render. Every edge perfectly straight and parallel, crisp corners. Immaculate surfaces: no dust, smudges, scratches, warping, noise, grain or AI artefacts. Tack-sharp edges with clean anti-aliasing.
+
+ARRANGEMENT. Two units stand side by side at the same depth: the left one faces the camera squarely and shows its full-front mirror; the right one is turned around and shows its back (flat matte black panel back, ladder frame of square black tube, the small service box, two diagonal braces down to the base).
+- The left unit faces the camera and shows its full-front mirror.
+- The right unit is turned around and shows its full back (ladder frame, braces, service box).
+
+All units stand upright on their bases on the same floor, verticals perfectly vertical; none is tilted, floating or lying down. All units are identical in size and design.
+
+STUDIO AND SHADOW. Apple.com product render style on a seamless light neutral grey background like image 4, no horizon line, no banding. One soft large key light from the front left and above, so every unit casts its soft, diffuse floor shadow back and to the right, with its own dark contact shadow under the base; shadows of neighbouring units overlap naturally. Thin clean highlight lines along the black edges. Everything in focus. No people, no text, no props.
+
+All screens OFF: every visible front is one clean, uniform, true mirror reflecting the bright, soft, empty studio as a smooth gradient; the mirrors do NOT reflect the other units, people or the camera.
+
+The last image is the original technical drawing (sizes in mm). In the final product the WHOLE front is mirror, not the smaller window shown in the drawing.

@@ -1,0 +1,7 @@
+Image 1 is the approved image with the screen turned ON. Keep EVERYTHING EXACTLY as in image 1, pixel for pixel: the same scene, furniture, people, product position, size, perspective, proportions, thin black frame, camera lens, feet, base and shadow, and the same app screen content in the same place (a hair-colour result: a young woman split by a thin vertical white line, brown hair on the left and lilac-purple hair on the right, on a light grey app page). Do not move, redraw, resize or restyle anything, and do not change any text or UI.
+
+Make ONLY the screen-on lighting photoreal. The product is a one-way-mirror smart mirror: the display sits directly behind the mirror glass.
+- The lit display area glows: emissive, bright, clean and evenly lit, a touch brighter and crisper than the surroundings, seen through the glass in correct perspective, with a very faint smooth glass reflection over it.
+- The edge of the display area is clean and straight, with no visible seam, frame line or bezel: the light simply ends where the screen ends, behind the same continuous glass.
+- Everywhere outside the display area (the margin above and beside it and the large area below it) the front STAYS a true mirror, exactly as in image 1: the same reflections, not lit, not black, not matte. Only a very subtle soft light spill from the screen at its immediate border.
+Photoreal, tack sharp, no noise, no banding, no AI artefacts. No text added.

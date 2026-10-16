@@ -1,0 +1,73 @@
+{
+ "id": "M05",
+ "file": "work_multi/M05_off_try1.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "front",
+   "state": "off",
+   "glass": [
+    [
+     447.8,
+     327.5
+    ],
+    [
+     873.0,
+     327.5
+    ],
+    [
+     873.0,
+     1259.1
+    ],
+    [
+     447.4,
+     1259.1
+    ]
+   ],
+   "dev": 0.0049,
+   "detected": true
+  },
+  {
+   "k": 2,
+   "face": "front 3/4",
+   "state": "off",
+   "glass": [
+    [
+     1138.8,
+     340.7
+    ],
+    [
+     1416.8,
+     315.8
+    ],
+    [
+     1416.8,
+     1274.6
+    ],
+    [
+     1138.8,
+     1245.4
+    ]
+   ],
+   "dev": 0.0115,
+   "detected": true
+  },
+  {
+   "k": 3,
+   "face": "right side",
+   "state": null
+  },
+  {
+   "k": 4,
+   "face": "rear 3/4",
+   "state": null
+  },
+  {
+   "k": 5,
+   "face": "back",
+   "state": null
+  }
+ ],
+ "max_dev": 0.0115,
+ "ok": false
+}

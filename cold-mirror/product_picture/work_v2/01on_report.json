@@ -1,0 +1,5 @@
+{"shot": "01-on", "base": "work_v2/01_try3.png (accepted screen-off render)",
+ "steps": ["window_v2.py: display quad from the detected panel outline", "screen_on_v2.py: refs/screen_home.png pinned -> 01on_comp.png",
+           "gpt_image_2_5 sunburst lighting pass on 01on_comp -> 01on_try2.png (panel corner drift 2.6 px)",
+           "screen_on_v2.py: real screenshot re-pinned on 01on_try2 -> final_v2/open"],
+ "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ji3FcnrJVQ8aIyciDXEmhDZpg0/hf_20261016_030505_cb331322-9c11-4f7a-9659-68c483669882.png"}

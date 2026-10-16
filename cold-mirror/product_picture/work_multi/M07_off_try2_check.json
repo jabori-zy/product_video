@@ -1,0 +1,18 @@
+{
+ "id": "M07",
+ "file": "/Users/apple/mjb/product_video/cold-mirror/product_picture/work_multi/M07_off_try2.png",
+ "units": [
+  {
+   "k": 1,
+   "face": "right side",
+   "state": null
+  },
+  {
+   "k": 2,
+   "face": "rear 3/4",
+   "state": null
+  }
+ ],
+ "max_dev": null,
+ "ok": true
+}
