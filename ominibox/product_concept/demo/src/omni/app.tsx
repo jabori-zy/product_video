@@ -53,14 +53,15 @@ export const ROW_PITCH = 36; // li 34 + gap-0.5
 export const ROW_LI = { x: 8, w: 240, h: 34 };
 export const LABEL_TOP = 308; // 「个人」分组标题按钮
 
-// ---------- 资源图标：按资源类型取真实图标 ----------
-export const ResIc: React.FC<{ icon: string; name?: string }> = ({ icon, name = '' }) => {
+// ---------- 资源图标：按资源类型取真实图标（对照 omnibox-web assets/icons/ResourceIcon.tsx） ----------
+// 文件夹展开时是 FolderOpen；B 站链接按域名用 bilibili 图标（ResourceIcon 的 DOMAIN_SUFFIX_TO_ICON），不是视频文件图标
+export const ResIc: React.FC<{ icon: string; name?: string; open?: boolean }> = ({ icon, name = '', open }) => {
   switch (icon) {
-    case '📁': return <Ic n="folder" />;
+    case '📁': return <Ic n={open ? 'folder-open' : 'folder'} />;
     case '📕': return <Ic n="res-pdf" />;
     case '🖼': return <Ic n="res-image" />;
     case '🎙': return <Ic n="res-audio" />;
-    case '🎬': return <Ic n="res-video" />;
+    case '🎬': return /B ?站|Bilibili/i.test(name) ? <Ic n="res-bilibili" /> : <Ic n="res-video" />;
     case '🌐': return /知乎|Zhihu/.test(name) ? <Ic n="res-zhihu" /> : <Ic n="res-link" />;
     case '💬': return <Ic n="message-circle" className="size-4 shrink-0" />;
     default: return <Ic n="file-text" className="scale-110" />;
@@ -220,7 +221,9 @@ export const Sidebar: React.FC<{ tab: number; space: string; children?: React.Re
         </div>
         <div className="flex min-h-5 items-center justify-end pl-4 pr-1" style={{ opacity: tab, position: 'absolute', inset: 0 }}>
           <div className="flex items-center gap-2">
+            {/* omnibox-web SidebarBrowseTabs：对话 tab 是 搜索 · 刷新 · 新建对话 */}
             <span className="inline-flex" data-state="closed"><button className={TOOL_BTN} aria-label="搜索聊天历史"><Ic n="search" className="size-4" /></button></span>
+            <span className="inline-flex" data-state="closed"><button className={TOOL_BTN} aria-label="刷新"><Ic n="rotate-cw" className="size-4" /></button></span>
             <span className="inline-flex" data-state="closed"><button className={TOOL_BTN} aria-label="新建对话"><Ic n="message-circle-plus" className="size-4" /></button></span>
           </div>
         </div>
@@ -293,7 +296,7 @@ export const Row: React.FC<{
           <div className="group/sidebar-item relative my-px rounded-md hover:bg-sidebar-accent flex items-center" {...hov(hover)}>
             <div className={ROW_BTN} data-sidebar="menu-button" data-size="default" data-active="false" data-state="closed" style={{ opacity: 1, paddingLeft: (caret ? 4 : 28) + 20 * depth }}>
               {caret && <button className={CARET_BTN}><Ic n="caret" className="transition-transform" /></button>}
-              <span className="size-4 shrink-0 [&_svg]:size-4 [&_img]:size-4"><ResIc icon={icon} name={text} /></span>
+              <span className="size-4 shrink-0 [&_svg]:size-4 [&_img]:size-4"><ResIc icon={icon} name={text} open={caret === 'open'} /></span>
               <span className="flex-1 truncate">{text}</span>
             </div>
             <Ic n="ellipsis" className={ROW_ACTION} />
@@ -310,6 +313,8 @@ export const ChatRow: React.FC<{ top: number; text: string; hover?: boolean; act
     <li data-sidebar="menu-item" className="group/menu-item relative group/sidebar-item">
       <div className={`group/sidebar-item relative my-px rounded-md hover:bg-sidebar-accent flex items-center${active ? ' bg-sidebar-accent' : ''}`} {...hov(hover)}>
         <div className={CHAT_ROW_BTN} data-sidebar="menu-button" data-size="default" data-active={active ? 'true' : 'false'}>
+          {/* omnibox-web conversations/index.tsx：每条对话前是 MessageCircle（对照 assets/chat.png） */}
+          <Ic n="message-circle" className="size-4 shrink-0" />
           <span className="flex-1 truncate text-sm font-normal leading-5">{text}</span>
         </div>
         <Ic n="ellipsis" className={ROW_ACTION} />
@@ -582,16 +587,17 @@ export const ToolCall: React.FC<{ name: string; args: string[]; pending?: boolea
 );
 
 /** 引用角标（回答里的段落编号）；hover = 悬停（深底白字） */
+// 角标做成正圆（产品里是 px-1 的胶囊，单个数字时偏高；成片按要求改圆）
 export const Cite: React.FC<{ n: number; hover?: boolean; s?: number }> = ({ n, hover, s = 1 }) => (
   <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary underline-offset-4 px-0 py-0 h-auto align-baseline hover:no-underline" data-state="closed" style={{ transform: `scale(${s})` }}>
-    <div className="inline-flex items-center border py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground rounded-full px-1 hover:text-primary-foreground hover:bg-primary dark:hover:bg-primary dark:bg-[#303030]" {...hov(hover)}>{n}</div>
+    <div className="inline-flex items-center border py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground rounded-full px-1 hover:text-primary-foreground hover:bg-primary dark:hover:bg-primary dark:bg-[#303030]" style={{ width: 20, height: 20, padding: 0, justifyContent: 'center', lineHeight: 1 }} {...hov(hover)}>{n}</div>
   </button>
 );
 
 /** 引用悬浮卡：资源标题、被引片段（原文 markdown）、资源 id。实拍朝下展开（data-side=bottom，离角标 4px）；
  * loading = 刚悬停时「正在加载详情…」，片段还是空的 */
 export const CiteCard: React.FC<{ title: string; text: string; id: string; loading?: boolean; o?: number; s?: number }> = ({ title, text, id, loading, o = 1, s = 1 }) => (
-  <div data-side="bottom" data-align="center" data-state="open" className="z-50 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none w-80" style={{ opacity: o, transform: `scale(${0.95 + 0.05 * s}) translateY(${-8 * (1 - s)}px)`, transformOrigin: '50% 0' }}>
+  <div data-side="bottom" data-align="center" data-state="open" className="z-50 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none w-80" style={{ opacity: o, transform: s < 1 ? `scale(${0.95 + 0.05 * s}) translateY(${-8 * (1 - s)}px)` : undefined, transformOrigin: '50% 0' }}>{/* 出现完就不留 transform：静止时按普通排版绘制，各渲染标签结果一致 */}
     <div>
       {loading && <p role="status">正在加载详情…</p>}
       <p className="font-semibold line-clamp-2">{title}</p>
@@ -610,12 +616,13 @@ const PANEL_BTN =
 /** 对话面板宽度（产品像素，实拍 376） */
 export const CHAT_PANEL_W = 376;
 
-/** 资源页顶栏：面包屑（父文件夹 › 资源；个人根目录下只有资源名）、更新时间、分享 / 编辑 / 更多 / 评论 / 编辑历史 */
-export const ResourceHeader: React.FC<{ crumbs: string[]; updated: string }> = ({ crumbs, updated }) => {
+/** 资源页顶栏：面包屑（父文件夹 › 资源；个人根目录下只有资源名）、更新时间、分享 / 编辑 / 更多 / 评论 / 编辑历史。
+ *  w-full：放进 Main 的 header 槽（横向 flex）时也要占满整行，右侧按钮才贴右 */
+export const ResourceHeader: React.FC<{ crumbs: string[]; updated: string; shareGlow?: number; copilot?: boolean }> = ({ crumbs, updated, shareGlow = 0, copilot = true }) => {
   const parents = crumbs.slice(0, -1);
   const name = crumbs[crumbs.length - 1];
   return (
-    <header className="flex min-h-[48px] min-w-0 shrink-0 items-center gap-2 overflow-hidden rounded-[16px] bg-white dark:bg-background">
+    <header className="flex w-full min-h-[48px] min-w-0 shrink-0 items-center gap-2 overflow-hidden rounded-[16px] bg-white dark:bg-background">
       <div className="flex min-w-0 flex-1 items-center gap-1 px-3 sm:gap-2">
         <nav aria-label="breadcrumb" className="max-w-full min-w-0 ml-2">
           <ol className="flex items-center break-words text-sm text-muted-foreground min-w-0 flex-nowrap gap-0 overflow-hidden sm:gap-0">
@@ -638,18 +645,20 @@ export const ResourceHeader: React.FC<{ crumbs: string[]; updated: string }> = (
       <div className="ml-auto flex shrink-0 items-center gap-1 pr-3">
         <div className="flex items-center gap-2 text-sm">
           <div className="hidden font-medium text-muted-foreground md:inline-block">{updated}</div>
-          <button className={HEAD_BTN} type="button" data-state="closed"><Ic n="share" />分享</button>
+          <button className={HEAD_BTN} type="button" data-state="closed" {...hov(shareGlow > 0)} style={shareGlow > 0 ? { boxShadow: `0 0 0 ${2 * shareGlow}px #3098ff, 0 0 ${18 * shareGlow}px #3098ff` } : undefined}><Ic n="share" />分享</button>
           <button className={HEAD_BTN}><Ic n="pencil" />编辑</button>
           <button className={`${GHOST} size-7 data-[state=open]:bg-accent`} type="button" data-state="closed"><Ic n="ellipsis" className="size-4" /></button>
         </div>
         <button className={ICON_BTN} type="button" aria-label="评论" data-state="closed"><Ic n="message-square-text" className="size-4" /></button>
         <button className={ICON_BTN} aria-label="打开编辑历史" type="button" data-state="closed"><Ic n="file-clock" /></button>
+        {/* omnibox-web CopilotToggleButton：对话面板没开时显示小黑 logo（开着时按钮在面板顶栏里，是「收起右侧边栏」） */}
+        {!copilot && <button className={ICON_BTN} aria-label="展开小黑" type="button" data-state="closed"><img src={staticFile('omni/nav-logo.svg')} alt="OmniBox Logo" className="size-4" /></button>}
       </div>
     </header>
   );
 };
 
-export type ResBlock = { kind: 'p' | 'quote'; text: string };
+export type ResBlock = { kind: 'p' | 'quote' | 'h2'; text: string };
 const MetaRow: React.FC<{ icon: string; label: string; children: React.ReactNode; top?: boolean }> = ({ icon, label, children, top }) => (
   <div className={`flex flex-wrap sm:flex-nowrap ${top ? 'items-start' : 'items-center'} gap-4`}>
     <div className={`${top ? 'min-h-5 ' : ''}flex items-center gap-1.5`}>
@@ -664,10 +673,19 @@ const MetaRow: React.FC<{ icon: string; label: string; children: React.ReactNode
  * 资源只读页（resource-readonly-page-header + tiptap 只读编辑器）。
  * hl = 被引用的块：产品 CSS 给含 .omnibox-scroll-line-highlight 的顶层块加圆角蓝底（rgba(0,144,255,.2)）。
  * loading = 刚打开、正文还没取回来（实拍里先空一下再出来）
+ * scroll 0 → 1：从页首滚到 scrollTo 块（该块停在正文第一块原来的位置）。距离按实际排版量出（同一父元素下的 offsetTop 差），不写死像素
  */
-export const ResourceView: React.FC<{ title: string; tags?: string[]; file?: string; created: string; blocks: ResBlock[]; hl?: number; loading?: boolean; hlO?: number }> = ({ title, tags, file, created, blocks, hl, loading, hlO = 1 }) => (
+export const ResourceView: React.FC<{ title: string; tags?: string[]; file?: string; created: string; blocks: ResBlock[]; hl?: number; loading?: boolean; hlO?: number; contentO?: number; scroll?: number; scrollTo?: number }> = ({ title, tags, file, created, blocks, hl, loading, hlO = 1, contentO = 1, scroll = 0, scrollTo }) => {
+  const body = React.useRef<HTMLDivElement>(null);
+  const [dist, setDist] = React.useState(0);
+  React.useLayoutEffect(() => {
+    const els = body.current?.children;
+    const d = els && scrollTo != null && els[scrollTo] ? (els[scrollTo] as HTMLElement).offsetTop - (els[0] as HTMLElement).offsetTop : 0;
+    if (d !== dist) setDist(d);
+  });
+  return (
   <div className="no-scrollbar flex min-w-0 flex-1 justify-center overflow-x-hidden overflow-y-auto p-4" data-resource-scroll="true">
-    <div className="flex w-full min-w-0 max-w-full flex-col" style={{ maxWidth: '100%' }}>
+    <div className="flex w-full min-w-0 max-w-full flex-col" style={{ maxWidth: '100%', transform: scroll ? `translateY(${-dist * scroll}px)` : undefined }}>
       <div data-resource-export-content="true">
         <div className="resource-readonly-page-header">
           <h1 className="resource-search-title mb-4 min-w-0 max-w-full break-all text-[34px] font-bold">{title}</h1>
@@ -700,7 +718,7 @@ export const ResourceView: React.FC<{ title: string; tags?: string[]; file?: str
             <div className="omnibox-editor-layout omnibox-editor-layout--embedded">
               <div role="presentation" className="omnibox-editor-content" style={{ cursor: 'auto' }}>
                 <div className="omnibox-drag-handle-wrapper" style={{ '--drag-handle-main-axis-offset': '16px' } as React.CSSProperties} />
-                <div contentEditable={false} translate="no" className="tiptap ProseMirror omnibox-editor" style={{ opacity: loading ? 0 : 1 }}>
+                <div ref={body} contentEditable={false} translate="no" className="tiptap ProseMirror omnibox-editor" style={{ opacity: loading ? 0 : contentO }}>
                   {blocks.map((b, i) => {
                     const inner = i === hl ? (
                       <>
@@ -708,7 +726,7 @@ export const ResourceView: React.FC<{ title: string; tags?: string[]; file?: str
                         <span data-scroll-line-highlight="true" className={hlO > 0 ? 'omnibox-scroll-line-highlight' : undefined}>{b.text}</span>
                       </>
                     ) : b.text;
-                    return b.kind === 'quote' ? <blockquote key={i}><p>{inner}</p></blockquote> : <p key={i}>{inner}</p>;
+                    return b.kind === 'quote' ? <blockquote key={i}><p>{inner}</p></blockquote> : b.kind === 'h2' ? <h2 key={i}>{inner}</h2> : <p key={i}>{inner}</p>;
                   })}
                 </div>
               </div>
@@ -719,6 +737,7 @@ export const ResourceView: React.FC<{ title: string; tags?: string[]; file?: str
     </div>
   </div>
 );
+};
 
 /** 右侧对话面板顶栏：收起面板、对话标题、新对话、历史 */
 export const ChatPanelHeader: React.FC<{ title: string }> = ({ title }) => (
@@ -760,8 +779,9 @@ export const SplitView: React.FC<{ split: number; header: React.ReactNode; resou
           <div data-orientation="horizontal" role="none" className="shrink-0 h-[1px] w-full bg-[#F2F2F2] dark:bg-[#303132]" />
           {resource}
         </main>
-        <div aria-hidden="true" className="pointer-events-none shrink-0" style={{ width: CHAT_PANEL_W * split, marginLeft: -8 * (1 - split) }} />
-        <div aria-hidden="false" className="absolute bottom-2 right-2 top-2 z-20 flex min-h-0 flex-col" style={{ width: CHAT_PANEL_W, transform: `translateX(${(CHAT_PANEL_W + 8) * (1 - split)}px)` }}>
+        <div aria-hidden="true" className="pointer-events-none shrink-0" style={{ width: CHAT_PANEL_W }} />
+        {/* split 0 → 1：对话从整页宽被挤到右侧面板（左缘从 8px 移到面板位置），资源页按最终版式铺在下面、随之露出 */}
+        <div aria-hidden="false" className="absolute bottom-2 right-2 top-2 z-20 flex min-h-0 flex-col" style={{ left: `calc(${8 * (1 - split)}px + (100% - ${CHAT_PANEL_W + 8}px) * ${split})` }}>
           <main className="relative flex flex-1 flex-col peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow min-h-0 !min-h-0 max-h-full min-w-0 h-full overflow-hidden bg-white dark:bg-background md:rounded-2xl m-0 rounded-none md:h-full">
             {panel}
           </main>

@@ -7,7 +7,7 @@ import type { ResKey } from '../copy';
 import { Board } from '../content/understand';
 import { CAM_FULL, CAM_WIDE, Laptop, PHONE, Phone, Stage, pageToWorld, phoneToWorld } from '../mobile/stage';
 import { OMNI_BG, WebHome, Z, rowY } from '../ui';
-import { BottomBar, ContentTabs, Dialog, HomeComposer, HomeHeader, Ic, M, MoreSheetBody, PH, PW, RecordSheetBody, ResRow, ResToolbar, Sheet, Tap, Toast, spr } from '../mobile/ui';
+import { BottomBar, ContentTabs, Dialog, HOME, ResLabel, HomeComposer, HomeHeader, Ic, M, MoreSheetBody, PH, PW, RecordSheetBody, ResRow, ResToolbar, Sheet, Tap, Toast, spr } from '../mobile/ui';
 
 // C+ 手机随手记（插在 D 开场 12.05 s）：电脑画面拉远成笔记本 → 手机录下周会、拍下白板 → 两条资源化作光点飞进电脑侧栏 → 推回电脑，接 D
 export const M1_AT = 12.05;
@@ -22,8 +22,8 @@ const CAM = [
   { t: 11.2, ...CAM_PHONE }, { t: 12.2, ...CAM_WIDE }, { t: 13.6, ...CAM_WIDE }, { t: 15.25, ...CAM_FULL },
 ];
 
-const BAR_Y = PH - 70; // 胶囊中心
-const ROW0 = 432, ROW_STEP = 46;
+const BAR_Y = HOME.barY; // 胶囊中心
+const ROW0 = HOME.row0, ROW_STEP = HOME.rowStep; // 资源行中心（按真机截图的首页版式，mobile/ui 的 HOME）
 const OLD: [string, ResKey][] = [['🌐', 'zhihuHome'], ['📕', 'monthly'], ['📕', 'docker']];
 const NEW: { at: number; icon: string; text: ResKey }[] = [{ at: 7.3, icon: '🎙', text: 'meeting' }, { at: 10.95, icon: '🖼', text: 'board' }];
 
@@ -62,9 +62,9 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
     <>
       <HomeHeader />
       <HomeComposer blink={blinkAt(t, [2.0, 8.0, 11.6])} />
-      <ContentTabs y={340} p={0} />
-      <div style={{ position: 'absolute', left: 18, top: 398, fontSize: 13, color: M.sub, display: 'flex', alignItems: 'center', gap: 2 }}>{tr('个人', 'Personal')} <Ic n="chevD" s={13} c={M.sub} /></div>
-      <ResToolbar y={396} />
+      <ContentTabs p={0} />
+      <ResLabel />
+      <ResToolbar />
       {rows.map((r, i) => <ResRow key={r.key} y={ys[i]} icon={r.icon} text={res(r.text as ResKey)} o={r.o} dx={(1 - Math.min(1, r.o)) * 30} parsing={r.parsing} t={t} hl={hlOf(r.key)} />)}
       <BottomBar t={t} rec={barRec} press={press} />
       <Tap t={t} at={2.6} x={195} y={BAR_Y} />
@@ -77,7 +77,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
       {dlgP > 0.001 && <Dialog p={dlgP} title={tr('结束并保存录音？', 'End and save recording?')} body={tr('返回后可继续录音。', 'You can keep recording after going back.')} cancel={tr('继续录音', 'Keep recording')} ok={tr('结束并保存', 'End and save')} press={t > 6.85 && t < 6.98} />}
       <Tap t={t} at={6.9} x={262} y={461} />
       <Toast t={t} a={7.15} text={tr('保存成功', 'Saved successfully')} />
-      <Tap t={t} at={8.3} x={105} y={BAR_Y} />
+      <Tap t={t} at={8.3} x={117} y={BAR_Y} />
       {moreP > 0.001 && (
         <Sheet p={moreP} h={440}>
           <MoreSheetBody press={t > 9.0 && t < 9.25 ? 0 : -1} />
@@ -112,7 +112,7 @@ export const M1: React.FC<{ t: number }> = ({ t }) => {
     const a = 11.9 + i * 0.25;
     const p = lin(t, a, a + DOT_FLIGHT, 0, 1, (x) => x * x * (3 - 2 * x));
     if (t < a || p >= 1) return null;
-    const from = phoneToWorld(60, ROW0 + i * ROW_STEP + 22, { ...PHONE, x: px });
+    const from = phoneToWorld(50, ROW0 + i * ROW_STEP, { ...PHONE, x: px });
     const to = pageToWorld(44 * Z, rowY(3 + i) + 17 * Z); // 浏览器网页里侧栏新资源行的图标（与原片 D 的落点一致）
     const x = from.x + (to.x - from.x) * p, y = from.y + (to.y - from.y) * p - 260 * 4 * p * (1 - p);
     return (

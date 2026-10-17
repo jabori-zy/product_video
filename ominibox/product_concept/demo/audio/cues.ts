@@ -3,6 +3,7 @@
 import { INSERTS, TOTAL_APP, insertScale, insertStart, toOutApp } from '../src/appTimeline';
 import { ARC_DE } from '../src/pace';
 import { E_CLICKS, E_Q1_AT } from '../src/scenes/E.times';
+import { F_CLICKS, F_TICKS } from '../src/scenes/F.times';
 import { TYPED, openKeys, stepOf, txt, type Lang, type TypedCopy } from '../src/copy';
 
 export type Kind =
@@ -84,7 +85,8 @@ export const buildCues = (lang: Lang): Cue[] => {
   for (const st of [13, 13.75, 14.5, 15.25]) c(o(st), 'swish', { dur: 0.35, v: 0.6 });
   c(o(14.0), 'murmur', { dur: o(14.35) - o(14.0), v: 0.4 }); // 白板扫描「滋」
   c(o(14.7), 'stream', { dur: 0.5 }); for (let j = 0; j < 3; j++) c(o(14.95 + j * 0.1), 'ding', { v: 0.35 });
-  for (let j = 0; j < 4; j++) c(o(16.0 + j * 0.08), 'pop', { v: 0.5 });
+  for (let k = 0; k < 8; k++) c(o(16.0 + k * 0.024), 'pop', { v: 0.35 }); // 标签回声：副本铺满画面
+  c(o(16.26), 'swish', { dur: o(16.4) - o(16.26), v: 0.5 }); for (let j = 0; j < 4; j++) c(o(16.36 + j * 0.012), 'pop', { v: 0.5 }); // 飞回卡片、真标签弹出
   c(o(16.55), 'pop'); typing(16.65, TYPED.search);
   for (let i = 0; i < 3; i++) c(o(17.15 + i * 0.07), 'tick');
   for (let i = 0; i < 3; i++) c(o(17.55 + i * 0.15), 'word', { i });
@@ -93,22 +95,22 @@ export const buildCues = (lang: Lang): Cue[] => {
   for (const k of E_CLICKS) c(o(18 + k), 'click');
   typing(18 + E_Q1_AT, TYPED.q1);
   c(o(20.95), 'swish', { dur: 0.3 }); c(o(21.7), 'stream', { dur: o(22.55) - o(21.7) });
-  c(o(22.65), 'pop', { v: 0.6 }); c(o(22.95), 'swish', { dur: 0.25, v: 0.5 }); c(o(23.32), 'swish', { dur: 0.25, v: 0.35 }); // 引用：资源页打开、对话面板滑入；淡回对话
+  c(o(22.6), 'pop', { v: 0.6 }); c(o(22.95), 'swish', { dur: o(23.2) - o(22.95), v: 0.5 }); c(o(23.1), 'swish', { dur: o(23.3) - o(23.1), v: 0.25 }); c(o(23.42), 'swish', { dur: 0.25, v: 0.35 }); // 引用：悬浮卡、资源页打开 + 对话挤到右侧、滚到被引段落；淡回对话
   typing(23.7, TYPED.q2); c(o(24.45), 'swish', { dur: 0.3 });
-  c(o(24.5), 'stream', { dur: o(25.8) - o(24.5) }); c(o(25.95), 'swish', { dur: 0.35 }); c(o(26.3), 'pop');
+  c(o(24.5), 'stream', { dur: o(25.8) - o(24.5) }); c(o(25.8), 'swish', { dur: 0.35 }); c(o(26.15), 'pop'); // 周报滚到底直接收进侧栏
 
   // ---------- E+ 跨端接力（插段）----------
   const m2 = (u: number) => E0 + u / insertScale('E+');
   c(m2(0), 'whoosh', { dur: 1.3, v: 0.5 }); c(m2(0.75), 'pop', { phone: true }); c(m2(1.5), 'tick');
   c(m2(1.6), 'whoosh', { dur: 0.4, v: 0.5 }); c(m2(1.95), 'swish', { dur: 0.8, v: 0.8 }); c(m2(2.8), 'pop', { phone: true });
   c(m2(3.0), 'whoosh', { dur: 0.6, v: 0.25 }); c(m2(3.6), 'stream', { dur: 1.4, v: 0.5, phone: true });
-  c(m2(5.3), 'tap', { phone: true }); c(m2(5.35), 'swish', { dur: 0.2, v: 0.5, phone: true }); c(m2(5.85), 'tap', { phone: true }); c(m2(5.9), 'swish', { dur: 0.2, v: 0.4, phone: true });
+  c(m2(5.3), 'tap', { phone: true }); c(m2(5.32), 'swish', { dur: m2(5.62) - m2(5.32), v: 0.5, phone: true }); c(m2(5.85), 'tap', { phone: true }); c(m2(5.9), 'swish', { dur: 0.2, v: 0.4, phone: true });
   c(m2(6.65), 'tap', { phone: true }); c(m2(6.8), 'swish', { dur: 0.3, phone: true });
   typing(7.3, TYPED.m2q, m2, true);
   c(m2(8.45), 'tap', { phone: true }); c(m2(8.55), 'swish', { dur: 0.25, phone: true }); c(m2(9.2), 'stream', { dur: 1.2, phone: true });
   c(m2(10.75), 'tap', { phone: true }); c(m2(10.9), 'sheetUp', { phone: true }); c(m2(12.1), 'tap', { phone: true }); c(m2(12.2), 'sheetDown', { phone: true });
-  c(m2(12.3), 'whoosh', { dur: 0.8, v: 0.3 }); c(m2(12.7), 'dotUp', { i: 0 }); c(m2(13.45), 'dotLand', { i: 0 });
-  c(m2(13.5), 'whoosh', { dur: 1.7, v: 0.6 });
+  // 回电脑：推近对话框 → 手机屏幕和对话框拉宽成电脑首页 → 小黑探头（M2.tsx 的 MORPH / PEEK）
+  c(m2(12.45), 'whoosh', { dur: m2(13.2) - m2(12.45), v: 0.3 }); c(m2(13.2), 'whoosh', { dur: m2(14.3) - m2(13.2), v: 0.6 }); c(m2(14.5), 'pop', { v: 0.6 });
 
   // E 续：Agent 归档
   typing(26.5, TYPED.q3); c(o(27.15), 'swish', { dur: 0.25 });
@@ -116,14 +118,14 @@ export const buildCues = (lang: Lang): Cue[] => {
   for (let i = 0; i < 3; i++) c(o(29.1 + i * 0.15), 'word', { i: i + 3 });
 
   // ---------- F 分享协作 ----------
-  for (const k of [0.3, 0.75, 1.0, 1.25, 1.5, 1.9]) c(o(30 + k), 'click');
-  for (const k of [0.75, 1.0, 1.25, 1.5]) c(o(30 + k) + 0.05, 'tick', { v: 0.8 });
+  for (const k of F_CLICKS) c(o(30 + k), 'click');
+  for (const k of F_TICKS) c(o(30 + k) + 0.05, 'tick', { v: 0.8 });
   for (const k of [0.5, 2.0, 2.5, 3.4]) c(o(30 + k), 'swish', { dur: 0.35, v: 0.7 });
   c(o(32.0), 'ding', { v: 0.7 });
   for (let i = 0; i < 4; i++) c(o(32.7 + i * 0.2), 'pop', { v: 0.7, i });
 
   // ---------- G 开放 ----------
-  for (let i = 0; i < 6; i++) c(o(35.1 + i * 0.15), 'pop', { v: 0.6, i });
+  for (let i = 0; i < 7; i++) { c(o(35 - 0.08 + i * 0.1), 'swish', { dur: 0.3, v: 0.35 }); c(o(35 - 0.08 + i * 0.1 + 0.36), 'pop', { v: 0.45, i }); c(o(35 + 1.3 + i * 0.06), 'swish', { dur: 0.3, v: 0.3 }); } // 离场：逐个向左飞出（G.tsx 的 EXIT_T / EXIT_STEP） // G 七块屏幕从右往左逐个飞入、落定（同 G.tsx 的 ENTER_T / DEV_STEP / FLY）
   for (const k of [37, 37.65, 38.3]) c(o(k), 'impact', { v: 0.7 });
 
   // ---------- H2 结尾（成片秒 = H0 + u）----------

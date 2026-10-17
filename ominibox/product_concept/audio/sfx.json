@@ -1,0 +1,345 @@
+{
+  "_note": "Higgsfield Seed Audio 1.0 生成的音效素材清单。name = 文件名（raw/<name>.wav 原始下载，samples/<name>.wav 处理后），kind = 对应 demo/audio/cues.ts 的事件类型；同一 kind 多个变体时混音轮流使用；cuts = [[起点秒, 长度秒], …]：从处理后的素材里截出单个声音（生成结果常含多下），每段算一个变体",
+  "items": [
+    {
+      "name": "key_1",
+      "kind": "key",
+      "prompt": "Single mechanical keyboard keystroke, crisp tactile click, close-mic, dry studio recording, one key press only, no music, no reverb",
+      "cuts": [
+        [
+          0.7,
+          0.1
+        ],
+        [
+          0.81,
+          0.1
+        ],
+        [
+          0.92,
+          0.12
+        ],
+        [
+          1.56,
+          0.11
+        ],
+        [
+          1.68,
+          0.12
+        ]
+      ]
+    },
+    {
+      "name": "key_2",
+      "kind": "key",
+      "prompt": "One light mechanical keyboard key tap, brown switch, soft clack, close-mic, dry, isolated single keystroke, no music",
+      "cuts": [
+        [
+          0.42,
+          0.1
+        ],
+        [
+          0.53,
+          0.09
+        ],
+        [
+          0.62,
+          0.12
+        ],
+        [
+          0.76,
+          0.12
+        ]
+      ]
+    },
+    {
+      "name": "key_3",
+      "kind": "key",
+      "prompt": "A single quick laptop-style keyboard key press, clean click, close microphone, dry, isolated, no music, no background noise",
+      "cuts": [
+        [
+          0.02,
+          0.2
+        ],
+        [
+          0.86,
+          0.13
+        ],
+        [
+          1.0,
+          0.13
+        ]
+      ]
+    },
+    {
+      "name": "key_heavy",
+      "kind": "keyHeavy",
+      "prompt": "Single mechanical keyboard space bar press, deeper thocky sound, close-mic, dry studio, isolated one press, no music"
+    },
+    {
+      "name": "enter",
+      "kind": "enter",
+      "prompt": "Firm press of the Enter key on a mechanical keyboard, satisfying heavy click, close-mic, dry, isolated, no music"
+    },
+    {
+      "name": "click",
+      "kind": "click",
+      "prompt": "Single computer mouse left click, crisp, close-mic, dry, isolated, no music",
+      "cuts": [
+        [
+          0.56,
+          0.22
+        ],
+        [
+          1.92,
+          0.22
+        ]
+      ]
+    },
+    {
+      "name": "tap",
+      "kind": "tap",
+      "prompt": "Single soft finger tap on a smartphone glass screen with a tiny haptic tick, subtle, dry, isolated, no music",
+      "cuts": [
+        [
+          1.5,
+          0.3
+        ]
+      ]
+    },
+    {
+      "name": "pop",
+      "kind": "pop",
+      "prompt": "Short soft UI pop, round bubbly cute interface sound for a card appearing, clean, dry, isolated, no music"
+    },
+    {
+      "name": "ding",
+      "kind": "ding",
+      "prompt": "Gentle bright notification chime, single clean bell-like ding, modern app success sound, short, no music bed"
+    },
+    {
+      "name": "tick",
+      "kind": "tick",
+      "prompt": "Tiny UI tick, small toggle switch click, very short, clean, dry, isolated, no music",
+      "cuts": [
+        [
+          0.08,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "swish",
+      "kind": "swish",
+      "prompt": "Fast soft air swish for a UI transition, short whoosh, clean, no music, no reverb tail"
+    },
+    {
+      "name": "sheet_up",
+      "kind": "sheetUp",
+      "prompt": "Soft upward swoosh of a panel sliding up on a phone screen, smooth, short, clean, no music"
+    },
+    {
+      "name": "sheet_down",
+      "kind": "sheetDown",
+      "prompt": "Soft downward swipe whoosh of a panel sliding down and closing, short, smooth, no music"
+    },
+    {
+      "name": "shutter",
+      "kind": "shutter",
+      "prompt": "Smartphone camera shutter click, modern iPhone style, crisp, single shot, no music"
+    },
+    {
+      "name": "rec_start",
+      "kind": "recStart",
+      "prompt": "Short recording start blip, two quick rising electronic tones, clean app sound, no music",
+      "cuts": [
+        [
+          1.95,
+          0.8
+        ]
+      ]
+    },
+    {
+      "name": "rec_stop",
+      "kind": "recStop",
+      "prompt": "Short recording stop blip, two quick falling electronic tones, clean app sound, no music",
+      "cuts": [
+        [
+          0.92,
+          1.2
+        ]
+      ]
+    },
+    {
+      "name": "murmur",
+      "kind": "murmur",
+      "prompt": "Indistinct meeting room murmur, a few colleagues talking quietly in the background, no clear words, continuous, no music"
+    },
+    {
+      "name": "stream",
+      "kind": "stream",
+      "prompt": "Soft continuous digital sparkle texture, gentle shimmering computer data sound, airy and subtle, no music, no voice"
+    },
+    {
+      "name": "whoosh",
+      "kind": "whoosh",
+      "prompt": "Cinematic fast whoosh transition, clean and punchy, short, modern trailer style, no music",
+      "cuts": [
+        [
+          0.2,
+          1.6
+        ]
+      ]
+    },
+    {
+      "name": "riser",
+      "kind": "riser",
+      "prompt": "Short tension riser, rising airy synth swell building up over about two seconds, clean, no drums"
+    },
+    {
+      "name": "impact",
+      "kind": "impact",
+      "prompt": "Deep cinematic impact hit, short boom with a bright transient, modern trailer, clean tail, no music"
+    },
+    {
+      "name": "arc",
+      "kind": "arc",
+      "prompt": "Magical shimmering light sweep moving across the screen, airy glittering swoosh, about one second, no music"
+    },
+    {
+      "name": "dot_up",
+      "kind": "dotUp",
+      "prompt": "Small magical sparkle rising upward, a glowing particle flying up, light twinkle, short, no music"
+    },
+    {
+      "name": "dot_land",
+      "kind": "dotLand",
+      "prompt": "Small sparkle landing chime, a glowing particle arriving with a soft twinkle, short, no music",
+      "cuts": [
+        [
+          0.0,
+          1.2
+        ]
+      ]
+    },
+    {
+      "name": "slide",
+      "kind": "slide",
+      "prompt": "Cute cartoon soft slide sound, a small character peeking out sideways, short playful, no music",
+      "cuts": [
+        [
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "meow_2",
+      "kind": "meow",
+      "prompt": "A small black kitten makes one soft happy mew, short and adorable, close-mic, isolated, no music"
+    },
+    {
+      "name": "meow_1",
+      "kind": "meow",
+      "prompt": "Cute young kitten single short meow, friendly and curious, close-mic, clean, no background, no music",
+      "cuts": [
+        [
+          0.0,
+          1.2
+        ]
+      ]
+    },
+    {
+      "name": "retract",
+      "kind": "retract",
+      "prompt": "Quick cartoon retract zip, a character ducking back out of sight, short and playful, no music"
+    },
+    {
+      "name": "boing",
+      "kind": "boing",
+      "prompt": "Cartoon spring boing for a cute character jumping, short and bouncy, no music"
+    },
+    {
+      "name": "land",
+      "kind": "land",
+      "prompt": "Soft cartoon landing thump of a small cat landing on its feet, short, cute, no music"
+    },
+    {
+      "name": "trampoline",
+      "kind": "trampoline",
+      "prompt": "Short cartoon trampoline bounce, springy wobble, playful, no music",
+      "cuts": [
+        [
+          0.44,
+          0.6
+        ]
+      ]
+    },
+    {
+      "name": "blink",
+      "kind": "blink",
+      "prompt": "Tiny cute blink sound, very short soft high pluck for a cartoon eye blink, no music"
+    },
+    {
+      "name": "word",
+      "kind": "word",
+      "prompt": "Punchy subtle text appear hit, short clean synth pluck stab for a word popping on screen, no music bed",
+      "cuts": [
+        [
+          0.06,
+          0.3
+        ],
+        [
+          0.35,
+          0.45
+        ],
+        [
+          0.85,
+          0.25
+        ],
+        [
+          1.57,
+          0.45
+        ]
+      ]
+    },
+    {
+      "name": "swap",
+      "kind": "swap",
+      "prompt": "Quick swoosh swap, two words switching places, short airy swish with a soft pop, no music"
+    },
+    {
+      "name": "fall",
+      "kind": "fall",
+      "prompt": "Short descending cartoon whistle of something falling, playful, clean, no music"
+    },
+    {
+      "name": "swell",
+      "kind": "swell",
+      "prompt": "Warm uplifting synth pad swell rising gently over about two seconds, soft and hopeful, no drums"
+    },
+    {
+      "name": "logo",
+      "kind": "logo",
+      "prompt": "Brand logo reveal sound, bright sparkling chime with a soft warm bass hit, premium tech product, short, clean"
+    },
+    {
+      "name": "line",
+      "kind": "line",
+      "prompt": "Soft quick line drawing swipe, a thin line drawn across the screen, light and clean, short, no music",
+      "cuts": [
+        [
+          0.37,
+          0.45
+        ],
+        [
+          0.53,
+          0.45
+        ],
+        [
+          1.34,
+          0.5
+        ]
+      ]
+    }
+  ]
+}

@@ -5,14 +5,11 @@
   "description": "OmniBox product video: high-fidelity cut (~130 s, Chinese and English, real product UI and web page snapshots, with music and SFX; latest is high_fidelity_v5)",
   "scripts": {
     "studio": "remotion studio --no-open",
-    "render": "remotion render Demo out/demo.mp4",
-    "render:paced": "node tools/render-paced.mjs",
     "render:content": "node tools/render-content.mjs",
-    "render:app": "remotion render DemoApp out/demo-add_more_app.mp4",
-    "render:slogan": "remotion render DemoSlogan out/demo_modify_slogon.mp4",
     "render:final": "node tools/render-final.mjs",
     "audio": "esbuild audio/build.ts --bundle --platform=node --format=cjs --log-level=warning --outfile=audio/.build/build.cjs && node audio/.build/build.cjs",
-    "still": "remotion still Demo"
+    "still": "remotion still Final",
+    "audio:ai": "esbuild audio/sampled.ts --bundle --platform=node --format=cjs --log-level=warning --outfile=audio/.build/sampled.cjs && node audio/.build/sampled.cjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.529",

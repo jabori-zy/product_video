@@ -83,20 +83,24 @@ export const Board: React.FC<{ c: Content }> = ({ c: { board: b } }) => {
 export const RagFrame: React.FC<{ c: Content; play?: boolean }> = ({ c: { bili: b }, play = true }) => {
   const f = b.frame;
   const nodes: [string, string, number, number][] = [
-    ['📄', f.docs, 30, 66], ['🗂', f.store, 108, 66], ['🔍', f.retrieve, 186, 66], ['🧠', f.llm, 264, 66],
+    // 节点图标：lucide 线条（file-text / database / search / brain），不用 emoji
+    ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8', f.docs, 30, 66],
+    ['M12 8c4.4 0 8-1.3 8-3s-3.6-3-8-3-8 1.3-8 3 3.6 3 8 3zM4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3', f.store, 108, 66],
+    ['M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.35-4.35', f.retrieve, 186, 66],
+    ['M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18zM12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18zM12 5v13', f.llm, 264, 66],
   ];
   return (
     <div style={{ width: 330, height: 190, fontFamily: FONT, position: 'relative', overflow: 'hidden', background: 'linear-gradient(160deg,#1E293B,#0F172A)', color: '#E2E8F0' }}>
       <div style={{ position: 'absolute', left: 14, top: 10, fontSize: 18, fontWeight: 900, letterSpacing: 1 }}>RAG<span style={{ fontSize: 10, fontWeight: 400, color: '#94A3B8', marginLeft: 6 }}>Retrieval-Augmented Generation</span></div>
       {nodes.map(([ic, s, x, y], i) => (
         <React.Fragment key={s}>
-          <div style={{ position: 'absolute', left: x - 26, top: y - 22, width: 52, height: 44, borderRadius: 8, background: '#334155', border: `1.5px solid ${CH[i]}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>{ic}</div>
+          <div style={{ position: 'absolute', left: x - 26, top: y - 22, width: 52, height: 44, borderRadius: 8, background: '#334155', border: `1.5px solid ${CH[i]}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke={CH[i]} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d={ic} /></svg></div>
           <div style={{ position: 'absolute', left: x - 38, top: y + 26, width: 76, textAlign: 'center', fontSize: 9.5, color: '#CBD5E1', lineHeight: 1.2 }}>{s}</div>
           {i < 3 && <div style={{ position: 'absolute', left: x + 28, top: y - 2, width: 22, height: 2, background: '#64748B' }}><div style={{ position: 'absolute', right: -2, top: -3, width: 0, height: 0, borderLeft: '6px solid #64748B', borderTop: '4px solid transparent', borderBottom: '4px solid transparent' }} /></div>}
         </React.Fragment>
       ))}
       <div style={{ position: 'absolute', left: 60, top: 130, width: 210, height: 34, borderRadius: 8, background: '#4A8EF922', border: `1.5px solid ${C.blue}`, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 11, color: '#BFDBFE' }}>
-        💬 {f.answer} <span style={{ background: C.blue, color: '#fff', borderRadius: '50%', width: 14, height: 14, fontSize: 9, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>1</span>
+        <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#BFDBFE" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg>{f.answer} <span style={{ background: C.blue, color: '#fff', borderRadius: '50%', width: 14, height: 14, fontSize: 9, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>1</span>
       </div>
       {play && (
         <div style={{ position: 'absolute', right: 12, bottom: 12, width: 30, height: 30, borderRadius: '50%', background: 'rgba(0,0,0,.45)', border: '2px solid rgba(255,255,255,.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 12, paddingLeft: 2, boxSizing: 'border-box' }}>▶</div>

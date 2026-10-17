@@ -4,6 +4,7 @@
 //   （high_fidelity_v1 起按语言分目录；更早的版本仍在 out/ 根目录）
 //   只重做声音：末尾加 --remux
 //   4K（3840×2160，画面按 2 倍渲染，排版不变）：加 --4k → 文件名加 _4k 后缀
+//   用 AI 生成的声音（../audio，Higgsfield 配乐 + 音效，见 ../audio/README.md）：加 --ai-audio（high_fidelity_v6 起）
 // 先按当前时间线重建方案二的声音 → 渲染 Final / FinalEn（线框已填真实内容、无时间码）→ 合成
 import { execSync } from 'child_process';
 import fs from 'fs';
@@ -15,14 +16,15 @@ const run = (cmd) => execSync(cmd, { cwd: root, stdio: 'inherit' });
 const version = process.argv[2] || 'final';
 const en = process.argv.includes('en');
 const COMP = en ? 'FinalEn' : 'Final';
-const MIX = `audio/out/music2${en ? '_en' : ''}/mix.wav`;
+const ai = process.argv.includes('--ai-audio');
+const MIX = ai ? `../audio/out${en ? '_en' : ''}/mix.wav` : `audio/out/music2${en ? '_en' : ''}/mix.wav`;
 const k4 = process.argv.includes('--4k');
 const OUT = `out/${en ? 'en' : 'zh'}/ominibox_product_video_${en ? 'en_' : ''}${version}${k4 ? '_4k' : ''}.mp4`;
 fs.mkdirSync(path.join(root, path.dirname(OUT)), { recursive: true });
 const TMP = `out/.final_silent${en ? '_en' : ''}${k4 ? '_4k' : ''}.mp4`;
 
 const remux = process.argv.includes('--remux'); // 只重做声音：沿用已渲染成片的画面
-run(`npm run audio${en ? ' -- en' : ''}`); // 声音事件表与画面同源：画面节奏或文案长度改了，声音跟着重算
+run(`npm run ${ai ? 'audio:ai' : 'audio'}${en ? ' -- en' : ''}`); // 声音事件表与画面同源：画面节奏或文案长度改了，声音跟着重算
 if (remux) run(`npx remotion ffmpeg -v error -y -i ${OUT} -map 0:v -c:v copy ${TMP}`);
 else run(`npx remotion render ${COMP} ${TMP} --timeout=120000${k4 ? ' --scale=2' : ''}`);
 // 母带：loudnorm 只用来测量，再按测量值做固定增益 → −14 LUFS、真峰值 ≤ −1.5 dBTP

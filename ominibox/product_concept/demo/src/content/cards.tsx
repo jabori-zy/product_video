@@ -1,4 +1,5 @@
 import React from 'react';
+import { Img, staticFile } from 'remotion';
 import type { Content } from '../data/content';
 import { FONT } from '../fonts';
 import { XiaoheiAvatar } from './avatar';
@@ -15,32 +16,12 @@ const page = (w: number, h: number, bg: string, extra?: React.CSSProperties): Re
 });
 const clamp = (n: number): React.CSSProperties => ({ display: '-webkit-box', WebkitLineClamp: n, WebkitBoxOrient: 'vertical', overflow: 'hidden' });
 
-/** 新闻站 720×450 */
-export const News: React.FC<{ c: Content }> = ({ c: { news: n } }) => (
-  <div style={page(720, 450, '#fff', { color: '#111' })}>
-    <div style={{ height: 52, background: '#0F172A', display: 'flex', alignItems: 'center', padding: '0 28px', gap: 22 }}>
-      <div style={{ color: '#fff', fontSize: 20, fontWeight: 900 }}>{n.site}</div>
-      {n.nav.map((s, i) => <div key={s} style={{ color: i === 1 ? '#38BDF8' : '#CBD5E1', fontSize: 14, fontWeight: i === 1 ? 700 : 400 }}>{s}</div>)}
-    </div>
-    <div style={{ display: 'flex', gap: 22, padding: '22px 28px' }}>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <span style={{ background: '#DC2626', color: '#fff', fontSize: 12, fontWeight: 700, padding: '3px 8px', borderRadius: 3 }}>{n.tag}</span>
-        <div style={{ fontSize: 27, fontWeight: 800, lineHeight: 1.3, marginTop: 12 }}>{n.headline}</div>
-        <div style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, marginTop: 10, ...clamp(3) }}>{n.dek}</div>
-        <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 10 }}>{n.byline}</div>
-      </div>
-      {/* 配图：成本下降折线 */}
-      <svg width={230} height={170} viewBox="0 0 230 170" style={{ flexShrink: 0, borderRadius: 8, background: 'linear-gradient(160deg,#E0F2FE,#F8FAFC)' }}>
-        {[40, 80, 120].map((y) => <line key={y} x1={16} x2={214} y1={y} y2={y} stroke="#CBD5E1" strokeDasharray="3 4" />)}
-        <polyline points="20,28 60,44 100,70 140,104 180,128 210,140" fill="none" stroke="#0EA5E9" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
-        {[[20, 28], [210, 140]].map(([x, y]) => <circle key={x} cx={x} cy={y} r={6} fill="#0EA5E9" />)}
-        <text x={214} y={32} fontSize={24} fontWeight={800} fill="#DC2626" textAnchor="end" fontFamily={FONT}>−90%</text>
-      </svg>
-    </div>
-    <div style={{ margin: '0 28px', borderTop: '2px solid #0F172A', paddingTop: 10 }}>
-      <div style={{ fontSize: 13, fontWeight: 700, color: '#0F172A' }}>{n.more}</div>
-      {n.stories.map((s) => <div key={s} style={{ fontSize: 15, marginTop: 8, color: '#1E293B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>· {s}</div>)}
-    </div>
+/** 新闻站 720×450：今日头条真实页面截图（public/toutiao.png，1612×1234，原图在 ../assets/toutiao.png）。
+ *  取左上 1340 宽（logo、导航、搜索、热榜头图、事件详情、右侧头条热榜），等比缩到卡片宽、底部裁掉 */
+const TOUTIAO = { w: 1612, crop: 1340 };
+export const News: React.FC<{ c: Content }> = () => (
+  <div style={page(720, 450, '#fff')}>
+    <Img src={staticFile('toutiao.png')} style={{ position: 'absolute', left: 0, top: 0, width: (TOUTIAO.w * 720) / TOUTIAO.crop, height: 'auto', display: 'block' }} />
   </div>
 );
 
@@ -219,7 +200,7 @@ export const XPost: React.FC<{ c: Content }> = ({ c: { x } }) => {
 export const Rss: React.FC<{ c: Content; reveal?: number[]; badge?: boolean }> = ({ c: { rss: r }, reveal = [1, 1, 1], badge = true }) => (
   <div style={page(460, 380, '#2a2a2e', { color: C.text, padding: 26 })}>
     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-      <div style={{ width: 40, height: 40, borderRadius: 10, background: '#F97316', color: '#fff', fontSize: 22, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📡</div>
+      <div style={{ width: 40, height: 40, borderRadius: 10, background: '#F97316', color: '#fff', fontSize: 22, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16M5 19a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" /></svg></div>
       <div>
         <div style={{ fontSize: 22, fontWeight: 700 }}>{r.folder}</div>
         <div style={{ fontSize: 13, color: C.muted }}>{r.feeds}</div>

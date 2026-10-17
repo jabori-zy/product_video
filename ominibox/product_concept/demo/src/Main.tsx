@@ -54,7 +54,7 @@ export const Main: React.FC<{ paced?: boolean; at?: number; label?: boolean; end
 
   const w5 = whip(T, 5, -1, 0); // A → B 向右甩（内容向左）
   const w9 = whip(T, 9, 1, 0); // B → C 向左甩（内容向右）
-  const w35 = whip(T, 35, 0, 1); // F → G 向上甩（内容向下）
+  const w35 = whip(T, 35, -1, 0); // F → G：内容向左甩出，G 的设备卡片从右往左逐个飞进来（G.tsx）
 
   if (in_(0, 5.15)) L.push(<Layer key="A" id="A" T={T} s={0} C={A} {...w5.out} />);
   if (in_(4.85, 9.15)) {
@@ -67,11 +67,12 @@ export const Main: React.FC<{ paced?: boolean; at?: number; label?: boolean; end
   // D → E：光带擦除
   if (in_(ARC_DE - 0.25, 30.2)) L.push(<Layer key="E" id="E" T={T} s={18} C={Ee} style={{ clipPath: T < ARC_DE + 0.25 ? `inset(0 ${Math.max(0, W - arcX(T, ARC_DE))}px 0 0)` : undefined }} />);
   // E → F：右上角「分享」图标放大成米白画布
+  // F → G：G 垫在下面（黑底 + 从右侧飞入的设备卡片），F 向左甩出露出 G
+  if (in_(34.85, 39.25)) L.push(<Layer key="G" id="G" T={T} s={35} C={Gg} />);
   if (in_(29.8, 35.15)) {
     const r = lin(T, 29.8, 30.2, 0, 2300);
     L.push(<Layer key="F" id="F" T={T} s={30} C={Ff} {...w35.out} style={{ clipPath: T < 30.2 ? `circle(${r}px at ${SHARE.x}px ${SHARE.y}px)` : undefined }} />);
   }
-  if (in_(34.85, 39.25)) L.push(<Layer key="G" id="G" T={T} s={35} C={Gg} {...w35.in} />);
   // G → H：光带擦除
   if (in_(38.75, 45.01)) L.push(<Layer key="H" id="H" T={T} s={39} C={ending} style={{ clipPath: T < 39.25 ? `inset(0 ${Math.max(0, W - arcX(T, 39))}px 0 0)` : undefined }} />);
 

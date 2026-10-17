@@ -6,15 +6,21 @@ import { C, Cat, Logo } from '../lib';
 
 // C 段手机：微信聊天 → OmniBox App（360×720，含机身边框，与线框一致）
 
-/** iOS 状态栏图标：信号、Wi-Fi、电池 */
-const StatusIcons: React.FC<{ color: string }> = ({ color }) => (
-  <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-    <svg width={17} height={11} viewBox="0 0 17 11" style={{ display: 'block' }}>{[0, 1, 2, 3].map((i) => <rect key={i} x={i * 4.5} y={8 - i * 2.6} width={3} height={3 + i * 2.6} rx={0.8} fill={color} />)}</svg>
-    <svg width={15} height={11} viewBox="0 0 15 11" style={{ display: 'block' }} fill="none" stroke={color} strokeWidth={1.7} strokeLinecap="round"><path d="M1 3.8a9 9 0 0 1 13 0M3.4 6.3a5.6 5.6 0 0 1 8.2 0" /><circle cx="7.5" cy="9" r="1.1" fill={color} stroke="none" /></svg>
-    <div style={{ width: 24, height: 12, borderRadius: 3.5, border: `1px solid ${color}88`, padding: 1.5, boxSizing: 'border-box', position: 'relative' }}>
-      <div style={{ width: '78%', height: '100%', borderRadius: 1.5, background: color }} />
-      <div style={{ position: 'absolute', right: -3.5, top: 3.5, width: 1.8, height: 4, borderRadius: 1, background: `${color}88` }} />
-    </div>
+/** iOS 状态栏图标：信号（四格）、Wi-Fi（两道弧 + 扇形）、电池（半透明外框 + 实心电量 + 正极），s 为整体缩放 */
+export const StatusIcons: React.FC<{ color: string; s?: number; level?: number }> = ({ color, s = 1, level = 0.8 }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 5 * s }}>
+    <svg width={18 * s} height={12 * s} viewBox="0 0 18 12" style={{ display: 'block' }}>
+      {[3.6, 5.8, 8.2, 11].map((h, i) => <rect key={i} x={i * 4.8} y={12 - h} width={3.4} height={h} rx={1} fill={color} />)}
+    </svg>
+    <svg width={16 * s} height={12 * s} viewBox="0 0 16 12" style={{ display: 'block' }}>
+      <g fill="none" stroke={color} strokeWidth={2.1}><path d="M1.21 4.71A9.6 9.6 0 0 1 14.79 4.71" /><path d="M3.62 7.12A6.2 6.2 0 0 1 12.38 7.12" /></g>
+      <path d="M8 11.5L5.6 9.1A3.4 3.4 0 0 1 10.4 9.1Z" fill={color} />
+    </svg>
+    <svg width={26 * s} height={12 * s} viewBox="0 0 26 12" style={{ display: 'block' }}>
+      <rect x={0.5} y={0.5} width={22} height={11} rx={3.4} fill="none" stroke={color} strokeOpacity={0.4} />
+      <rect x={2} y={2} width={19 * level} height={8} rx={2} fill={color} />
+      <rect x={23.6} y={4} width={1.6} height={4} rx={0.8} fill={color} fillOpacity={0.45} />
+    </svg>
   </div>
 );
 
@@ -117,7 +123,7 @@ export const App: React.FC<{ c: Content }> = ({ c: { app: a } }) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 20px' }}>
       <Logo size={30} />
       <div style={{ color: '#fff', fontSize: 16, fontWeight: 700 }}>{a.space} ⌄</div>
-      <span style={{ marginLeft: 'auto', color: C.muted, fontSize: 18 }}>🔔</span>
+      <svg style={{ marginLeft: 'auto' }} width={20} height={20} viewBox="0 0 24 24" fill="none" stroke={C.muted} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
     </div>
     <div style={{ margin: '10px 20px 0', height: 36, borderRadius: 999, background: '#2a2a2a', display: 'flex', padding: 3, boxSizing: 'border-box' }}>
       {a.tabs.map((s, i) => <div key={s} style={{ flex: 1, borderRadius: 999, background: i === 1 ? '#454545' : undefined, color: '#fff', fontSize: 14, fontWeight: i === 1 ? 700 : 400, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{s}</div>)}
@@ -140,7 +146,7 @@ export const App: React.FC<{ c: Content }> = ({ c: { app: a } }) => (
     <div style={{ position: 'absolute', left: 0, bottom: 0, width: '100%', height: 78, background: '#151517', borderTop: '1px solid #2a2a2a', display: 'flex', justifyContent: 'space-around', alignItems: 'center', paddingBottom: 10, boxSizing: 'border-box' }}>
       {a.bottom.map((s, i) => (
         <div key={s} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, color: i === 1 ? '#8AB4FF' : '#ddd', fontSize: 12, fontWeight: i === 1 ? 700 : 400 }}>
-          <div style={{ width: i === 1 ? 44 : 26, height: i === 1 ? 44 : 26, borderRadius: '50%', background: i === 1 ? C.blue : undefined, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: i === 1 ? 20 : 18 }}>{['☰', '🎙', '✎'][i]}</div>
+          <div style={{ width: i === 1 ? 44 : 26, height: i === 1 ? 44 : 26, borderRadius: '50%', background: i === 1 ? C.blue : undefined, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: i === 1 ? 20 : 18 }}><svg width={i === 1 ? 22 : 18} height={i === 1 ? 22 : 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d={['M12 5v14M5 12h14', 'M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM19 11a7 7 0 0 1-14 0M12 18v3', 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h6'][i]} /></svg></div>
           {s}
         </div>
       ))}

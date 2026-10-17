@@ -16,16 +16,26 @@ export const SitePage: React.FC<{
   /** 页面下滚（CSS 像素） */ scroll?: number;
   /** 选择器 → 属性（输入框的值、占位符等） */ attrs?: Record<string, Record<string, string>>;
   radius?: number; bg?: string;
-}> = ({ site, w, h, zoom, slots, scroll = 0, attrs, radius = 0, bg }) => {
+  /** 内容位改用项目字体 SC（默认开；知乎关掉：B 段引文选区按原字体实测的位置画） */ ownFont?: boolean;
+}> = ({ site, w, h, zoom, slots, scroll = 0, attrs, radius = 0, bg, ownFont = true }) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const [els, setEls] = useState<Record<string, HTMLElement> | null>(null);
   const [handle] = useState(() => delayRender(`site ${site}`));
   // 内容位填好、字体就绪之后才放行这一帧
+  // 片子自己的文字（填进内容位的标题、封面……）用项目字体 SC（Noto Sans SC，100–900 真字重），不靠系统字体：
+  // 系统字体缺某个字重时浏览器会临时合成 / 换字体，多标签并行渲染时各标签选得不一样，成片里同一处文字逐帧变宽变窄（抖动）。
+  // 所以在 iframe 里装上 SC，等用到的字重都加载完才放行这一帧
   useLayoutEffect(() => {
     if (!els) return;
     const doc = ref.current!.contentDocument!;
-    doc.fonts.load('16px SC').then(() => doc.fonts.ready).then(() => continueRender(handle), () => continueRender(handle));
-  }, [els, handle]);
+    if (ownFont && !doc.getElementById('sc-font')) {
+      const st = doc.createElement('style'); st.id = 'sc-font';
+      st.textContent = `@font-face{font-family:SC;src:url(${staticFile('fonts/NotoSansSC.ttf')});font-weight:100 900}[data-slot]{font-family:SC,sans-serif!important}[data-slot] *{font-family:SC,sans-serif!important}`;
+      doc.head.appendChild(st);
+    }
+    Promise.all(['400', '500', '600', '700', '900'].map((w) => doc.fonts.load(`${w} 16px SC`, 'Notion替代方案')))
+      .then(() => doc.fonts.ready).then(() => continueRender(handle), () => continueRender(handle));
+  }, [els, handle, ownFont]);
   useLayoutEffect(() => {
     const win = ref.current?.contentWindow;
     if (!els || !win) return;

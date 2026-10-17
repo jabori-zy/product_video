@@ -9,13 +9,13 @@ import { App, WeChat } from './phone';
 import { Board, Keyframes, Pdf, RagFrame } from './understand';
 import { Answer, Report } from './answers';
 import { Readme } from './github';
-import { DevAndroid, DevExt, DevIos, DevQQ, DevWeb, DevWechat } from './devices';
+import { DevAndroid, DevExt, DevIos, DevQQ, DevTelegram, DevWeb, DevWechat } from './devices';
 
 // 线框内容的独立入口：不影响视频的 Root.tsx。每项 × 每种语言一个 Still，id = <lang>-<slug>
 const VIEW: Record<Slug, React.FC<{ c: Content }>> = {
   zhihu: Zhihu, news: News, bili: BiliSearch, xhs: XhsSearch, x: XSearch, wechat: WeChat, app: App, rss: Rss,
   pdf: Pdf, board: Board, frame: RagFrame, keyframes: Keyframes, answer: Answer, report: Report, readme: Readme,
-  'dev-web': DevWeb, 'dev-ext': DevExt, 'dev-ios': DevIos, 'dev-android': DevAndroid, 'dev-wechat': DevWechat, 'dev-qq': DevQQ,
+  'dev-web': DevWeb, 'dev-ext': DevExt, 'dev-ios': DevIos, 'dev-android': DevAndroid, 'dev-wechat': DevWechat, 'dev-qq': DevQQ, 'dev-telegram': DevTelegram,
 };
 
 // file / where 只给截图脚本用（文件名、README 索引）

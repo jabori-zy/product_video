@@ -10,6 +10,8 @@ export type Content = {
     // 专栏文章
     title: string; author: string; bio: string; voters: string; date: string; collect: string; // collect：标题下「收录于 · 专栏」
     paras: string[]; quote: string; upvote: string; comments: string; like: string; share: string; save: string;
+    /** E 段在 OmniBox 里打开的整篇文章（收藏后的资源正文）：quote = 上面的 quote，cite = paras[0]（被引段落），para = paras[文本里的序号] */
+    article: ['p' | 'h2' | 'quote' | 'cite' | 'para', string][];
     // 右栏：关于作者 + 大家都在搜
     about: string; stats: [string, string][]; follow: string; message: string; hot: string; refresh: string; hotTag: string; hotItems: [string, string][];
   };
@@ -68,11 +70,12 @@ export type Content = {
   readme: { repo: string; tabs: string[]; desc: string; badges: string[]; quick: string; cmds: string[]; feats: string[] };
   devices: {
     web: { space: string; nav: string[]; tabs: [string, string]; greet: string; ask: string };
-    ext: { name: string; save: string; to: string; area: string };
+    ext: { name: string; save: string; to: string; space: string; area: string; hold: string };
     ios: { greet: string; ask: string; bottom: string[] };
     android: { title: string; items: string[] };
     wechat: { title: string; msgs: [boolean, string][] };
     qq: { title: string; msgs: [boolean, string][] };
+    telegram: { title: string; sub: string; msgs: [boolean, string][] };
   };
   /** 截图文件名（不含编号与扩展名） */
   files: Record<Slug, string>;
@@ -84,7 +87,7 @@ export const LANGS = Object.keys(LOCALES) as Lang[];
 
 export type Slug =
   | 'zhihu' | 'news' | 'bili' | 'xhs' | 'x' | 'wechat' | 'app' | 'rss' | 'pdf' | 'board' | 'frame' | 'keyframes'
-  | 'answer' | 'report' | 'readme' | 'dev-web' | 'dev-ext' | 'dev-ios' | 'dev-android' | 'dev-wechat' | 'dev-qq';
+  | 'answer' | 'report' | 'readme' | 'dev-web' | 'dev-ext' | 'dev-ios' | 'dev-android' | 'dev-wechat' | 'dev-qq' | 'dev-telegram';
 
 /** 截图清单：顺序 = 在视频里出现的顺序；where = 填哪个线框（45 s 版 / 89 s 版时间） */
 export const ITEMS: { slug: Slug; w: number; h: number; where: string }[] = [
@@ -103,12 +106,13 @@ export const ITEMS: { slug: Slug; w: number; h: number; where: string }[] = [
   { slug: 'answer', w: 960, h: 470, where: 'E 回答正文（灰条，21.0–22.5 s / 44.1–47.6 s）' },
   { slug: 'report', w: 960, h: 940, where: 'E 周报正文 + 待办表（23.5–26.5 s / 49.6–55.0 s）' },
   { slug: 'readme', w: 1000, h: 290, where: 'G README（37.0–37.65 s / 75.0–76.6 s）' },
-  { slug: 'dev-web', w: 460, h: 300, where: 'G 设备阵列 · 网页（35.0–37.0 s / 71.1–75.0 s）' },
-  { slug: 'dev-ext', w: 200, h: 250, where: 'G 设备阵列 · 插件' },
-  { slug: 'dev-ios', w: 170, h: 350, where: 'G 设备阵列 · iOS' },
-  { slug: 'dev-android', w: 170, h: 350, where: 'G 设备阵列 · Android' },
-  { slug: 'dev-wechat', w: 260, h: 350, where: 'G 设备阵列 · 微信' },
-  { slug: 'dev-qq', w: 260, h: 350, where: 'G 设备阵列 · QQ' },
+  { slug: 'dev-web', w: 460, h: 285, where: 'G 设备阵列 · 网页（35.0–37.0 s / 71.1–75.0 s）' },
+  { slug: 'dev-ext', w: 260, h: 176, where: 'G 设备阵列 · 插件' },
+  { slug: 'dev-ios', w: 170, h: 368, where: 'G 设备阵列 · iOS' },
+  { slug: 'dev-android', w: 170, h: 368, where: 'G 设备阵列 · Android' },
+  { slug: 'dev-wechat', w: 170, h: 368, where: 'G 设备阵列 · 微信' },
+  { slug: 'dev-qq', w: 170, h: 368, where: 'G 设备阵列 · QQ' },
+  { slug: 'dev-telegram', w: 170, h: 368, where: 'G 设备阵列 · Telegram' },
 ];
 
 export const fileName = (lang: Lang, slug: Slug) => {

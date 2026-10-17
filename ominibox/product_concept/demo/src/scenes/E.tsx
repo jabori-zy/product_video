@@ -2,12 +2,13 @@ import React from 'react';
 import { Band, Camera, Caption, Cursor, Fill, Words, inOut, kf, lin, morph, sp, typed } from '../lib';
 import {
   Accordion, AnswerActions, AppFrame, ApprovalCard, ChatComposerBar, ChatHeader, ChatPanelHeader, ChatRow, ChatScroll, Cite, CiteCard, Composer, DateLabel, GroupLabel,
-  HomeBody, HomeCards, HomeHeader, Main, Markdown, OMNI_BG, ResourceHeader, ResourceView, Row, Sidebar, SplitView, SystemGroup, ThoughtFor, ToolCall, UserMsg, Z, rowRect, rowTop, useRecent,
+  HomeBody, HomeCards, HomeHeader, Ic, Main, Markdown, OMNI_BG, ResourceHeader, ResourceView, Row, Sidebar, PANEL, SHARE, SplitView, SystemGroup, ThoughtFor, ToolCall, UserMsg, Z, rowRect, rowTop, useRecent,
 } from '../ui';
 import { LOCALES } from '../data/content';
 import { useLang, useRes, useTr } from '../i18n';
 import { TYPED, stepOf, txt, type ResKey } from '../copy';
-import { E_CLICKS, E_Q1_AT } from './E.times';
+import { E_CLICKS, E_OPEN_ROW, E_Q1_AT, E_SHARE } from './E.times';
+import { CatPeek } from '../peek';
 
 export { SHARE } from '../ui';
 
@@ -49,10 +50,11 @@ const CAM = [
   { t: 6.45, x: 1125, y: 880, s: 1.5 },
   { t: 6.7, x: 1125, y: 400, s: 1.3 },
   { t: 7.75, x: 1125, y: 560, s: 1.3 },
-  { t: 8.1, ...FULL },
+  { t: 8.0, ...FULL },
   { t: 8.45, ...FULL },
-  { t: 8.65, x: 1125, y: 880, s: 1.5 },
-  { t: 9.1, x: 1125, y: 880, s: 1.5 },
+  // 周报收进侧栏后回到首页，在首页输入框里打 Q3
+  { t: 8.65, x: 1100, y: 540, s: 1.4 },
+  { t: 9.1, x: 1100, y: 540, s: 1.4 },
   { t: 9.3, ...FULL },
   { t: 9.45, x: 1125, y: 742, s: 1.6 },
   { t: 9.6, x: 1125, y: 742, s: 1.6 },
@@ -68,8 +70,8 @@ const AT = {
   chatSend: P(1198, 749),
   cite1: P(675.4, 320.7), // 第 1 条回答的引用角标（出处是收藏的知乎文章）
   read: P(1020, 372), // 资源页被引段落（蓝底，312–988 × 313–380）右侧的空白，点开之后光标停在这里
-  save: P(532, 584), // 周报末尾「保存」（滚动 400 之后）
   approve: P(560, 709), // 待确认卡片「同意」
+  agentRow: P(130, rowTop(1) + 17), // 归档后「AI 研究」里的第 1 行「AI Agent 元年」（depth 1）
 };
 
 /** 被引用资源（收藏的知乎文章）的 id，悬浮卡底部显示 */
@@ -89,22 +91,24 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
   const lang = useLang(), tr = useTr(), res = useRes();
   const Zc = LOCALES[lang]; // 线框里的真实内容（data/locales）
   const L = (p: string[]) => (lang === 'en' ? p[1] : p[0]);
-  const c = kf(t, CAM);
+  // 推近时画面下沿不超出主区圆角面板（否则面板下方的灰色底会露出来，比如只拍输入框的时候）
+  const c0 = kf(t, CAM);
+  const c = c0.s > 1 ? { ...c0, y: Math.min(c0.y, PANEL.y + PANEL.h - 540 / c0.s) } : c0;
   const recent = useRecent();
 
   // ---- 侧栏：资源 → 对话 → 资源 ----
-  const tab = t < 7.9 ? sp(t, 0) : 1 - sp(t, 7.9);
+  const tab = t < 7.75 ? sp(t, 0) : 1 - sp(t, 7.75);
   const histO = tab;
   const folderP = sp(t, 9.8);
   const expand = (j: number) => sp(t, 10.6 + j * 0.05);
   const compact = lin(t, 10.55, 10.75, 0, 1);
-  const weeklyP = t >= 8.3 ? sp(t, 8.3) : 0;
+  const weeklyP = t >= 8.15 ? sp(t, 8.15) : 0;
   const tree = (
     <div style={{ opacity: 1 - histO }}>
       <GroupLabel top={308} text={tr('个人', 'Personal')} />
       {t >= 9.8 && <Row top={rowTop(0)} icon="📁" text={res('aiFolder')} o={folderP} hover={t > 10.1 && t < 10.7} caret={t > 10.6 ? 'open' : 'closed'} />}
       {TREE.map(([ic, s], i) => {
-        if (i === 8 && t < 8.3) return null;
+        if (i === 8 && t < 8.15) return null;
         const mi = MOVE.indexOf(i);
         const base = rowTop(i + folderP);
         if (mi >= 0) {
@@ -117,7 +121,7 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
         return <Row key={s} top={base + (rowTop(7 + k) - base) * compact} icon={ic} text={res(s)} />;
       })}
       {t >= 10.6 && MOVE.map((i, j) => (
-        <Row key={`in${i}`} top={rowTop(1 + j)} depth={1} icon={TREE[i][0]} text={res(TREE[i][1])} o={expand(j)} />
+        <Row key={`in${i}`} top={rowTop(1 + j)} depth={1} icon={TREE[i][0]} text={res(TREE[i][1])} o={expand(j)} hover={j === 0 && t > E_OPEN_ROW - 0.012 && t < E_OPEN_ROW + 0.01} />
       ))}
       <SystemGroup top={rowTop(7 + weeklyP + folderP) + 34 + 8} />
     </div>
@@ -156,7 +160,11 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
 
   // ---- 首页：点「Agent 2.1 轻」→ 滑条拉到「高」→ 打字 → 发送 ----
   const homeO = 1 - lin(t, 2.95, 3.1, 0, 1);
-  const chatO = lin(t, 3.0, 3.1, 0, 1);
+  // 周报飞进侧栏后主区回到首页（小黑 + 输入框），Q3 在首页输入、发送后进入新对话
+  const home2O = lin(t, 7.85, 8.05, 0, 1) * (1 - lin(t, 9.15, 9.3, 0, 1));
+  const chatO = lin(t, 3.0, 3.1, 0, 1) * (1 - home2O);
+  const onHome = t < 3.0 || home2O > 0.5;
+  const peek = React.useContext(CatPeek);
   const q1 = typed(t, E_Q1_AT, txt(TYPED.q1, lang), stepOf(TYPED.q1, lang));
   const popO = Math.min(lin(t, 1.62, 1.72, 0, 1), 1 - lin(t, 2.02, 2.12, 0, 1));
   const level = lin(t, 1.92, 2.02, 3, 5); // 3 = 轻（默认）→ 5 = 高
@@ -183,8 +191,7 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
       )}
     </>
   ) : <ThoughtFor sec={12} />;
-  const citeCard = t > 4.65 && t < 4.95;
-  const citeLoading = t < 4.7; // 实拍：刚悬停时先是「正在加载详情…」，片段随后出来
+  const citeCard = t > 4.6 && t < 4.95; // 悬停即出完整卡片（标题 + 片段），不显示「正在加载详情…」，约 2 帧出齐
   const q1Block = (
     <Block o={chatO * (1 - q1Fade)} dy={-q1Fade * 150}>
       <UserMsg text={txt(TYPED.q1, lang)} />
@@ -203,8 +210,9 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
                     <span style={{ position: 'relative', display: 'inline-block', marginLeft: 4 }}>
                       <Cite n={j + 1} s={sp(t, a + 0.2)} hover={j === 0 && t > 4.6 && t < 5.0} />
                       {j === 0 && citeCard && (
-                        <span style={{ position: 'absolute', left: '50%', top: 'calc(100% + 4px)', transform: 'translateX(-50%)', zIndex: 50 }}>
-                          <CiteCard title={Zc.zhihu.title} text={Zc.zhihu.paras[0]} id={RES_ID} loading={citeLoading} o={lin(t, 4.65, 4.7, 0, 1)} s={sp(t, 4.65)} />
+                        // 卡片 w-80 = 320 产品像素：用 calc 定到整像素居中，不用 translateX(-50%)（多标签并行渲染时小数位移会被各标签取整不同，成片里卡片抖动）
+                        <span style={{ position: 'absolute', left: 'calc(50% - 160px)', top: 'calc(100% + 4px)', zIndex: 50 }}>
+                          <CiteCard title={Zc.zhihu.title} text={Zc.zhihu.paras[0]} id={RES_ID} o={lin(t, 4.6, 4.62, 0, 1)} s={lin(t, 4.6, 4.62, 0, 1)} />
                         </span>
                       )}
                     </span>
@@ -219,13 +227,19 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
     </Block>
   );
 
-  // 点引用 → 在 OmniBox 里打开被引用的资源（产品：路由立即换成资源页，对话面板 200ms 从右侧滑入，正文取回后被引段落蓝底）
+  // 点引用 → 在 OmniBox 里直接打开被引用的资源，当前对话被挤到右侧面板（对照 assets/open_citation.mp4；被引段落蓝底）
   // → 停一下看清出处 → 淡回整页对话（产品里没有一键回去的按钮，这里按剪辑处理，不画假的点击）
-  const splitOn = t >= 4.95 && t < 5.45;
-  const split = lin(t, 4.95, 5.05, 0, 1);
-  const splitO = 1 - lin(t, 5.32, 5.45, 0, 1);
-  const resLoading = t < 5.0;
+  // 挤压 4.95 → 5.2（资源正文 5.05 → 5.2 淡入）→ 从页首滚过约一屏半到被引段落 5.1 → 5.3 → 停一下 → 5.42 起淡回整页对话
+  // （节奏表 pace.ts 在 23.5 之后变快，所以停留和淡出都放在 5.5 之前，片长不变）
+  const splitOn = t >= 4.95 && t < 5.52;
+  const split = lin(t, 4.95, 5.2, 0, 1);
+  const splitO = 1 - lin(t, 5.42, 5.52, 0, 1);
+  const resO = lin(t, 5.05, 5.2, 0, 1);
+  const resScroll = lin(t, 5.1, 5.3, 0, 1, inOut);
   const Z0 = Zc.zhihu;
+  // 整篇文章：被引段落（cite）前面是引言块（quote），滚动后引言块停在正文第一块的位置，被引段落落在原来的 313–380（光标 AT.read 不用改）
+  const article = Z0.article.map(([k, x]) => ({ kind: k === 'h2' ? 'h2' as const : k === 'quote' ? 'quote' as const : 'p' as const, text: k === 'quote' ? Z0.quote : k === 'cite' ? Z0.paras[0] : k === 'para' ? Z0.paras[+x] : x }));
+  const citeAt = Z0.article.findIndex(([k]) => k === 'cite');
   const splitView = splitOn && (
     <SplitView
       split={split}
@@ -235,9 +249,11 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
         <ResourceView
           title={Z0.title}
           created="2026-10-13 21:14:05"
-          blocks={[{ kind: 'quote', text: Z0.quote }, ...Z0.paras.map((x) => ({ kind: 'p' as const, text: x }))]}
-          hl={1}
-          loading={resLoading}
+          blocks={article}
+          hl={citeAt}
+          scroll={resScroll}
+          scrollTo={citeAt - 1}
+          contentO={resO}
         />
       }
       panel={
@@ -255,15 +271,15 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
   // Q2 周报：回答就是周报正文；点「保存」→ 存成资源（整块缩成一行飞进资源树）
   const q2 = typed(t, 5.7, txt(TYPED.q2, lang), stepOf(TYPED.q2, lang));
   const q3 = typed(t, 8.5, txt(TYPED.q3, lang), stepOf(TYPED.q3, lang));
-  const compText = t < 6.4 ? (t >= 5.7 ? q2 : '') : t >= 8.5 && t < 9.15 ? q3 : '';
+  const compText = t < 6.4 && t >= 5.7 ? q2 : ''; // Q3 改在首页输入框里打（见 home2Composer）
   const q2O = lin(t, 6.45, 6.6, 0, 1) * (1 - lin(t, 8.35, 8.5, 0, 1));
   const R = Zc.report;
   const docT = typed(t, 6.5, txt(TYPED.docTitle, lang), stepOf(TYPED.docTitle, lang));
   const sec = (j: number) => 6.7 + j * 0.35;
   const scroll = lin(t, 6.6, 7.8, 0, 400);
-  const inFlow = t < 7.95; // 保存之后正文由飞行卡片接管
-  const q2Block = (
-    <Block o={q2O * (inFlow ? 1 : 0)} dy={-scroll}>
+  const inFlow = t < 7.8; // 滚到底（7.8）正文直接由飞行卡片接管，不点「保存」
+  const q2Content = (
+    <>
       <UserMsg text={txt(TYPED.q2, lang)} />
       <ThoughtFor sec={6} />
       <Markdown>
@@ -291,18 +307,26 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
             )}
           </React.Fragment>
         ))}
-        <AnswerActions o={lin(t, 7.6, 7.7, 0, 1)} saveHover={t > 7.7 && t < 7.95} tip={t > 7.7 && t < 7.95 ? tr('将当前回复保存至个人空间', 'Save this response to personal space') : undefined} />
+        <AnswerActions o={lin(t, 7.6, 7.7, 0, 1)} />
       </Markdown>
-    </Block>
+    </>
   );
-  // 保存：正文区缩成资源行飞进侧栏（产品像素）
+  const q2Block = <Block o={q2O * (inFlow ? 1 : 0)} dy={-scroll}>{q2Content}</Block>;
+  // 保存：正文区连同周报内容一起缩成资源行飞进侧栏（产品像素）；卡片里是同一份正文（同样的滚动位置），快落地时换成资源行的标题
   const row8 = rowRect(8);
   const doc = morph(t, [
     { t: 0, x: 460, y: 56, w: 768, h: 580, r: 0 },
-    { t: 7.95, x: row8.x / Z, y: row8.y / Z, w: row8.w / Z, h: row8.h / Z, r: 6 },
+    { t: 7.8, x: row8.x / Z, y: row8.y / Z, w: row8.w / Z, h: row8.h / Z, r: 6 },
   ]);
-  const docCard = t >= 7.95 && t < 8.3 && (
-    <div style={{ position: 'absolute', left: doc.x, top: doc.y, width: doc.w, height: doc.h, borderRadius: doc.r, background: '#fff', border: '1px solid hsl(240 5.9% 90%)', boxShadow: '0 12px 40px rgba(15,23,42,.18)', zIndex: 60 }} />
+  const docK = doc.w / 768;
+  const docCard = t >= 7.8 && t < 8.15 && (
+    <div style={{ position: 'absolute', left: doc.x, top: doc.y, width: doc.w, height: doc.h, borderRadius: doc.r, background: '#fff', border: '1px solid hsl(240 5.9% 90%)', boxShadow: '0 12px 40px rgba(15,23,42,.18)', zIndex: 60, overflow: 'hidden' }}>
+      {/* 卡片里的正文：与对话区同宽（768）、同滚动位置（ChatScroll 的 p-4 = 顶部 16），整体按卡片宽度缩放 */}
+      <div style={{ position: 'absolute', left: 0, top: 0, width: 768, transform: `scale(${docK})`, transformOrigin: '0 0', opacity: 1 - lin(doc._p, 0.55, 0.85, 0, 1) }}>
+        <div className="space-y-4" style={{ transform: `translateY(${16 - scroll}px)` }}>{q2Content}</div>
+      </div>
+      <div className="flex items-center gap-2 px-2 text-sm" style={{ position: 'absolute', inset: 0, whiteSpace: 'nowrap', opacity: lin(doc._p, 0.6, 0.9, 0, 1) }}><Ic n="res-doc" className="size-4 shrink-0" />{res('weekly')}</div>
+    </div>
   );
 
   // Q3 Agent：工具调用，创建文件夹要人工确认（卡片在输入框的位置）
@@ -328,25 +352,33 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
     </Block>
   );
 
-  const black = Math.min(lin(t, 11.0, 11.1, 0, 1), 1 - lin(t, 11.7, 11.8, 0, 1));
+  const black = Math.min(lin(t, 11.0, 11.1, 0, 1), 1 - lin(t, 11.7, 11.712, 0, 1));
+  // v6：黑场退去后点侧栏「AI Agent 元年」→ 主区换成这篇文章的资源页 → 点资源页顶栏「分享」→ F 从这个按钮展开
+  const artO = lin(t, E_OPEN_ROW + 0.001, E_OPEN_ROW + 0.008, 0, 1);
+  const shareGlow = lin(t, E_SHARE, E_SHARE + 0.008, 0, 1);
+  const path2 = [
+    { t: 11.712, x: 900, y: 600 }, { t: E_OPEN_ROW - 0.004, ...AT.agentRow }, { t: E_OPEN_ROW + 0.026, ...AT.agentRow },
+    { t: E_SHARE - 0.004, x: SHARE.x, y: SHARE.y }, { t: 11.8, x: SHARE.x, y: SHARE.y },
+  ];
 
   const path = [
     { t: 1.3, x: 1300, y: 820 }, { t: 1.55, ...AT.agent }, { t: 1.75, ...AT.agent }, { t: 1.88, ...AT.slideHigh }, { t: 2.1, ...AT.slideHigh },
     { t: 2.45, x: AT.homeSend.x - 60, y: AT.homeSend.y + 40 }, { t: 2.85, ...AT.homeSend },
-    { t: 4.45, x: 1300, y: 600 }, { t: 4.6, ...AT.cite1 }, { t: 5.0, ...AT.cite1 }, { t: 5.25, ...AT.read }, { t: 5.45, ...AT.read },
-    { t: 5.75, x: 1250, y: 930 }, { t: 6.2, x: 1350, y: 960 }, { t: 6.38, ...AT.chatSend }, { t: 7.5, x: 900, y: 820 }, { t: 7.75, ...AT.save },
-    { t: 8.6, x: 1350, y: 960 }, { t: 9.1, ...AT.chatSend }, { t: 9.4, ...AT.approve }, { t: 10.2, x: 900, y: 600 },
+    { t: 4.45, x: 1300, y: 600 }, { t: 4.6, ...AT.cite1 }, { t: 5.0, ...AT.cite1 }, { t: 5.3, ...AT.read }, { t: 5.5, ...AT.read },
+    { t: 5.75, x: 1250, y: 930 }, { t: 6.2, x: 1350, y: 960 }, { t: 6.38, ...AT.chatSend }, { t: 7.5, x: 1300, y: 900 },
+    { t: 8.6, x: AT.homeSend.x - 60, y: AT.homeSend.y + 40 }, { t: 9.1, ...AT.homeSend }, { t: 9.4, ...AT.approve }, { t: 10.2, x: 900, y: 600 },
   ];
 
   const chatComposer = pending
     ? <ApprovalCard title={tr('创建文件夹', 'Create folder')} args={[tr('个人', 'Personal'), res('aiFolder')]} press={t > 9.5 && t < 9.62 ? 1 : 0} />
-    : <Composer text={compText} caret={!!compText} level={levelName} ring sendHover={(t > 6.3 && t < 6.42) || (t > 9.05 && t < 9.17)} />;
+    : <Composer text={compText} caret={!!compText} level={levelName} ring sendHover={t > 6.3 && t < 6.42} />;
+  const home2Composer = <Composer text={q3} caret={t > 8.45 && t < 9.15} level={levelName} sendHover={t > 9.05 && t < 9.17} />;
 
   return (
     <Fill bg={OMNI_BG}>
       <Camera c={c}>
-        <AppFrame side={<Sidebar tab={tab} space={res('space')} home={t < 3.0}>{tree}{history}</Sidebar>} overlay={docCard} over={splitView}>
-          <Main header={t < 3.0 ? <HomeHeader /> : <ChatHeader title={tr('收藏资料里的 AI Agent 趋势', 'AI agent trends in my saves')} titleO={lin(t, 3.3, 3.45, 0, 1)} shareGlow={lin(t, 11.7, 11.8, 0, 1)} />}>
+        <AppFrame side={<Sidebar tab={tab} space={res('space')} home={onHome}>{tree}{history}</Sidebar>} overlay={docCard} over={splitView}>
+          <Main header={onHome ? <HomeHeader /> : artO > 0.5 ? <ResourceHeader crumbs={[res('aiFolder'), Z0.title]} updated="2 天前创建" shareGlow={shareGlow} copilot={false} /> : <ChatHeader title={t >= 9.15 ? tr('归档 AI 相关资料', 'Organize AI sources') : tr('收藏资料里的 AI Agent 趋势', 'AI agent trends in my saves')} titleO={t >= 9.15 ? lin(t, 9.35, 9.5, 0, 1) : lin(t, 3.3, 3.45, 0, 1)} />}>
             <div className="relative flex min-h-0 flex-1 flex-col">
               {/* 首页 */}
               {homeO > 0 && (
@@ -354,9 +386,18 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
                   <HomeBody tip={tr('列出包含“会议”标签的所有资源', 'List all resources tagged "meeting"')} chip={sp(t, 0.5)} composer={homeComposer} cards={<HomeCards recent={recent} />} />
                 </div>
               )}
+              {/* 周报存好后回到首页：小黑 + 输入框，Q3 在这里输入 */}
+              {home2O > 0 && (
+                <div className="absolute inset-0 flex flex-col" style={{ opacity: home2O }}>
+                  <HomeBody tip={tr('列出包含“会议”标签的所有资源', 'List all resources tagged "meeting"')} composer={home2Composer} cards={<HomeCards recent={recent} />} cat={peek < 1 ? (
+                    // E+ 插段末尾：小黑从输入框后面探出。槽位 92×98、下沿压进输入框 26px；位移会让小黑画在输入框上面，所以直接在输入框上沿（72）处裁掉
+                    <div style={{ width: 92, height: 98 }}><div style={{ height: 72, overflow: 'hidden' }}><div style={{ transform: `translateY(${(1 - peek) * 80}px)` }}><Ic n="xiaohei" /></div></div></div>
+                  ) : undefined} />
+                </div>
+              )}
               {/* 对话页 */}
-              {chatO > 0 && (
-                <div className="absolute inset-0 flex flex-col" style={{ opacity: chatO }}>
+              {chatO * (1 - artO) > 0 && (
+                <div className="absolute inset-0 flex flex-col" style={{ opacity: chatO * (1 - artO) }}>
                   <ChatScroll>
                     <div style={{ position: 'relative', height: 700 }}>
                       {q1Block}
@@ -367,10 +408,18 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
                   <ChatComposerBar>{chatComposer}</ChatComposerBar>
                 </div>
               )}
+              {/* v6：分享前打开的资源页（收藏的知乎文章，整篇、不高亮） */}
+              {artO > 0 && (
+                <div className="absolute inset-0 flex flex-col" style={{ opacity: artO }}>
+                  <div data-orientation="horizontal" role="none" className="shrink-0 h-[1px] w-full bg-[#F2F2F2]" />
+                  <ResourceView title={Z0.title} created="2026-10-13 21:14:05" blocks={article} />
+                </div>
+              )}
             </div>
           </Main>
         </AppFrame>
         <Cursor t={t} path={path} clicks={E_CLICKS} show={[1.3, 10.4]} size={34 / Math.max(1, c.s * 0.7)} />
+        <Cursor t={t} path={path2} clicks={[E_OPEN_ROW, E_SHARE]} show={[11.712, 11.8]} size={34} k={34} />
       </Camera>
 
       <Caption t={t} a={3.8} b={5.3} text={tr('有问必答，句句有出处', 'Answers with sources. Every time.')} y={720} size={60} plate />
@@ -379,10 +428,9 @@ export const Ee: React.FC<{ t: number }> = ({ t }) => {
 
       <div style={{ position: 'absolute', inset: 0, background: '#000', opacity: black }} />
       {t >= 11.0 && t < 11.85 && (
-        <div style={{ position: 'absolute', inset: 0, opacity: 1 - lin(t, 11.7, 11.8, 0, 1) }}>
+        <div style={{ position: 'absolute', inset: 0, opacity: 1 - lin(t, 11.7, 11.712, 0, 1) }}>
           <Band x={lin(t, 11.0, 11.6, 2200, -300)} o={0.55} />
           <Words t={t} times={[11.1, 11.25, 11.4]} words={tr(['记忆', '变成', '万物'], ['Memory', 'becomes', 'everything.'])} colors={['#7FB0FF']} />
-          <Caption t={t} a={11.55} b={12} text={tr('问答 · 写作 · 执行', 'Ask · Write · Act')} y={600} size={40} />
         </div>
       )}
     </Fill>

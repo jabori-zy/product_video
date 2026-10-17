@@ -47,7 +47,7 @@ export const ZhihuPage: React.FC<{
   };
   z.stats.forEach(([, v], i) => { slots[`stat-${i}`] = v; });
   z.hotItems.forEach(([k, v], i) => { slots[`hot-${i}`] = k; slots[`heat-${i}`] = v; });
-  return <SitePage site="zhihu" w={w} h={h} zoom={zoom} slots={slots} scroll={scroll / zoom} bg="#F6F6F6" attrs={{ '.AppHeader input': { placeholder: z.search, value: '' } }} />;
+  return <SitePage site="zhihu" w={w} h={h} zoom={zoom} slots={slots} scroll={scroll / zoom} bg="#F6F6F6" ownFont={false} attrs={{ '.AppHeader input': { placeholder: z.search, value: '' } }} />;
 };
 
 /** Content Screenshots 01：整页 1500×788 */

@@ -66,12 +66,9 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
     cat = { ...hop(t, 2.88, 3.15, { x: 412, y: GROUND }, { x: CAT_X, y: TEXT_TOP }, 210, 0.08), s: 1 };
     cat.y += dip;
   } else {
-    // 坐在文字上随文字移动，4.0 后滑到输入框上沿后方
-    const ride = { x: g.x + (CAT_X - 960) * g.k, y: g.y - 45 * g.k };
-    const p2 = sp(t, 4.0, { damping: 15 });
-    const fx = SLOT.x, fy = SLOT.y;
-    const s = lin(t, 3.6, 4.0, 1, 0.78) - 0.02 * p2;
-    cat = { x: ride.x + (fx - ride.x) * (t >= 4.0 ? p2 : 0), y: ride.y + (fy - ride.y) * (t >= 4.0 ? p2 : 0), sx: 1, sy: 1, s };
+    // 从文字上跳起，弧线越过输入框上方，直接落进输入框后面（下半截藏起），不从输入框前面滑过
+    const s = lin(t, 3.6, 4.0, 1, 0.76);
+    cat = { ...hop(t, 3.7, 4.0, { x: CAT_X, y: TEXT_TOP }, SLOT, 150), s };
     if (t >= 4.25) cat.y += lin(t, 4.25, 4.45, 0, 1) * 360; // 跟着输入框一起下沉
   }
   const look = t < 3.25 ? 1 : t < 3.6 ? 0 : -0.6;
@@ -98,7 +95,8 @@ export const A: React.FC<{ t: number }> = ({ t }) => {
   const zoom = lin(t, 4.4, 4.9, 1, 1.25);
   // 小黑落位后藏在输入框后面：按输入框上沿裁掉下半截（输入框跟着首页一起下沉时裁切线也跟着走）
   const compTop = COMP_TOP + (t >= 4.25 ? lin(t, 4.25, 4.45, 0, 1) * 300 : 0);
-  const catClip = t >= 4.0 ? Math.max(0, cat.y - compTop) * (t >= 4.25 ? 1 : sp(t, 4.0, { damping: 15 })) : 0;
+  // 过了弧线最高点（3.85）才开始裁：起跳时还站在文字上，不能被裁
+  const catClip = t >= 3.85 ? Math.max(0, cat.y - compTop) : 0;
   return (
     <Fill bg={bg}>
      <div style={{ position: 'absolute', inset: 0, transform: `scale(${zoom})`, transformOrigin: '1540px 120px' }}>

@@ -303,14 +303,15 @@ export const LogoDrawn: React.FC<{ size?: number; blink?: number; look?: number;
 
 // ---------- 光标与 HUD ----------
 /** macOS 光标：path=[{t,x,y}]，clicks=[秒]，点击时缩小并出现涟漪 */
-export const Cursor: React.FC<{ t: number; path: any[]; clicks?: number[]; show?: [number, number]; size?: number; dark?: boolean }> = ({
-  t, path, clicks = [], show, size = 34, dark,
+/** k：节奏表把这段放慢了 k 倍时传 k，点击的按下 / 涟漪仍按原速（0.12 / 0.35 秒）播放 */
+export const Cursor: React.FC<{ t: number; path: any[]; clicks?: number[]; show?: [number, number]; size?: number; dark?: boolean; k?: number }> = ({
+  t, path, clicks = [], show, size = 34, dark, k: slow = 1,
 }) => {
   if (show && (t < show[0] || t > show[1])) return null;
   const p = kf(t, path);
-  const c = clicks.find((k) => t >= k && t < k + 0.35);
-  const press = c !== undefined && t < c + 0.12 ? 0.82 : 1;
-  const rp = c !== undefined ? (t - c) / 0.35 : 0;
+  const c = clicks.find((k) => t >= k && t < k + 0.35 / slow);
+  const press = c !== undefined && t < c + 0.12 / slow ? 0.82 : 1;
+  const rp = c !== undefined ? ((t - c) * slow) / 0.35 : 0;
   return (
     <>
       {c !== undefined && (

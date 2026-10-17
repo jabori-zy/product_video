@@ -20,7 +20,9 @@ export const rowRect = (i: number) => ({ x: 8 * Z, y: rowY(i) + Z, w: 240 * Z, h
 /** 主区圆角面板（画布像素） */
 export const PANEL = { x: (SIDE + 8) * Z, y: 8 * Z, w: (1440 - SIDE - 16) * Z, h: (810 - 16) * Z, r: 16 * Z };
 /** 对话页顶栏「分享」按钮中心（画布像素）：E → F 的圆形展开从这里开始 */
-export const SHARE = { x: 1342 * Z, y: 32 * Z };
+// v6：分享前先打开「AI Agent 元年」资源页，所以是资源页顶栏的「分享」按钮（h-8 px-3 text-xs，72×32；整宽主区右起：pr-3、两个 28 图标、更多 28、编辑 72，间距 4 / 8）
+// 对话面板没开时最右还有小黑按钮（28 + 间距 4），分享按钮再往左 32
+export const SHARE = { x: 1172 * Z, y: 32 * Z, w: 72 * Z, h: 32 * Z };
 
 /** 「个人」下的静态资源树 + 「系统」分组；rows = [图标, 名字] */
 export const Tree: React.FC<{ rows: [string, string][] }> = ({ rows }) => {
