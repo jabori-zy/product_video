@@ -2,9 +2,9 @@
   "name": "omnibox-product-demo",
   "version": "0.1.0",
   "private": true,
-  "description": "小黑 OmniBox 产品介绍片 · 草稿 demo（45 s，无配乐，占位矩形）",
+  "description": "OmniBox product video: high-fidelity cut (~130 s, Chinese and English, real product UI and web page snapshots, with music and SFX; latest is high_fidelity_v5)",
   "scripts": {
-    "studio": "remotion studio",
+    "studio": "remotion studio --no-open",
     "render": "remotion render Demo out/demo.mp4",
     "render:paced": "node tools/render-paced.mjs",
     "render:content": "node tools/render-content.mjs",
